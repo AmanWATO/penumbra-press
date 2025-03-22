@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,109 +16,140 @@ interface InstagramPost {
 
 export function InstagramFeed() {
   const [posts, setPosts] = useState<InstagramPost[]>([]);
+  const [profileImage, setProfileImage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const theme = useTheme();
-  
-  const instagramUsername = "your_instagram_handle"; // Replace with your actual handle
+
+  const instagramUsername = "wordsinshade";
 
   useEffect(() => {
-    // This is where we would fetch from Instagram API
-    // For now, we'll simulate a fetch with placeholder data
     const fetchInstagramPosts = async () => {
       try {
-        // In a real implementation, you would use:
-        // const response = await fetch('/api/instagram-feed');
-        // const data = await response.json();
+        const response = await fetch(
+          "https://real-time-instagram-scraper-api1.p.rapidapi.com/v1/user_posts?username_or_id=wordsinshade&count=6",
+          {
+            headers: {
+              "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPIDAPI_KEY || "",
+              "X-RapidAPI-Host": "real-time-instagram-scraper-api1.p.rapidapi.com",
+            },
+          }
+        );
+      
+        const data = await response.json();
         
-        // Simulated data for demonstration
-        const mockPosts: InstagramPost[] = Array.from({ length: 8 }).map((_, i) => ({
-          id: `post-${i}`,
-          media_url: `/instagram-${i + 1}.jpg`, // These would be real Instagram image URLs in the actual API
-          permalink: `https://instagram.com/p/mock${i}`,
-          caption: `Instagram post caption ${i + 1}`,
-          timestamp: new Date().toISOString()
+        // Check if the data structure is valid
+        if (!data || !data.data || !data.data.items) {
+          throw new Error("Invalid API response structure");
+        }
+      
+        const userData = data.data.user;
+        const mediaData = data.data.items;
+      
+        const posts: InstagramPost[] = mediaData.map((post: any) => ({
+          id: post.id,
+          media_url: post.image_versions2.candidates[0].url,
+          permalink: `https://www.instagram.com/p/${post.code}/`,
+          caption: post.caption?.text || "", 
+          timestamp: post.taken_at,
         }));
-        
-        setTimeout(() => {
-          setPosts(mockPosts);
-          setLoading(false);
-        }, 500); // Simulate loading
-      } catch (err) {
-        setError("Failed to load Instagram posts");
+      
+        setPosts(posts);
+        setProfileImage(userData.profile_pic_url);
         setLoading(false);
-        console.error("Error fetching Instagram posts:", err);
+      } catch (err) {
+        setError("Failed to fetch Instagram posts");
+        setLoading(false);
+        console.error(err);
       }
     };
 
     fetchInstagramPosts();
-  }, []);
+  }, []); // Runs only on mount
 
   return (
-    <section 
+    <section
       className="py-16"
-      style={{ 
+      style={{
         backgroundColor: theme.background.primary,
-        fontFamily: theme.fonts.body
+        fontFamily: theme.fonts.body,
       }}
+      id="instagram-feed"
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
-          <h2 
-            className="text-3xl font-bold"
-            style={{ 
-              fontFamily: theme.fonts.heading,
-              color: theme.text.primary
-            }}
-          >
-            Instagram Feed
-          </h2>
-          <Button 
-            asChild 
+          <div className="flex items-center gap-3">
+            {profileImage && (
+              <div className="relative h-10 w-10 max-md:w-7 max-md:h-7 rounded-full overflow-hidden">
+                <Image
+                  src={profileImage}
+                  alt={`${instagramUsername} profile picture`}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            )}
+            <h2
+              className="text-3xl max-md:text-xl font-bold"
+              style={{
+                fontFamily: theme.fonts.heading,
+                color: theme.text.primary,
+              }}
+            >
+              Instagram Feed
+            </h2>
+          </div>
+
+          <Button
+            asChild
             variant="outline"
-            style={{ 
+            style={{
               borderColor: theme.border.medium,
-              color: theme.text.primary 
+              color: theme.text.primary,
             }}
           >
-            <Link href={`https://instagram.com/${instagramUsername}`} target="_blank" rel="noopener noreferrer">
-              <Instagram className="mr-2 h-4 w-4" />
-              Follow Me
+            <Link
+              href={`https://instagram.com/${instagramUsername}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Instagram className="h-4 w-4" />
+              <p className="max-md:hidden" >Follow Me</p>
             </Link>
           </Button>
         </div>
-        
+
         {loading && (
-          <div 
+          <div
             className="text-center py-8"
             style={{ color: theme.text.secondary }}
           >
             <p>Loading Instagram feed...</p>
           </div>
         )}
-        
+
         {error && (
           <div className="text-center py-8 text-red-500">
             <p>{error}</p>
           </div>
         )}
-        
+
         {!loading && !error && (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {posts.map((post) => (
-              <Link 
-                href={post.permalink} 
-                key={post.id} 
-                target="_blank" 
+              <Link
+                href={post.permalink}
+                key={post.id}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="block"
               >
                 <div className="relative aspect-square overflow-hidden rounded-md">
-                  <Image 
+                  <Image
                     src={post.media_url}
                     alt={post.caption}
                     fill
-                    className="object-cover hover:scale-105 transition-transform duration-300" 
+                    className="object-cover hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               </Link>

@@ -23,7 +23,7 @@ export function NewsletterSection() {
         <p className="text-lg max-w-2xl mx-auto mb-8">
           Subscribe to receive updates on new releases, literary events, and exclusive content.
         </p>
-        <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+        <form className="flex flex-col sm:flex-row gap-4 items-center max-w-md mx-auto">
           <input 
             type="email" 
             placeholder="Your email address" 
@@ -36,6 +36,7 @@ export function NewsletterSection() {
           />
           <Button 
             type="submit"
+            className="cursor-pointer"
             style={{ 
               backgroundColor: theme.background.secondary,
               color: theme.text.primary,

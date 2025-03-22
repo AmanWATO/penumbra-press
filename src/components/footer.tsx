@@ -17,14 +17,15 @@ export function Footer() {
       }}
     >
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <Link href="/" className="flex items-center space-x-2 mb-4">
+            <Link href="/" className="flex items-center space-x-3 mb-4">
               <Image 
                 src="/penumbra_press_without_text.png" 
                 alt="Penumbra Press" 
                 width={32} 
                 height={32} 
+                className="rounded-md"
               />
               <span 
                 className="text-lg font-semibold"
@@ -43,7 +44,7 @@ export function Footer() {
               Where words dwell between light and shadow — a haven for poetry, storytelling, and literary reflections.
             </p>
           </div>
-          <div>
+          {/* <div>
             <h3 
               className="font-semibold mb-4"
               style={{ color: theme.text.primary }}
@@ -80,7 +81,7 @@ export function Footer() {
                 Contact
               </Link>
             </nav>
-          </div>
+          </div> */}
           <div>
             <h3 
               className="font-semibold mb-4"
@@ -95,7 +96,7 @@ export function Footer() {
                 asChild
                 style={{ color: theme.text.primary }}
               >
-                <Link href="https://instagram.com/your-handle" target="_blank" rel="noopener noreferrer">
+                <Link href="https://instagram.com/wordsinshade" target="_blank" rel="noopener noreferrer">
                   <Instagram className="h-5 w-5" />
                   <span className="sr-only">Instagram</span>
                 </Link>
@@ -106,7 +107,7 @@ export function Footer() {
                 asChild
                 style={{ color: theme.text.primary }}
               >
-                <Link href="mailto:your-email@example.com">
+                <Link href="mailto:penumbrapress22@gmail.com">
                   <Mail className="h-5 w-5" />
                   <span className="sr-only">Email</span>
                 </Link>

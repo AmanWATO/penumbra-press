@@ -11,6 +11,7 @@ export function AboutSection() {
     <section
       className="py-16"
       style={{ backgroundColor: theme.background.secondary }}
+      id="about-author"
     >
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center gap-8">
@@ -41,7 +42,7 @@ export function AboutSection() {
                 color: theme.text.secondary,
               }}
             >
-              {` Welcome to Penumbra Press. I'm [Your Name], a writer exploring the boundaries between light and shadow, 
+              {` Welcome to Penumbra Press. I'm Aman Srivastava, a writer exploring the boundaries between light and shadow, 
               reality and imagination. My work seeks to illuminate the quiet corners of human experience through poetry, 
               storytelling, and literary reflection.`}
             </p>
@@ -54,7 +55,7 @@ export function AboutSection() {
               }}
             >
               <Link href="/about">
-                <User className="mr-2 h-4 w-4" />
+                <User className="h-4 w-4" />
                 Learn More About Me
               </Link>
             </Button>

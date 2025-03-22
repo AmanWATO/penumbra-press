@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Mail, Menu, X } from "lucide-react";
 import { useTheme } from "@/lib/ThemeProvider";
@@ -10,6 +9,15 @@ import { useTheme } from "@/lib/ThemeProvider";
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const theme = useTheme();
+
+  // Function to handle smooth scrolling
+  const handleScroll = (id: string) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      setMobileMenuOpen(false); // Close menu on mobile after clicking
+    }
+  };
 
   return (
     <header
@@ -21,7 +29,11 @@ export function Header() {
       }}
     >
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center space-x-3">
+        {/* Logo */}
+        <div
+          onClick={() => handleScroll("top")}
+          className="flex items-center space-x-3 cursor-pointer"
+        >
           <Image
             src="/penumbra_press_without_text.png"
             alt="Penumbra Press"
@@ -38,31 +50,31 @@ export function Header() {
           >
             Penumbra Press
           </span>
-        </Link>
+        </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
-          <Link
-            href="/books"
-            className="hover:opacity-80 transition-opacity"
+          <button
+            onClick={() => handleScroll("books")}
+            className="hover:opacity-80 transition-opacity cursor-pointer"
             style={{ color: theme.text.primary }}
           >
             Books
-          </Link>
-          <Link
-            href="/instagram"
-            className="hover:opacity-80 transition-opacity"
+          </button>
+          <button
+            onClick={() => handleScroll("instagram-feed")}
+            className="hover:opacity-80 transition-opacity cursor-pointer"
             style={{ color: theme.text.primary }}
           >
             Instagram
-          </Link>
-          <Link
-            href="/about"
-            className="hover:opacity-80 transition-opacity"
+          </button>
+          <button
+            onClick={() => handleScroll("about-author")}
+            className="hover:opacity-80 transition-opacity cursor-pointer"
             style={{ color: theme.text.primary }}
           >
             About
-          </Link>
+          </button>
           <Button
             asChild
             variant="outline"
@@ -71,10 +83,10 @@ export function Header() {
               color: theme.text.primary,
             }}
           >
-            <Link href="/contact">
-              <Mail className=" h-4 w-4" />
+            <button onClick={() => handleScroll("contact")}>
+              <Mail className="h-4 w-4" />
               Contact
-            </Link>
+            </button>
           </Button>
         </nav>
 
@@ -101,27 +113,28 @@ export function Header() {
           style={{ borderColor: theme.border.light }}
         >
           <nav className="flex flex-col space-y-3">
-            <Link
-              href="/books"
-              className="py-2 hover:opacity-80 transition-opacity"
+            <button
+              onClick={() => handleScroll("books")}
+              className="py-2 hover:opacity-80 transition-opacity cursor-pointer"
               style={{ color: theme.text.primary }}
+            
             >
               Books
-            </Link>
-            <Link
-              href="/instagram"
-              className="py-2 hover:opacity-80 transition-opacity"
+            </button>
+            <button
+              onClick={() => handleScroll("instagram-feed")}
+              className="py-2 hover:opacity-80 transition-opacity cursor-pointer"
               style={{ color: theme.text.primary }}
             >
               Instagram
-            </Link>
-            <Link
-              href="/about"
-              className="py-2 hover:opacity-80 transition-opacity"
+            </button>
+            <button
+              onClick={() => handleScroll("about-author")}
+              className="py-2 hover:opacity-80 transition-opacity cursor-pointer"
               style={{ color: theme.text.primary }}
             >
               About
-            </Link>
+            </button>
             <Button
               asChild
               variant="outline"
@@ -131,10 +144,13 @@ export function Header() {
                 color: theme.text.primary,
               }}
             >
-              <Link href="/contact" className="justify-center">
-                <Mail className=" h-4 w-4" />
+              <button
+                onClick={() => handleScroll("contact")}
+                className="justify-center"
+              >
+                <Mail className="h-4 w-4" />
                 Contact
-              </Link>
+              </button>
             </Button>
           </nav>
         </div>

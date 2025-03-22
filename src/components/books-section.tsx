@@ -36,6 +36,7 @@ export function BooksSection() {
     <section
       className="py-16"
       style={{ backgroundColor: theme.background.secondary }}
+      id="books"
     >
       <div className="container mx-auto px-4">
         <h2
