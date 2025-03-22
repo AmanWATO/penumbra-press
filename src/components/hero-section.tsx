@@ -8,12 +8,12 @@ export function HeroSection() {
 
   return (
     <section
-      className="relative w-full h-96 flex items-center justify-center overflow-hidden"
+      className="relative w-full h-screen flex items-center justify-center overflow-hidden"
       style={{ backgroundColor: theme.background.dark }}
     >
       <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/60 z-10"></div>
       <Image
-        src="/hero-background.jpg"
+        src="/hero-background.png"
         alt="Penumbra Press Background"
         fill
         className="object-cover object-center opacity-60"

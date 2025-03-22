@@ -1,5 +1,6 @@
 import { useTheme } from "@/lib/ThemeProvider";
 import { BookCard } from "./book-card";
+import { ComingSoonCard } from "./coming-soon";
 
 interface BookProps {
   id: number;
@@ -12,49 +13,45 @@ interface BookProps {
 const books: BookProps[] = [
   {
     id: 1,
-    title: "Whispers of Twilight",
+    title: "Grace In The Ether",
     coverImage: "/book1.jpg",
-    description: "A collection of poems exploring the liminal spaces between day and night, conscious and subconscious.",
-    link: "/books/whispers-of-twilight"
+    description:
+      "“Grace in the Ether”, is a book written with a care for those who are lost in their bustling lives and fail to notice the grace that fleets around. This book is a probe of such subtle wonder that graces our lives- whether we deserve it or not because that’s what it’s kindness.",
+    link: "/books/whispers-of-twilight",
   },
   {
     id: 2,
-    title: "Echoes in the Void",
+    title: "The Jumbled Flow",
     coverImage: "/book2.jpg",
-    description: "Short stories that navigate the uncharted terrains of memory and loss.",
-    link: "/books/echoes-in-the-void"
+    description:
+      "Have you ever noticed how thoughts rarely arrive in a straight line? They mostly weave, collide, and drift — much like life itself. The Jumbled Flow was born from this very nature, a collection of poems spanning five years of wandering through emotions, reflections, and the intricate dance of human connections.",
+    link: "/books/echoes-in-the-void",
   },
-  {
-    id: 3,
-    title: "Midnight Musings",
-    coverImage: "/book3.jpg",
-    description: "Essays and reflections on literature, art, and the human condition.",
-    link: "/books/midnight-musings"
-  }
 ];
 
 export function BooksSection() {
   const theme = useTheme();
 
   return (
-    <section 
+    <section
       className="py-16"
       style={{ backgroundColor: theme.background.secondary }}
     >
       <div className="container mx-auto px-4">
-        <h2 
+        <h2
           className="text-3xl font-bold mb-8 text-center"
-          style={{ 
+          style={{
             fontFamily: theme.fonts.heading,
-            color: theme.text.primary
+            color: theme.text.primary,
           }}
         >
           Featured Books
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {books.map(book => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {books.map((book) => (
             <BookCard key={book.id} book={book} />
           ))}
+          <ComingSoonCard />
         </div>
       </div>
     </section>

@@ -30,7 +30,7 @@ export function BookCard({ book }: { book: BookProps }) {
         borderColor: theme.border.light,
       }}
     >
-      <div className="relative aspect-[2/3] w-full">
+      <div className="relative aspect-[4/5] w-full">
         <Image
           src={book.coverImage}
           alt={book.title}
@@ -68,7 +68,7 @@ export function BookCard({ book }: { book: BookProps }) {
           }}
         >
           <Link href={book.link}>
-            <BookOpen className="mr-2 h-4 w-4" />
+            <BookOpen className="h-4 w-4" />
             Read More
           </Link>
         </Button>

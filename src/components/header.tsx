@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useState } from "react";
 import Image from "next/image";
@@ -16,17 +16,18 @@ export function Header() {
       className="w-full border-b"
       style={{
         backgroundColor: theme.background.primary,
-        borderColor: theme.border.light,
+        borderColor: theme.border.dark,
         fontFamily: theme.fonts.body,
       }}
     >
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center space-x-2">
+        <Link href="/" className="flex items-center space-x-3">
           <Image
             src="/penumbra_press_without_text.png"
             alt="Penumbra Press"
             width={40}
             height={40}
+            className="rounded-md"
           />
           <span
             className="text-xl font-semibold"
@@ -71,7 +72,7 @@ export function Header() {
             }}
           >
             <Link href="/contact">
-              <Mail className="mr-2 h-4 w-4" />
+              <Mail className=" h-4 w-4" />
               Contact
             </Link>
           </Button>
@@ -131,7 +132,7 @@ export function Header() {
               }}
             >
               <Link href="/contact" className="justify-center">
-                <Mail className="mr-2 h-4 w-4" />
+                <Mail className=" h-4 w-4" />
                 Contact
               </Link>
             </Button>
