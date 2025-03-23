@@ -10,12 +10,11 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const theme = useTheme();
 
-  // Function to handle smooth scrolling
   const handleScroll = (id: string) => {
     const section = document.getElementById(id);
     if (section) {
       section.scrollIntoView({ behavior: "smooth", block: "start" });
-      setMobileMenuOpen(false); // Close menu on mobile after clicking
+      setMobileMenuOpen(false);
     }
   };
 
@@ -117,7 +116,6 @@ export function Header() {
               onClick={() => handleScroll("books")}
               className="py-2 hover:opacity-80 transition-opacity cursor-pointer"
               style={{ color: theme.text.primary }}
-            
             >
               Books
             </button>

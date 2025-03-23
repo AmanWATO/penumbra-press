@@ -1,10 +1,15 @@
 import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { useTheme } from "@/lib/ThemeProvider";
 
 export function HeroSection() {
   const theme = useTheme();
+
+  const handleScroll = (id: string) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   return (
     <section
@@ -38,16 +43,16 @@ export function HeroSection() {
           Explore the interplay of ink and ether through poetry, storytelling,
           and literary reflections.
         </p>
-        <Button
-          asChild
-          size="lg"
+        <button
+          onClick={() => handleScroll("books")}
           style={{
             backgroundColor: theme.background.secondary,
             color: theme.text.primary,
           }}
+          className="rounded-md font-sm font-semibold py-2 px-4 hover:opacity-80 transition-opacity cursor-pointer"
         >
-          <Link href="/books">Explore My Books</Link>
-        </Button>
+          Explore My Books
+        </button>
       </div>
     </section>
   );

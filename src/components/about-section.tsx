@@ -16,13 +16,16 @@ export function AboutSection() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center gap-8">
           <div className="md:w-1/3">
-            <div className="relative aspect-square w-full max-w-sm mx-auto rounded-full overflow-hidden">
-              <Image
-                src="/author.jpg"
-                alt="Author photo"
-                fill
-                className="object-cover"
-              />
+            <div className="relative w-full max-w-sm mx-auto">
+              <div className="relative aspect-square w-11/12 mx-auto rounded-full overflow-hidden z-10">
+                <Image
+                  src="/author-profile.png"
+                  alt="Aman Srivastava"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
             </div>
           </div>
           <div className="md:w-2/3">
@@ -46,19 +49,32 @@ export function AboutSection() {
               reality and imagination. My work seeks to illuminate the quiet corners of human experience through poetry, 
               storytelling, and literary reflection.`}
             </p>
-            <Button
-              asChild
-              style={{
-                backgroundColor: theme.background.dark,
-                color: theme.text.light,
-                fontFamily: theme.fonts.body,
-              }}
-            >
-              <Link href="/about">
-                <User className="h-4 w-4" />
-                Learn More About Me
-              </Link>
-            </Button>
+            <div className="flex space-x-4">
+              <Button
+                asChild
+                style={{
+                  backgroundColor: theme.background.dark,
+                  color: theme.text.light,
+                  fontFamily: theme.fonts.body,
+                }}
+              >
+                <Link href="/about">
+                  <User className="h-4 w-4 mr-2" />
+                  Learn More About Me
+                </Link>
+              </Button>
+              {/* <Button
+                asChild
+                variant="outline"
+                style={{
+                  borderColor: theme.background.dark,
+                  color: theme.text.primary,
+                  fontFamily: theme.fonts.body,
+                }}
+              >
+                <Link href="/works">Explore My Works</Link>
+              </Button> */}
+            </div>
           </div>
         </div>
       </div>
