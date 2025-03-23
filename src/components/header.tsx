@@ -5,10 +5,12 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Mail, Menu, X } from "lucide-react";
 import { useTheme } from "@/lib/ThemeProvider";
+import { useRouter } from "next/navigation";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const theme = useTheme();
+  const router = useRouter();
 
   const handleScroll = (id: string) => {
     const section = document.getElementById(id);
@@ -82,7 +84,10 @@ export function Header() {
               color: theme.text.primary,
             }}
           >
-            <button onClick={() => handleScroll("contact")}>
+            <button
+              onClick={() => router.push("/contact-us")}
+              className="cursor-pointer"
+            >
               <Mail className="h-4 w-4" />
               Contact
             </button>
@@ -136,15 +141,15 @@ export function Header() {
             <Button
               asChild
               variant="outline"
-              className="w-full"
+              className="w-full cursor-pointer"
               style={{
                 borderColor: theme.border.medium,
                 color: theme.text.primary,
               }}
             >
               <button
-                onClick={() => handleScroll("contact")}
-                className="justify-center"
+                onClick={() => router.push("/contact-us")}
+                className="justify-center cursor-pointer"
               >
                 <Mail className="h-4 w-4" />
                 Contact

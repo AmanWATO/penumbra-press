@@ -48,6 +48,8 @@ export function HeroSection() {
           style={{
             backgroundColor: theme.background.secondary,
             color: theme.text.primary,
+            fontFamily: theme.fonts.button,
+
           }}
           className="rounded-md font-sm font-semibold py-2 px-4 hover:opacity-80 transition-opacity cursor-pointer"
         >

@@ -14,6 +14,7 @@ export const colors = {
 export const fonts = {
   heading: "var(--font-playfair)",
   body: "var(--font-space-grotesk)",
+  button: "var(--font-poppins)",
 };
 
 export const theme = {
