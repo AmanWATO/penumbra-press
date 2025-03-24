@@ -1,18 +1,17 @@
 import { useState } from "react";
 import { Mail, Phone, MessageSquare } from "lucide-react";
-import { useTheme } from "@/lib/ThemeProvider";
+import { useTheme } from "@/context/ThemeProvider";
 import { ContactMethod } from "./ContactMethod";
+import { useConfig } from "@/context/ConfigProvider";
 
 interface CopiedState {
   email: boolean;
   phone: boolean;
 }
 
-const CONTACT_EMAIL = "penumbrapress22@gmail.com";
-const CONTACT_NUMBER = "+91 95802 99449";
-
 export function ContactInfo() {
   const theme = useTheme();
+  const config = useConfig();
 
   const [copied, setCopied] = useState<CopiedState>({
     email: false,
@@ -55,9 +54,9 @@ export function ContactInfo() {
             />
           }
           title="Email"
-          value={CONTACT_EMAIL}
+          value={config.about_author.email}
           isCopied={copied.email}
-          onCopy={() => copyToClipboard(CONTACT_EMAIL, "email")}
+          onCopy={() => copyToClipboard(config.about_author.email, "email")}
           className="break-all"
         />
 
@@ -69,9 +68,11 @@ export function ContactInfo() {
             />
           }
           title="Phone"
-          value={CONTACT_NUMBER}
+          value={config.about_author.phoneNumber}
           isCopied={copied.phone}
-          onCopy={() => copyToClipboard(CONTACT_NUMBER, "phone")}
+          onCopy={() =>
+            copyToClipboard(config.about_author.phoneNumber, "phone")
+          }
         />
 
         <div className="flex items-start space-x-3 md:space-x-4">

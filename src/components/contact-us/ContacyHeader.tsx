@@ -1,10 +1,10 @@
-import { useTheme } from "@/lib/ThemeProvider";
+import { useTheme } from "@/context/ThemeProvider";
 
 export function ContactHeader() {
   const theme = useTheme();
 
   return (
-    <div className="mb-8 md:mb-10 text-center">
+    <div className=" mb-8 md:mb-10 text-center">
       <h2
         className="text-2xl sm:text-3xl md:text-4xl mb-4 md:mb-6 relative inline-block"
         style={{

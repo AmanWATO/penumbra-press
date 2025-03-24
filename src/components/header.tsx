@@ -4,13 +4,15 @@ import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Mail, Menu, X } from "lucide-react";
-import { useTheme } from "@/lib/ThemeProvider";
+import { useTheme } from "@/context/ThemeProvider";
 import { useRouter } from "next/navigation";
+import { useConfig } from "@/context/ConfigProvider";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const theme = useTheme();
   const router = useRouter();
+  const config = useConfig();
 
   const handleScroll = (id: string) => {
     const section = document.getElementById(id);
@@ -30,7 +32,6 @@ export function Header() {
       }}
     >
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo */}
         <div
           onClick={() => handleScroll("top")}
           className="flex items-center space-x-3 cursor-pointer"
@@ -49,7 +50,7 @@ export function Header() {
               color: theme.text.primary,
             }}
           >
-            Penumbra Press
+            {`${config.app.name}`}
           </span>
         </div>
 

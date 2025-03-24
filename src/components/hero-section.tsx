@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useTheme } from "@/lib/ThemeProvider";
+import { useTheme } from "@/context/ThemeProvider";
 
 export function HeroSection() {
   const theme = useTheme();

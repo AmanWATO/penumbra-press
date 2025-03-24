@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Poppins, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/lib/ThemeProvider";
+import { ThemeProvider } from "@/context/ThemeProvider";
+import { ConfigProvider } from "@/context/ConfigProvider";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -35,7 +36,9 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${spaceGrotesk.variable} ${poppins.variable} antialiased`}
       >
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <ConfigProvider>{children}</ConfigProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

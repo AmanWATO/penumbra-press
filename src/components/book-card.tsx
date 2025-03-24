@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
-import { useTheme } from "@/lib/ThemeProvider";
+import { useTheme } from "@/context/ThemeProvider";
 
 interface BookProps {
   id: number;

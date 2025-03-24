@@ -1,6 +1,6 @@
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useTheme } from "@/lib/ThemeProvider";
+import { useTheme } from "@/context/ThemeProvider";
 import { FormField } from "./FormField";
 import { ContactFormData } from "@/app/contact-us/page";
 

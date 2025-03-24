@@ -1,7 +1,9 @@
-import { useTheme } from "@/lib/ThemeProvider";
+import { useConfig } from "@/context/ConfigProvider";
+import { useTheme } from "@/context/ThemeProvider";
 
 export function PageFooter() {
   const theme = useTheme();
+  const config = useConfig();
 
   return (
     <div className="mt-10 md:mt-16 relative">
@@ -27,7 +29,7 @@ export function PageFooter() {
             color: theme.text.secondary,
           }}
         >
-          Penumbra Press — Where words dwell between light and shadow
+          {`${config.app.name}`} — Where words dwell between light and shadow
         </p>
       </div>
     </div>

@@ -1,4 +1,3 @@
-// ContactPage.tsx
 "use client";
 
 import { ContactForm } from "@/components/contact-us/ContactForm";
@@ -6,7 +5,7 @@ import { ContactInfo } from "@/components/contact-us/ContactInfo";
 import { ContactHeader } from "@/components/contact-us/ContacyHeader";
 import { PageFooter } from "@/components/contact-us/PageFooter";
 import { SuccessMessage } from "@/components/contact-us/SuccessMessage";
-import { useTheme } from "@/lib/ThemeProvider";
+import { useTheme } from "@/context/ThemeProvider";
 import { useState } from "react";
 
 export interface ContactFormData {

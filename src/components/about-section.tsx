@@ -2,10 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
-import { useTheme } from "@/lib/ThemeProvider";
+import { useTheme } from "@/context/ThemeProvider";
+import { useConfig } from "@/context/ConfigProvider";
 
 export function AboutSection() {
   const theme = useTheme();
+  const config = useConfig();
 
   return (
     <section
@@ -45,7 +47,7 @@ export function AboutSection() {
                 color: theme.text.secondary,
               }}
             >
-              {` Welcome to Penumbra Press. I'm Aman Srivastava, a writer exploring the boundaries between light and shadow, 
+              {` Welcome to ${config.app.name}. I'm ${config.about_author.name}, a writer exploring the boundaries between light and shadow, 
               reality and imagination. My work seeks to illuminate the quiet corners of human experience through poetry, 
               storytelling, and literary reflection.`}
             </p>

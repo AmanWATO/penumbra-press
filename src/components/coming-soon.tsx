@@ -1,5 +1,5 @@
 import { Card, CardTitle, CardDescription } from "@/components/ui/card";
-import { useTheme } from "@/lib/ThemeProvider";
+import { useTheme } from "@/context/ThemeProvider";
 import { Sparkles } from "lucide-react";
 
 export function ComingSoonCard() {

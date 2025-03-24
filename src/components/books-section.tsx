@@ -1,4 +1,4 @@
-import { useTheme } from "@/lib/ThemeProvider";
+import { useTheme } from "@/context/ThemeProvider";
 import { BookCard } from "./book-card";
 import { ComingSoonCard } from "./coming-soon";
 

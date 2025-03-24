@@ -1,4 +1,4 @@
-import { useTheme } from "@/lib/ThemeProvider";
+import { useTheme } from "@/context/ThemeProvider";
 
 interface FormFieldProps {
   id: string;

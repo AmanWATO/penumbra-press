@@ -1,4 +1,4 @@
-import { useTheme } from "@/lib/ThemeProvider";
+import { useTheme } from "@/context/ThemeProvider";
 import { Check } from "lucide-react";
 
 export function SuccessMessage() {

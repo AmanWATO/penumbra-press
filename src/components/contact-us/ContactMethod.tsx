@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Copy, Check } from "lucide-react";
-import { useTheme } from "@/lib/ThemeProvider";
+import { useTheme } from "@/context/ThemeProvider";
 
 interface ContactMethodProps {
   icon: ReactNode;
