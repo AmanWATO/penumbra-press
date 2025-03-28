@@ -9,6 +9,10 @@ export const colors = {
   gray800: "#626464",
   gray900: "#5c5c5f",
   darkGray: "#363739",
+  softBeige: "#f5f5dc",
+  deepTeal: "#1a6b6b",
+  softEggshell: "#F0EAD6",
+  deepSepia: "#5D4037"
 };
 
 export const fonts = {

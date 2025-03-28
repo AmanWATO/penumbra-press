@@ -33,7 +33,7 @@ export function Header() {
     >
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div
-          onClick={() => handleScroll("top")}
+          onClick={() => router.push('/')}
           className="flex items-center space-x-3 cursor-pointer"
         >
           <Image
@@ -57,7 +57,8 @@ export function Header() {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
           <button
-            onClick={() => handleScroll("books")}
+            // onClick={() => handleScroll("books")}
+            onClick={() => router.push('/my-books')}
             className="hover:opacity-80 transition-opacity cursor-pointer"
             style={{ color: theme.text.primary }}
           >
