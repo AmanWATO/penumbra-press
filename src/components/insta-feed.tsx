@@ -38,10 +38,9 @@ export function InstagramFeed() {
       
         const data = await response.json();
         
-        // Check if the data structure is valid
-        if (!data || !data.data || !data.data.items) {
-          throw new Error("Invalid API response structure");
-        }
+      
+
+        console.log({data})
       
         const userData = data.data.user;
         const mediaData = data.data.items;

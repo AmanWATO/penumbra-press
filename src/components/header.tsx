@@ -64,13 +64,13 @@ export function Header() {
           >
             Books
           </button>
-          <button
+          {/* <button
             onClick={() => handleScroll("instagram-feed")}
             className="hover:opacity-80 transition-opacity cursor-pointer"
             style={{ color: theme.text.primary }}
           >
             Instagram
-          </button>
+          </button> */}
           <button
             onClick={() => handleScroll("about-author")}
             className="hover:opacity-80 transition-opacity cursor-pointer"
@@ -126,13 +126,13 @@ export function Header() {
             >
               Books
             </button>
-            <button
+            {/* <button
               onClick={() => handleScroll("instagram-feed")}
               className="py-2 hover:opacity-80 transition-opacity cursor-pointer"
               style={{ color: theme.text.primary }}
             >
               Instagram
-            </button>
+            </button> */}
             <button
               onClick={() => handleScroll("about-author")}
               className="py-2 hover:opacity-80 transition-opacity cursor-pointer"

@@ -17,7 +17,7 @@ const books: BookProps[] = [
     coverImage: "/book1.jpg",
     description:
       "“Grace in the Ether”, is a book written with a care for those who are lost in their bustling lives and fail to notice the grace that fleets around. This book is a probe of such subtle wonder that graces our lives- whether we deserve it or not because that’s what it’s kindness.",
-    link: "/books/whispers-of-twilight",
+    link: "/",
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ const books: BookProps[] = [
     coverImage: "/book2.jpg",
     description:
       "Have you ever noticed how thoughts rarely arrive in a straight line? They mostly weave, collide, and drift — much like life itself. The Jumbled Flow was born from this very nature, a collection of poems spanning five years of wandering through emotions, reflections, and the intricate dance of human connections.",
-    link: "/books/echoes-in-the-void",
+    link: "/",
   },
 ];
 

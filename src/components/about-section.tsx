@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
 import { useTheme } from "@/context/ThemeProvider";
 import { useConfig } from "@/context/ConfigProvider";
+import { colors } from "@/styles/theme";
 
 export function AboutSection() {
   const theme = useTheme();
@@ -12,7 +13,7 @@ export function AboutSection() {
   return (
     <section
       className="py-16"
-      style={{ backgroundColor: theme.background.secondary }}
+      style={{ backgroundColor: colors.gray100 }}
       id="about-author"
     >
       <div className="container mx-auto px-4">
@@ -61,7 +62,7 @@ export function AboutSection() {
                 }}
               >
                 <Link href="/about">
-                  <User className="h-4 w-4 mr-2" />
+                  <User className="h-4 w-4" />
                   Learn More About Me
                 </Link>
               </Button>

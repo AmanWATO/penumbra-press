@@ -5,6 +5,9 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { colors } from "@/styles/theme";
 import ColorThief from "colorthief";
+// Import icons from a library (assuming you're using react-icons)
+import { FaAmazon } from "react-icons/fa";
+import { SiFlipkart } from "react-icons/si";
 
 const booksData = [
   {
@@ -13,30 +16,64 @@ const booksData = [
     genre: "Poetry",
     coverImage: "/book1.jpg",
     description:
-      "“Grace in the Ether”, is a book written with a care for those who are lost in their bustling lives and fail to notice the grace that fleets around. This book is a probe of such subtle wonder that graces our lives- whether we deserve it or not because that’s what it’s kindness.",
+      "Grace in the Ether, is a book written with a care for those who are lost in their bustling lives and fail to notice the grace that fleets around. This book is a probe of such subtle wonder that graces our lives- whether we deserve it or not because that's what it's kindness.",
     publicationYear: 2024,
+    availability: {
+      amazon: true,
+      flipkart: true,
+      amazonLink: "https://amzn.in/d/cfwFYBC",
+      flipkartLink: "https://www.flipkart.com/grace-in-the-ether/p/itm3c127bbdbda7c?pid=9798894751412&lid=LSTBOK9798894751412P2YEUF&marketplace=FLIPKART&q=grace+in+the+ether&store=bks&srno=s_1_2&otracker=AS_QueryStore_OrganicAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_OrganicAutoSuggest_1_14_na_na_na&fm=organic&iid=e25c3f35-efbc-425b-a708-69d275abb3be.9798894751412.SEARCH&ppt=hp&ppn=homepage&ssid=iph3gz7v9c0000001743357020378&qH=7405fb0126ddf153",
+    },
   },
   {
     id: 2,
     title: "The Jumbled Flow",
     genre: "Collection",
     coverImage: "/book2.jpg",
-    description: "Have you ever noticed how thoughts rarely arrive in a straight line? They mostly weave, collide, and drift — much like life itself. The Jumbled Flow was born from this very nature, a collection of poems spanning five years of wandering through emotions, reflections, and the intricate dance of human connections.",
+    description:
+      "Have you ever noticed how thoughts rarely arrive in a straight line? They mostly weave, collide, and drift — much like life itself. The Jumbled Flow was born from this very nature, a collection of poems spanning five years of wandering through emotions, reflections, and the intricate dance of human connections.",
     publicationYear: 2025,
+    availability: {
+      amazon: true,
+      flipkart: true,
+      amazonLink: "https://amzn.in/d/52NYNx1",
+      flipkartLink:"https://www.flipkart.com/the-jumbled-flow/p/itmb57205713680f?pid=9789370462380&lid=LSTBOK9789370462380XP5YIV&marketplace=FLIPKART&q=The+jumbled+flow&store=search.flipkart.com&srno=s_1_1&otracker=search&otracker1=search&fm=organic&iid=5f44759e-e41d-4a1e-81c0-12b87c9847f9.9789370462380.SEARCH&ppt=pp&ppn=pp&ssid=g93258mxnk0000001743357061773&qH=2ae3bdb1fc65d920"
+    },
   },
   {
     id: 3,
     title: "When The Sky Meets The Sea of Souls",
     genre: "Poetry",
     coverImage: "/book3.png",
-    description: "Love is both a whisper and a storm, a quiet ache and a force that shapes us. When the Sky Meets the Sea of Souls is my poetic odyssey — 49 moments of love in its rawest forms. From self-discovery to healing, from the depth of solitude to the luminous unity of souls, this collection explores the spaces where love lives",
+    description:
+      "Love is both a whisper and a storm, a quiet ache and a force that shapes us. When the Sky Meets the Sea of Souls is my poetic odyssey — 49 moments of love in its rawest forms. From self-discovery to healing, from the depth of solitude to the luminous unity of souls, this collection explores the spaces where love lives",
     publicationYear: 2025,
+    availability: {
+      amazon: true,
+      flipkart: false,
+      amazonLink: "https://amzn.in/d/2CNR8BG",
+    },
   },
 ];
+
+const PageLoader = () => {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50">
+      <div className="text-center p-8 bg-white rounded-lg shadow-md">
+        <div className="w-16 h-16 border-4 border-gray-800 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+        <h3 className="text-xl font-semibold text-gray-800 mb-2">
+          Loading Books
+        </h3>
+      </div>
+    </div>
+  );
+};
 
 export default function AuthorBooksPage() {
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [bookColors, setBookColors] = useState<{ [key: number]: string }>({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [colorsLoaded, setColorsLoaded] = useState(false);
 
   useEffect(() => {
     AOS.init({
@@ -44,38 +81,129 @@ export default function AuthorBooksPage() {
       once: true,
     });
 
-    // Extract dominant colors from book covers
     const extractColors = async () => {
-      const colorThief = new ColorThief();
-      const colorPromises = booksData.map(async (book) => {
-        return new Promise<{ id: number; color: string }>((resolve) => {
-          const img = new window.Image();
-          img.crossOrigin = "Anonymous";
-          img.src = book.coverImage;
-          img.onload = () => {
-            const [r, g, b] = colorThief.getColor(img);
-            resolve({
-              id: book.id,
-              color: `rgb(${r},${g},${b})`,
-            });
-          };
+      try {
+        if (typeof window === "undefined") return;
+
+        const colorThief = new ColorThief();
+        const colorPromises = booksData.map(async (book) => {
+          return new Promise<{ id: number; color: string }>((resolve) => {
+            const img = new window.Image();
+            img.crossOrigin = "Anonymous";
+            img.src = book.coverImage;
+
+            if (img.complete) {
+              try {
+                const [r, g, b] = colorThief.getColor(img);
+                resolve({
+                  id: book.id,
+                  color: `rgb(${r},${g},${b})`,
+                });
+              } catch (error) {
+                console.error(
+                  "Error extracting color from loaded image:",
+                  error
+                );
+                resolve({
+                  id: book.id,
+                  color: "rgb(120,120,120)",
+                });
+              }
+              return;
+            }
+
+            img.onload = () => {
+              try {
+                const [r, g, b] = colorThief.getColor(img);
+                resolve({
+                  id: book.id,
+                  color: `rgb(${r},${g},${b})`,
+                });
+              } catch (error) {
+                console.error("Error extracting color:", error);
+                resolve({
+                  id: book.id,
+                  color: "rgb(120,120,120)", 
+                });
+              }
+            };
+
+            img.onerror = () => {
+              console.error("Error loading image:", book.coverImage);
+              resolve({
+                id: book.id,
+                color: "rgb(120,120,120)", 
+              });
+            };
+          });
         });
-      });
 
-      const extractedColors = await Promise.all(colorPromises);
-      const colorMap = extractedColors.reduce(
-        (acc: { [key: number]: string }, item) => {
-          acc[item.id] = item.color;
-          return acc;
-        },
-        {} as { [key: number]: string }
-      );
+        const extractedColors = await Promise.all(colorPromises);
+        const colorMap = extractedColors.reduce(
+          (acc: { [key: number]: string }, item) => {
+            acc[item.id] = item.color;
+            return acc;
+          },
+          {} as { [key: number]: string }
+        );
 
-      setBookColors(colorMap);
+        setBookColors(colorMap);
+        setColorsLoaded(true);
+      } catch (error) {
+        console.error("Error in color extraction:", error);
+        applyFallbackColors();
+      }
     };
 
+    const applyFallbackColors = () => {
+      const fallbackColors = booksData.reduce((acc, book) => {
+        acc[book.id] =
+          book.genre === "Poetry"
+            ? "rgb(148,129,111)"
+            : book.genre === "Collection"
+            ? "rgb(66,123,122)"
+            : "rgb(80,80,80)";
+        return acc;
+      }, {} as { [key: number]: string });
+
+      setBookColors(fallbackColors);
+      setColorsLoaded(true);
+    };
+
+    // Start color extraction
     extractColors();
-  }, []);
+
+    // Fallback timer if extraction takes too long
+    const timeoutId = setTimeout(() => {
+      if (!colorsLoaded) {
+        applyFallbackColors();
+      }
+    }, 5000); // 5 second fallback
+
+    // Ensure loading state shows for at least 1 second to avoid flashing
+    const minLoadingTime = setTimeout(() => {
+      if (colorsLoaded) {
+        setIsLoading(false);
+      }
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearTimeout(minLoadingTime);
+    };
+  }, [colorsLoaded]);
+
+  // Second effect to handle loading state changes after colors are loaded
+  useEffect(() => {
+    if (colorsLoaded) {
+      // Add a stable delay before hiding loader
+      const hideLoader = setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+
+      return () => clearTimeout(hideLoader);
+    }
+  }, [colorsLoaded]);
 
   const genreColors = {
     Poetry: colors.softBeige,
@@ -95,6 +223,8 @@ export default function AuthorBooksPage() {
       className="min-h-screen py-10"
       style={{ backgroundColor: colors?.gray100 }}
     >
+      {isLoading && <PageLoader />}
+
       <div className="container mx-auto px-4">
         <h1
           data-aos="fade-down"
@@ -103,12 +233,12 @@ export default function AuthorBooksPage() {
           Published Works
         </h1>
 
-        <div className="flex justify-center mb-10 space-x-4">
+        <div className="flex justify-center mb-10 space-x-4 flex-wrap">
           {["All", ...Object.keys(genreColors)].map((genre) => (
             <button
               key={genre}
               onClick={() => setSelectedGenre(genre)}
-              className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+              className={`px-4 py-2 rounded-lg transition-all duration-300 mb-2 ${
                 selectedGenre === genre
                   ? "bg-gray-800 text-white"
                   : "bg-gray-200 text-gray-800 hover:bg-gray-300"
@@ -127,16 +257,16 @@ export default function AuthorBooksPage() {
               data-aos-delay={book.id * 100}
               className="bg-white rounded-lg overflow-hidden shadow-lg"
               style={{
-                borderRight: `8px solid ${bookColors[book.id]}`,
+                borderRight: `8px solid ${bookColors[book.id] || "#808080"}`,
                 boxShadow: `0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px ${
-                  bookColors[book.id]
+                  bookColors[book.id] || "#808080"
                 }50`,
               }}
             >
               <div
                 className="relative h-48 w-full"
                 style={{
-                  backgroundColor: bookColors[book.id],
+                  backgroundColor: bookColors[book.id] || "#f0f0f0",
                 }}
               >
                 <Image
@@ -150,7 +280,7 @@ export default function AuthorBooksPage() {
               <div
                 className="text-white px-3 py-4 h-20"
                 style={{
-                  backgroundColor: bookColors[book.id],
+                  backgroundColor: bookColors[book.id] || "#808080",
                 }}
               >
                 <h2 className="text-xl font-bold">{book.title}</h2>
@@ -160,6 +290,40 @@ export default function AuthorBooksPage() {
               </div>
               <div className="px-6 flex flex-col items-center justify-between py-4 ">
                 <p className="text-gray-600 mb-4">{book.description}</p>
+
+                <div className="w-full mb-4">
+                  <h3 className="text-gray-700 font-semibold mb-2">Buy Now:</h3>
+                  <div className="flex gap-3 flex-wrap">
+                    {/* Show Amazon button if available */}
+                    {book.availability?.amazon && (
+                      <a
+                        href={book.availability.amazonLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors w-full md:w-auto justify-center text-sm"
+                        style={{ borderColor: colors.gray400 }}
+                      >
+                        <FaAmazon size={18} color={colors.deepSepia} />
+                        <span>Buy on Amazon</span>
+                      </a>
+                    )}
+
+                    {/* Show Flipkart button if available */}
+                    {book.availability?.flipkart && (
+                      <a
+                        href={book.availability.flipkartLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors w-full md:w-auto justify-center text-sm"
+                        style={{ borderColor: colors.gray400 }}
+                      >
+                        <SiFlipkart size={18} color={colors.deepTeal} />
+                        <span>Buy on Flipkart</span>
+                      </a>
+                    )}
+                  </div>
+                </div>
+
                 <button
                   onClick={() => console.log("object")}
                   className="block w-full text-center px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
