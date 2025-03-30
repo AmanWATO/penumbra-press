@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
     ],
   },
   env: {
-    SITE_NAME: "Penumbra Press",
+    SITE_NAME: "Penumbra Penned",
   },
 };
 

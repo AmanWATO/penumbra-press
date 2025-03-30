@@ -38,7 +38,7 @@ export function Header() {
         >
           <Image
             src="/penumbra_press_without_text.png"
-            alt="Penumbra Press"
+            alt="Penumbra Penned"
             width={40}
             height={40}
             className="rounded-md"

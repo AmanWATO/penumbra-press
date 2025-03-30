@@ -12,7 +12,7 @@ export interface Config {
 
 const config: Config = {
   app: {
-    name: "Penumbra Press",
+    name: "Penumbra Penned",
     description:
       "Where words dwell between light and shadow — a haven for poetry, storytelling, and literary reflections. Explore the interplay of ink and ether.",
   },

@@ -15,7 +15,7 @@ export interface ContactFormData {
   message: string;
 }
 
-export function ContactPage() {
+export default function ContactPage() {
   const theme = useTheme();
   const [formData, setFormData] = useState<ContactFormData>({
     name: "",
@@ -80,5 +80,3 @@ export function ContactPage() {
     </section>
   );
 }
-
-export default ContactPage;

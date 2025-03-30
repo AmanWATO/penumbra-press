@@ -26,7 +26,7 @@ export function Footer() {
             <Link href="/" className="flex items-center space-x-3 mb-4">
               <Image
                 src="/penumbra_press_without_text.png"
-                alt="Penumbra Press"
+                alt="Penumbra Penned"
                 width={32}
                 height={32}
                 className="rounded-md"
