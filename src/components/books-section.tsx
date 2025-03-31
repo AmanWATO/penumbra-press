@@ -1,6 +1,7 @@
 import { useTheme } from "@/context/ThemeProvider";
 import { BookCard } from "./book-card";
 import { ComingSoonCard } from "./coming-soon";
+import { colors } from "@/styles/theme";
 
 interface BookProps {
   id: number;
@@ -13,10 +14,10 @@ interface BookProps {
 const books: BookProps[] = [
   {
     id: 1,
-    title: "Grace In The Ether",
-    coverImage: "/book1.jpg",
+    title: "When The Sky Meets The Sea of Souls",
+    coverImage: "/book3.png",
     description:
-      "“Grace in the Ether”, is a book written with a care for those who are lost in their bustling lives and fail to notice the grace that fleets around. This book is a probe of such subtle wonder that graces our lives- whether we deserve it or not because that’s what it’s kindness.",
+      "Love is both a whisper and a storm, a quiet ache and a force that shapes us. When the Sky Meets the Sea of Souls is my poetic odyssey — 49 moments of love in its rawest forms. From self-discovery to healing, from the depth of solitude to the luminous unity of souls, this collection explores the spaces where love lives",
     link: "/",
   },
   {
@@ -34,21 +35,34 @@ export function BooksSection() {
 
   return (
     <section
-      className="py-16"
-      style={{ backgroundColor: theme.background.secondary }}
+      className="py-10 pb-20 max-md:pv-10 max-md:py-6 "
+      style={{ backgroundColor: colors.gray300 }}
       id="books"
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-20">
         <h2
-          className="text-3xl font-bold mb-8 text-center"
+          className="text-3xl font-bold mb-4 text-center"
           style={{
             fontFamily: theme.fonts.heading,
             color: theme.text.primary,
           }}
         >
-          Recent Released Books
+          Latest Literary Journeys
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <p
+          className="text-lg font-bold mb-8 text-center"
+          style={{
+            fontFamily: theme.fonts.body,
+            color: theme.text.secondary,
+          }}
+        >
+          Explore our most recent book releases, each crafted to inspire,
+          captivate, and transport you to new worlds. Stay tuned for more
+          stories coming soon!
+        </p>
+      </div>
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {books.map((book) => (
             <BookCard key={book.id} book={book} />
           ))}

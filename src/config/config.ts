@@ -7,6 +7,7 @@ export interface Config {
     name: string;
     email: string;
     phoneNumber: string;
+    instaId:string
   };
 }
 
@@ -20,6 +21,7 @@ const config: Config = {
     name: "Aman Srivastava",
     email: "penumbrapress22@gmail.com",
     phoneNumber: "+91 95802 99449",
+    instaId:"https://instagram.com/wordsinshade"
   },
 };
 

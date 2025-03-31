@@ -30,12 +30,13 @@ export function BookCard({ book }: { book: BookProps }) {
         borderColor: theme.border.light,
       }}
     >
-      <div className="relative aspect-[4/5] w-full">
+      <div className="relative h-48 w-full">
         <Image
           src={book.coverImage}
           alt={book.title}
-          fill
-          className="object-cover"
+          layout="fill"
+          objectFit="contain"
+          className="absolute inset-0"
         />
       </div>
       <CardHeader>

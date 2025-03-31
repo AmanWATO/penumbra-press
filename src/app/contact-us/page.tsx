@@ -51,7 +51,7 @@ export default function ContactPage() {
   return (
     <section
       id="contact"
-      className="py-12 md:py-16 lg:py-20"
+      className="py-12 md:py-16"
       style={{ backgroundColor: theme.background.primary }}
     >
       <div className="container mx-auto px-4">

@@ -5,9 +5,9 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { colors } from "@/styles/theme";
 import ColorThief from "colorthief";
-// Import icons from a library (assuming you're using react-icons)
 import { FaAmazon } from "react-icons/fa";
 import { SiFlipkart } from "react-icons/si";
+import { useTheme } from "@/context/ThemeProvider";
 
 const booksData = [
   {
@@ -22,7 +22,8 @@ const booksData = [
       amazon: true,
       flipkart: true,
       amazonLink: "https://amzn.in/d/cfwFYBC",
-      flipkartLink: "https://www.flipkart.com/grace-in-the-ether/p/itm3c127bbdbda7c?pid=9798894751412&lid=LSTBOK9798894751412P2YEUF&marketplace=FLIPKART&q=grace+in+the+ether&store=bks&srno=s_1_2&otracker=AS_QueryStore_OrganicAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_OrganicAutoSuggest_1_14_na_na_na&fm=organic&iid=e25c3f35-efbc-425b-a708-69d275abb3be.9798894751412.SEARCH&ppt=hp&ppn=homepage&ssid=iph3gz7v9c0000001743357020378&qH=7405fb0126ddf153",
+      flipkartLink:
+        "https://www.flipkart.com/grace-in-the-ether/p/itm3c127bbdbda7c?pid=9798894751412&lid=LSTBOK9798894751412P2YEUF&marketplace=FLIPKART&q=grace+in+the+ether&store=bks&srno=s_1_2&otracker=AS_QueryStore_OrganicAutoSuggest_1_14_na_na_na&otracker1=AS_QueryStore_OrganicAutoSuggest_1_14_na_na_na&fm=organic&iid=e25c3f35-efbc-425b-a708-69d275abb3be.9798894751412.SEARCH&ppt=hp&ppn=homepage&ssid=iph3gz7v9c0000001743357020378&qH=7405fb0126ddf153",
     },
   },
   {
@@ -37,7 +38,8 @@ const booksData = [
       amazon: true,
       flipkart: true,
       amazonLink: "https://amzn.in/d/52NYNx1",
-      flipkartLink:"https://www.flipkart.com/the-jumbled-flow/p/itmb57205713680f?pid=9789370462380&lid=LSTBOK9789370462380XP5YIV&marketplace=FLIPKART&q=The+jumbled+flow&store=search.flipkart.com&srno=s_1_1&otracker=search&otracker1=search&fm=organic&iid=5f44759e-e41d-4a1e-81c0-12b87c9847f9.9789370462380.SEARCH&ppt=pp&ppn=pp&ssid=g93258mxnk0000001743357061773&qH=2ae3bdb1fc65d920"
+      flipkartLink:
+        "https://www.flipkart.com/the-jumbled-flow/p/itmb57205713680f?pid=9789370462380&lid=LSTBOK9789370462380XP5YIV&marketplace=FLIPKART&q=The+jumbled+flow&store=search.flipkart.com&srno=s_1_1&otracker=search&otracker1=search&fm=organic&iid=5f44759e-e41d-4a1e-81c0-12b87c9847f9.9789370462380.SEARCH&ppt=pp&ppn=pp&ssid=g93258mxnk0000001743357061773&qH=2ae3bdb1fc65d920",
     },
   },
   {
@@ -56,24 +58,13 @@ const booksData = [
   },
 ];
 
-const PageLoader = () => {
-  return (
-    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50">
-      <div className="text-center p-8 bg-white rounded-lg shadow-md">
-        <div className="w-16 h-16 border-4 border-gray-800 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
-        <h3 className="text-xl font-semibold text-gray-800 mb-2">
-          Loading Books
-        </h3>
-      </div>
-    </div>
-  );
-};
-
 export default function AuthorBooksPage() {
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [bookColors, setBookColors] = useState<{ [key: number]: string }>({});
   const [isLoading, setIsLoading] = useState(true);
   const [colorsLoaded, setColorsLoaded] = useState(false);
+
+  const theme = useTheme();
 
   useEffect(() => {
     AOS.init({
@@ -123,7 +114,7 @@ export default function AuthorBooksPage() {
                 console.error("Error extracting color:", error);
                 resolve({
                   id: book.id,
-                  color: "rgb(120,120,120)", 
+                  color: "rgb(120,120,120)",
                 });
               }
             };
@@ -132,7 +123,7 @@ export default function AuthorBooksPage() {
               console.error("Error loading image:", book.coverImage);
               resolve({
                 id: book.id,
-                color: "rgb(120,120,120)", 
+                color: "rgb(120,120,120)",
               });
             };
           });
@@ -170,17 +161,14 @@ export default function AuthorBooksPage() {
       setColorsLoaded(true);
     };
 
-    // Start color extraction
     extractColors();
 
-    // Fallback timer if extraction takes too long
     const timeoutId = setTimeout(() => {
       if (!colorsLoaded) {
         applyFallbackColors();
       }
     }, 5000); // 5 second fallback
 
-    // Ensure loading state shows for at least 1 second to avoid flashing
     const minLoadingTime = setTimeout(() => {
       if (colorsLoaded) {
         setIsLoading(false);
@@ -193,10 +181,8 @@ export default function AuthorBooksPage() {
     };
   }, [colorsLoaded]);
 
-  // Second effect to handle loading state changes after colors are loaded
   useEffect(() => {
     if (colorsLoaded) {
-      // Add a stable delay before hiding loader
       const hideLoader = setTimeout(() => {
         setIsLoading(false);
       }, 1000);
@@ -218,123 +204,192 @@ export default function AuthorBooksPage() {
       ? booksData
       : booksData.filter((book) => book.genre === selectedGenre);
 
+  const availableGenres = [...new Set(booksData.map((book) => book.genre))];
+
   return (
     <div
-      className="min-h-screen py-10"
-      style={{ backgroundColor: colors?.gray100 }}
+      className="min-h-screen py-10 max-md:py-5 max-md:pb-10 pb-20"
+      style={{ backgroundColor: colors?.parchment }}
     >
-      {isLoading && <PageLoader />}
-
-      <div className="container mx-auto px-4">
-        <h1
-          data-aos="fade-down"
-          className="text-4xl font-bold text-center mb-8 text-gray-800"
+      {isLoading ? (
+        <div
+          style={{ backgroundColor: colors?.parchment }}
+          className="text-center p-4 "
         >
-          Published Works
-        </h1>
-
-        <div className="flex justify-center mb-10 space-x-4 flex-wrap">
-          {["All", ...Object.keys(genreColors)].map((genre) => (
-            <button
-              key={genre}
-              onClick={() => setSelectedGenre(genre)}
-              className={`px-4 py-2 rounded-lg transition-all duration-300 mb-2 ${
-                selectedGenre === genre
-                  ? "bg-gray-800 text-white"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-              }`}
-            >
-              {genre}
-            </button>
-          ))}
+          <div className="w-10 h-10 border-4 border-[#1d1d1d] border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+          <h3 className="text-xl font-semibold text-[#1d1d1d] mb-2">
+            Loading Books
+          </h3>
         </div>
+      ) : (
+        <div className="container mx-auto px-4">
+          <h1
+            data-aos="fade-down"
+            className="text-3xl font-bold mb-8 text-center"
+            style={{
+              fontFamily: theme.fonts.heading,
+              color: theme.text.primary,
+            }}
+          >
+            Published Works
+          </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredBooks.map((book) => (
-            <div
-              key={book.id}
-              data-aos="fade-up"
-              data-aos-delay={book.id * 100}
-              className="bg-white rounded-lg overflow-hidden shadow-lg"
-              style={{
-                borderRight: `8px solid ${bookColors[book.id] || "#808080"}`,
-                boxShadow: `0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px ${
-                  bookColors[book.id] || "#808080"
-                }50`,
-              }}
-            >
-              <div
-                className="relative h-48 w-full"
-                style={{
-                  backgroundColor: bookColors[book.id] || "#f0f0f0",
-                }}
+          <div className="flex justify-center mb-10 space-x-4 flex-wrap">
+            {["All", ...Object.keys(genreColors)].map((genre) => (
+              <button
+                key={genre}
+                onClick={() => setSelectedGenre(genre)}
+                className={`px-4 py-2 rounded-[8px] transition-all cursor-pointer duration-300 mb-2 ${
+                  selectedGenre === genre
+                    ? "bg-[#1d1d1d] text-[#f0ebe0]"
+                    : "bg-[#f1efe2] text-[#1d1d1d] hover:bg-[#dfdcd0]"
+                }`}
               >
-                <Image
-                  src={book.coverImage}
-                  alt={book.title}
-                  layout="fill"
-                  objectFit="contain"
-                  className="absolute inset-0"
-                />
-              </div>
-              <div
-                className="text-white px-3 py-4 h-20"
-                style={{
-                  backgroundColor: bookColors[book.id] || "#808080",
-                }}
-              >
-                <h2 className="text-xl font-bold">{book.title}</h2>
-                <p className="text-sm">
-                  {book.genre} | {book.publicationYear}
-                </p>
-              </div>
-              <div className="px-6 flex flex-col items-center justify-between py-4 ">
-                <p className="text-gray-600 mb-4">{book.description}</p>
+                {genre}
+              </button>
+            ))}
+          </div>
 
-                <div className="w-full mb-4">
-                  <h3 className="text-gray-700 font-semibold mb-2">Buy Now:</h3>
-                  <div className="flex gap-3 flex-wrap">
-                    {/* Show Amazon button if available */}
-                    {book.availability?.amazon && (
-                      <a
-                        href={book.availability.amazonLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors w-full md:w-auto justify-center text-sm"
-                        style={{ borderColor: colors.gray400 }}
-                      >
-                        <FaAmazon size={18} color={colors.deepSepia} />
-                        <span>Buy on Amazon</span>
-                      </a>
-                    )}
+          {filteredBooks.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredBooks.map((book) => (
+                <div
+                  key={book.id}
+                  data-aos="fade-up"
+                  data-aos-delay={book.id * 100}
+                  className="bg-white rounded-lg overflow-hidden shadow-lg"
+                  style={{
+                    borderRight: `8px solid ${
+                      bookColors[book.id] || "#808080"
+                    }`,
+                    boxShadow: `0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px ${
+                      bookColors[book.id] || "#808080"
+                    }50`,
+                  }}
+                >
+                  <div
+                    className="relative h-48 w-full"
+                    style={{
+                      backgroundColor: bookColors[book.id] || "#f0f0f0",
+                    }}
+                  >
+                    <Image
+                      src={book.coverImage}
+                      alt={book.title}
+                      layout="fill"
+                      objectFit="contain"
+                      className="absolute inset-0"
+                    />
+                  </div>
+                  <div
+                    className="text-white px-3 py-4 h-20"
+                    style={{
+                      backgroundColor: bookColors[book.id] || "#808080",
+                    }}
+                  >
+                    <h2 className="text-xl font-bold">{book.title}</h2>
+                    <p className="text-sm">
+                      {book.genre} | {book.publicationYear}
+                    </p>
+                  </div>
+                  <div className="px-6 flex flex-col items-center justify-between py-4">
+                    <p className="text-[#232128] mb-4">{book.description}</p>
 
-                    {/* Show Flipkart button if available */}
-                    {book.availability?.flipkart && (
-                      <a
-                        href={book.availability.flipkartLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors w-full md:w-auto justify-center text-sm"
-                        style={{ borderColor: colors.gray400 }}
-                      >
-                        <SiFlipkart size={18} color={colors.deepTeal} />
-                        <span>Buy on Flipkart</span>
-                      </a>
-                    )}
+                    <div className="w-full mb-4 flex items-center gap-2">
+                      <h3 className="text-[#1d1d1d]0 font-semibold mb-2">
+                        Buy Now:
+                      </h3>
+                      <div className="flex gap-4 flex-wrap">
+                        {book.availability?.amazon && (
+                          <a
+                            href={book.availability.amazonLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-4 py-[6px] bg-white border-2 border-gray-300 rounded-md hover:bg-gray-50 transition-colors w-full md:w-auto justify-center text-sm"
+                            style={{ borderColor: colors.mediumSepia }}
+                          >
+                            <FaAmazon size={18} color={colors.moonGray} />
+                          </a>
+                        )}
+
+                        {book.availability?.flipkart && (
+                          <a
+                            href={book.availability.flipkartLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-4 py-[6px] bg-white border-2 border-gray-300 rounded-md hover:bg-gray-50 transition-colors w-full md:w-auto justify-center text-sm"
+                            style={{ borderColor: colors.mediumSepia }}
+                          >
+                            <SiFlipkart size={18} color={"#F8D706"} />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => console.log("object")}
+                      style={{
+                        fontFamily: theme.fonts.body,
+                        color: theme.text.light,
+                      }}
+                      className="block w-full text-center px-4 py-2 bg-[#5d5a4e]  rounded-sm hover:bg-[#7d7a6e] transition-colors cursor-pointer"
+                    >
+                      Learn More
+                    </button>
                   </div>
                 </div>
-
-                <button
-                  onClick={() => console.log("object")}
-                  className="block w-full text-center px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                >
-                  Learn More
-                </button>
-              </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            <div data-aos="fade-up" className="p-4 text-center">
+              <h2
+                className="text-2xl font-bold mb-4"
+                style={{ color: colors.unavailable }}
+              >
+                Currently Unavailable
+              </h2>
+
+              {availableGenres.length > 1 && (
+                <div className="mt-4">
+                  <p className="mb-3 text-[#232128]">
+                    Explore books available in these genres:
+                  </p>
+                  <ul className="list-disc list-inside text-left max-w-md mx-auto">
+                    {availableGenres.map((genre) => (
+                      <li key={genre} className="mb-2 text-[#232128]">
+                        <button
+                          onClick={() => setSelectedGenre(genre)}
+                          className="font-medium hover:underline cursor-pointer"
+                        >
+                          {genre}
+                        </button>
+                        <span className="text-sm text-gray-600 ml-2">
+                          (
+                          {
+                            booksData.filter((book) => book.genre === genre)
+                              .length
+                          }{" "}
+                          {booksData.filter((book) => book.genre === genre)
+                            .length === 1
+                            ? "book"
+                            : "books"}
+                          )
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    onClick={() => setSelectedGenre("All")}
+                    className="mt-6 px-6 py-2 bg-[#5d5a4e] text-white rounded hover:bg-[#7d7a6e] transition-colors"
+                  >
+                    View All Books
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
-      </div>
+      )}
     </div>
   );
 }

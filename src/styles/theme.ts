@@ -1,18 +1,28 @@
 export const colors = {
-  gray100: "#e5e6e6",
-  gray200: "#dcdcd4",
-  gray300: "#d4dcd4",
-  gray400: "#b3b3b2",
-  gray500: "#8d8e8c",
-  gray600: "#848486",
-  gray700: "#727576",
-  gray800: "#626464",
-  gray900: "#5c5c5f",
-  darkGray: "#363739",
+  gray100: "#f1efe2",
+  gray200: "#e8e6d9",
+  gray300: "#dfdcd0",
+  gray400: "#cfccc0",
+  gray500: "#b8b5a9",
+  gray600: "#9e9b8f",
+  gray700: "#7d7a6e",
+  gray800: "#5d5a4e",
+  gray900: "#3d3a2e",
+  darkGray: "#1d1d1d",
   softBeige: "#f5f5dc",
   deepTeal: "#1a6b6b",
   softEggshell: "#F0EAD6",
-  deepSepia: "#5D4037"
+  deepSepia: "#5D4037",
+  cream: "#f0ebe0",
+  parchment: "#e8e2d6",
+  lightSepia: "#d5cebf",
+  mediumSepia: "#b2aa96",
+  darkSepia: "#857f6b",
+  inkBrown: "#5a513c",
+  moonGray: "#3a3630",
+  nightBlue: "#232128",
+  penumbraBlack: "#171717",
+  unavailable:"#FF4C4C"
 };
 
 export const fonts = {
@@ -24,6 +34,13 @@ export const fonts = {
 export const theme = {
   colors,
   fonts,
+  sections: {
+    headFoot: {
+      background: colors.penumbraBlack,
+      text: colors.cream,
+      accent: colors.mediumSepia,
+    },
+  },
   background: {
     primary: colors.gray100,
     secondary: colors.gray300,
