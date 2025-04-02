@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import Image from "next/image";
@@ -16,7 +15,7 @@ interface SocialLinkProps {
 
 const SocialLink = ({ href, icon, label }: SocialLinkProps) => {
   const theme = useTheme();
-  
+
   return (
     <Button
       variant="ghost"
@@ -27,8 +26,12 @@ const SocialLink = ({ href, icon, label }: SocialLinkProps) => {
     >
       <Link
         href={href}
-        target={href.startsWith('http') || href.startsWith('mailto') ? "_blank" : "_self"}
-        rel={href.startsWith('http') ? "noopener noreferrer" : ""}
+        target={
+          href.startsWith("http") || href.startsWith("mailto")
+            ? "_blank"
+            : "_self"
+        }
+        rel={href.startsWith("http") ? "noopener noreferrer" : ""}
       >
         {icon}
         <span className="sr-only">{label}</span>
@@ -44,12 +47,12 @@ interface FooterLinkProps {
 
 const FooterLink = ({ href, label }: FooterLinkProps) => {
   const theme = useTheme();
-  
+
   return (
-    <Link 
-      href={href} 
+    <Link
+      href={href}
       className="hover:underline"
-      style={{ color: theme.text.secondary }}
+      style={{ color: theme.text.light }}
     >
       {label}
     </Link>
@@ -59,30 +62,30 @@ const FooterLink = ({ href, label }: FooterLinkProps) => {
 export function Footer() {
   const theme = useTheme();
   const config = useConfig();
-  
+
   const socialLinks = [
     {
       href: config.about_author.instaId,
       icon: <Instagram className="h-5 w-5" />,
-      label: "Instagram"
+      label: "Instagram",
     },
     {
       href: "mailto:penumbrapress22@gmail.com",
       icon: <Mail className="h-5 w-5" />,
-      label: "Email"
-    }
+      label: "Email",
+    },
   ];
-  
+
   const quickLinks = [
-    { href: "/books", label: "Books" },
-    { href: "/instagram", label: "Instagram" },
-    { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" }
+    { href: "/shadow-script-contest", label: "Shadow Script Contest" },
+    { href: "/my-book", label: "Books" },
+    { href: "/penumbra-quotes", label: "Quotes" },
+    { href: "/contact-us", label: "Contact" },
   ];
 
   return (
     <footer
-      className="py-8 border-t mt-auto"
+      className="py-16 max-md:py-8 border-t mt-auto"
       style={{
         backgroundColor: theme.sections.headFoot.background,
         borderColor: theme.sections.headFoot.accent,
@@ -90,7 +93,7 @@ export function Footer() {
       }}
     >
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <Link href="/" className="flex items-center space-x-3 mb-4">
               <Image
@@ -118,10 +121,9 @@ export function Footer() {
               storytelling, and literary reflections.
             </p>
           </div>
-          
-          {/* Keeping the commented section as requested */}
-          {/* <div>
-            <h3 
+
+          <div>
+            <h3
               className="font-semibold mb-4"
               style={{ color: theme.sections.headFoot.text }}
             >
@@ -129,15 +131,15 @@ export function Footer() {
             </h3>
             <nav className="flex flex-col space-y-2 text-sm">
               {quickLinks.map((link, index) => (
-                <FooterLink 
+                <FooterLink
                   key={`quicklink-${index}`}
                   href={link.href}
                   label={link.label}
                 />
               ))}
             </nav>
-          </div> */}
-          
+          </div>
+
           <div>
             <h3
               className="font-semibold mb-4"
@@ -147,7 +149,7 @@ export function Footer() {
             </h3>
             <div className="flex space-x-4">
               {socialLinks.map((link, index) => (
-                <SocialLink 
+                <SocialLink
                   key={`social-${index}`}
                   href={link.href}
                   icon={link.icon}

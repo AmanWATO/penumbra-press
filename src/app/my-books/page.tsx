@@ -217,7 +217,12 @@ export default function AuthorBooksPage() {
           className="text-center p-4 "
         >
           <div className="w-10 h-10 border-4 border-[#1d1d1d] border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
-          <h3 className="text-xl font-semibold text-[#1d1d1d] mb-2">
+          <h3
+            style={{
+              fontFamily: theme.fonts.button,
+            }}
+            className="text-xl font-semibold text-[#1d1d1d] mb-2"
+          >
             Loading Books
           </h3>
         </div>

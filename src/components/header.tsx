@@ -26,7 +26,7 @@ const NavLink: React.FC<NavLinkProps> = ({ label, action, icon }) => {
       <Button
         asChild
         variant="outline"
-        className={`cursor-pointer ${
+        className={`cursor-pointer hover:underline ${
           !icon ? "" : "w-full md:w-auto justify-center"
         }`}
         style={{
@@ -45,7 +45,7 @@ const NavLink: React.FC<NavLinkProps> = ({ label, action, icon }) => {
   return (
     <button
       onClick={action}
-      className="hover:opacity-80 transition-opacity cursor-pointer py-2 md:py-0"
+      className="hover:opacity-80 hover:underline transition-opacity cursor-pointer py-2 md:py-0"
       style={{ color: theme.sections.headFoot.text }}
     >
       {label}
@@ -69,6 +69,10 @@ export function Header() {
 
   const navLinks = [
     {
+      label: "Shadow Script Contest",
+      action: () => router.push("/shadow-script-contest"),
+    },
+    {
       label: "Books",
       // Keeping the commented code as requested
       // action: () => handleScroll("books"),
@@ -78,6 +82,11 @@ export function Header() {
     //   label: "Instagram",
     //   action: () => handleScroll("instagram-feed"),
     // },
+    {
+      label: "Quotes",
+      action: () => router.push("/penumbra-quotes"),
+    },
+
     {
       label: "About",
       action: () => handleScroll("about-author"),
@@ -152,10 +161,10 @@ export function Header() {
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
         <div
-          className="md:hidden px-4 py-2 pb-4 border-t"
+          className="md:hidden px-6 py-4 pb-8 border-t "
           style={{ borderColor: theme.border.light }}
         >
-          <nav className="flex flex-col space-y-3">
+          <nav className="flex flex-col space-y-2 max-md:items-start">
             {navLinks.map((link, index) => (
               <NavLink
                 key={`mobile-${index}`}
