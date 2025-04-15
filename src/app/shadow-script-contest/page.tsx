@@ -8,7 +8,7 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
     style={{
       fontFamily: fonts.heading,
       color: colors.parchment,
-      borderColor: colors.inkBrown,
+      borderColor: colors.softBeige,
     }}
     className="text-3xl mb-6 border-b pb-2"
   >
@@ -25,8 +25,8 @@ const Card = ({
 }) => (
   <div
     style={{
-      backgroundColor: colors.nightBlue,
-      borderColor: colors.inkBrown,
+      backgroundColor: colors.parchment,
+      borderColor: colors.nightBlue,
     }}
     className={`p-6 rounded-lg border ${className}`}
   >
@@ -38,7 +38,7 @@ const CardTitle = ({ children }: { children: React.ReactNode }) => (
   <h3
     style={{
       fontFamily: fonts.heading,
-      color: colors.lightSepia,
+      color: colors.nightBlue,
     }}
     className="text-xl md:text-2xl mb-3"
   >
@@ -48,18 +48,14 @@ const CardTitle = ({ children }: { children: React.ReactNode }) => (
 
 const ListItem = ({ children }: { children: React.ReactNode }) => (
   <li className="flex items-start">
-    <div style={{ fontFamily: fonts.body }}>{children}</div>
+    <div style={{ fontFamily: fonts.body, color: colors.deepSepia }}>
+      {children}
+    </div>
   </li>
 );
 
 export default function ContestPage() {
   const keyDates = [
-    {
-      title: "Theme Announcement",
-      date: "15th April, 2025",
-      description:
-        "The contest theme will be revealed, providing direction for your submissions.",
-    },
     {
       title: "Submission Portal Opens",
       date: "1st May, 2025",
@@ -106,7 +102,7 @@ export default function ContestPage() {
           label: "Publishing:",
           value: "Full book publication with Penumbra Penned",
         },
-        { label: "Feature:", value: "Author spotlight in quarterly magazine" },
+        { label: "Feature:", value: "Author spotlight in penumbra magazine" },
       ],
     },
     {
@@ -140,6 +136,11 @@ export default function ContestPage() {
     { label: "Word Count:", value: "1,500 to 5,000 words" },
     { label: "Genre:", value: "Open to all fiction that aligns with theme" },
     { label: "Eligibility:", value: "Open to all Indian writers, ages 16+" },
+    {
+      label: "Accepted Formats:",
+      value:
+        "Poetry, Fiction, Epistolary, Creative Non-fiction, Flash Fiction, Short Stories",
+    },
   ];
 
   return (
@@ -186,13 +187,38 @@ export default function ContestPage() {
           </section>
 
           <section className="mb-12 md:mb-16">
+            <SectionTitle>Theme</SectionTitle>
+            <Card>
+              <CardTitle>Contest Theme</CardTitle>
+              <p
+                style={{ fontFamily: fonts.body, color: colors.deepSepia }}
+                className="text-base md:text-lg mb-2"
+              >
+                {
+                  "Let your shadow speak—unveiling the mesmerizing and mysterious visions that only your light can bring to life."
+                }
+              </p>
+              <p
+                style={{
+                  fontFamily: fonts.body,
+                  color: colors.nightBlue,
+                }}
+              >
+                Embrace the interplay between light and darkness. Let the unseen
+                parts of yourself reveal truths that only emerge when cast
+                against the glow of your own awareness and insight.
+              </p>
+            </Card>
+          </section>
+
+          <section className="mb-12 md:mb-16">
             <SectionTitle>Key Dates</SectionTitle>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
               {keyDates.map((item, index) => (
                 <Card key={index}>
                   <CardTitle>{item.title}</CardTitle>
                   <p
-                    style={{ fontFamily: fonts.body }}
+                    style={{ fontFamily: fonts.body, color: colors.deepSepia }}
                     className="text-base md:text-lg mb-2"
                   >
                     {item.date}
@@ -200,7 +226,7 @@ export default function ContestPage() {
                   <p
                     style={{
                       fontFamily: fonts.body,
-                      color: colors.mediumSepia,
+                      color: colors.nightBlue,
                     }}
                   >
                     {item.description}
@@ -216,11 +242,16 @@ export default function ContestPage() {
               <ul className="space-y-4">
                 {entryFees.map((fee, index) => (
                   <ListItem key={index}>
-                    <span className="font-bold text-base md:text-lg">
+                    <span
+                      style={{
+                        color: colors.deepSepia,
+                      }}
+                      className="font-bold text-base md:text-lg"
+                    >
                       {fee.title}
                     </span>{" "}
                     {fee.description}
-                    <span style={{ color: colors.mediumSepia }}>
+                    <span style={{ color: colors.nightBlue }}>
                       {fee.note && ` ${fee.note}`}
                     </span>
                   </ListItem>
@@ -237,7 +268,10 @@ export default function ContestPage() {
                   <CardTitle>{prize.title}</CardTitle>
                   {prize.benefits ? (
                     <ul
-                      style={{ fontFamily: fonts.body }}
+                      style={{
+                        fontFamily: fonts.body,
+                        color: colors.deepSepia,
+                      }}
                       className="space-y-2"
                     >
                       {prize.benefits.map((benefit, idx) => (
@@ -248,7 +282,12 @@ export default function ContestPage() {
                       ))}
                     </ul>
                   ) : (
-                    <p style={{ fontFamily: fonts.body }}>
+                    <p
+                      style={{
+                        fontFamily: fonts.body,
+                        color: colors.deepSepia,
+                      }}
+                    >
                       {prize.description}
                     </p>
                   )}
@@ -263,7 +302,14 @@ export default function ContestPage() {
               <ul className="space-y-4">
                 {guidelines.map((guideline, index) => (
                   <ListItem key={index}>
-                    <span className="font-bold">{guideline.label}</span>{" "}
+                    <span
+                      style={{
+                        color: colors.deepSepia,
+                      }}
+                      className="font-bold"
+                    >
+                      {guideline.label}
+                    </span>{" "}
                     {guideline.value}
                   </ListItem>
                 ))}
@@ -275,8 +321,8 @@ export default function ContestPage() {
                 disabled
                 style={{
                   fontFamily: fonts.button,
-                  backgroundColor: colors.inkBrown,
-                  color: colors.cream,
+                  backgroundColor: colors.cream,
+                  color: colors.inkBrown,
                 }}
                 className="px-4 md:px-6 py-2 md:py-3 text-sm md:text-base rounded-md cursor-not-allowed shadow-lg"
               >

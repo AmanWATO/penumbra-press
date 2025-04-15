@@ -39,7 +39,7 @@ export function BooksSection() {
       style={{ backgroundColor: colors.gray300 }}
       id="books"
     >
-      <div className="container mx-auto px-20">
+      <div className="container mx-auto px-20 max-md:px-5">
         <h2
           className="text-3xl font-bold mb-4 text-center"
           style={{
