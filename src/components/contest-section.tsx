@@ -60,7 +60,7 @@ export const ContestSection = () => {
               >
                 Submissions Open
               </p>
-              <p style={{ color: colors.lightSepia }}>May 1, 2025</p>
+              <p style={{ color: colors.lightSepia }}>May 10, 2025</p>
             </div>
           </div>
         </div>
