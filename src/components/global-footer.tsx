@@ -3,7 +3,7 @@
 import { Footer } from "@/components/footer";
 import { usePathname } from "next/navigation";
 
-const HIDDEN_FOOTER_ROUTES = ["/contact-us"];
+const HIDDEN_FOOTER_ROUTES = ["/login", "/register", "/reset", "/contact-us"];
 
 export function GlobalFooter() {
   const pathname = usePathname();
