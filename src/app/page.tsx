@@ -13,8 +13,8 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       <HeroSection />
       <BooksSection />
-      <QuoteSection/>
-      <ContestSection/>
+      <QuoteSection />
+      <ContestSection />
       {/* <InstagramFeed /> */}
       <AboutSection />
       <NewsletterSection />

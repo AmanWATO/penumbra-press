@@ -22,7 +22,7 @@ export const colors = {
   moonGray: "#3a3630",
   nightBlue: "#232128",
   penumbraBlack: "#171717",
-  unavailable:"#FF4C4C"
+  unavailable: "#FF4C4C",
 };
 
 export const fonts = {
@@ -39,6 +39,18 @@ export const theme = {
       background: colors.penumbraBlack,
       text: colors.cream,
       accent: colors.mediumSepia,
+    },
+    quotes: {
+      background: "#F9F7FE",
+      text: "#333333",
+      subtext: "#777777",
+      accent: colors.penumbraBlack,
+      cardBackground: "rgba(0, 0, 0, 0.02)",
+      cardBackgroundActive: "rgba(0, 0, 0, 0.06)",
+      decorativeElements: colors.gray600,
+      quoteNumber: "#282520",
+      explanation: "#555555",
+      divider: colors.nightBlue,
     },
   },
   background: {

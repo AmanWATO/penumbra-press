@@ -35,7 +35,7 @@ export function BooksSection() {
 
   return (
     <section
-      className="py-10 pb-20 max-md:pv-10 max-md:py-6 "
+      className="py-16 pb-20 max-md:py-10 min-h-screen"
       style={{ backgroundColor: colors.gray300 }}
       id="books"
     >

@@ -18,25 +18,28 @@ export const QuoteSection = () => {
     setQuote(penumbrapennedQuotes[quoteIndex]);
   }, []);
 
+  const quotesTheme = theme.sections.quotes;
+
+
   if (!quote) return null;
 
   return (
     <section
       className="w-full py-16 px-4 md:px-8 lg:px-16"
-      style={{ backgroundColor: theme.colors.deepSepia }}
+      style={{ backgroundColor: quotesTheme.background }}
     >
       <div className="max-w-4xl mx-auto">
         <div className="text-center">
           <h2
             className={`text-2xl md:text-3xl mb-8 font-bold ${theme.fonts.heading}`}
-            style={{ color: theme.colors.cream }}
+            style={{ color: quotesTheme.text}}
           >
             Quote of the Day
           </h2>
           <div className="bg-white/10 backdrop-blur-sm p-6 md:p-8 rounded-lg shadow-lg">
             <p
               className={`text-xl md:text-2xl italic mb-4 leading-relaxed ${theme.fonts.heading}`}
-              style={{ color: theme.colors.cream }}
+              style={{ color: quotesTheme.text}}
             >
               {`"${quote.quote}"`}
             </p>
@@ -46,7 +49,7 @@ export const QuoteSection = () => {
             ></div>
             <p
               className={`text-sm md:text-base ${theme.fonts.body}`}
-              style={{ color: theme.colors.lightSepia }}
+              style={{ color: quotesTheme.subtext }}
             >
               {quote.explanation}
             </p>
