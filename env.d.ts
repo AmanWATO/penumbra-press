@@ -9,6 +9,7 @@ declare namespace NodeJS {
     NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: string;
     NEXT_PUBLIC_FIREBASE_APP_ID: string;
     NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: string;
-    NEXT_RESEND_API_KEY: string
+    NEXT_RESEND_API_KEY: string;
+    NEXT_WEB_URL:string;
   }
 }
