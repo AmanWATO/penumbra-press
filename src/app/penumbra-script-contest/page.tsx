@@ -2,6 +2,7 @@
 
 import React from "react";
 import { colors, fonts } from "@/styles/theme";
+import { useRouter } from "next/navigation";
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
   <h2
@@ -55,21 +56,23 @@ const ListItem = ({ children }: { children: React.ReactNode }) => (
 );
 
 export default function ContestPage() {
+  const router = useRouter();
+
   const keyDates = [
     {
       title: "Submission Portal Opens",
-      date: "10th May, 2025",
+      date: "1st June, 2025",
       description: "Begin submitting your entries through our online portal.",
     },
     {
       title: "Early Bird Deadline",
-      date: "30th May, 2025",
+      date: "15th June, 2025",
       description:
         "Last day to submit entries at the reduced rate of ₹99 per entry.",
     },
     {
       title: "Final Deadline",
-      date: "25th July, 2025",
+      date: "10th August, 2025",
       description:
         "Last day to submit entries at the standard rate of ₹149 per entry.",
     },
@@ -79,12 +82,12 @@ export default function ContestPage() {
     {
       title: "Early Bird Rate:",
       description: "₹99 per entry",
-      note: "(May 10th to May 30th)",
+      note: "(June 1st to June 15th)",
     },
     {
       title: "Standard Rate:",
       description: "₹149 per entry",
-      note: "(May 31st to July 25th)",
+      note: "(June 16th to August 10th)",
     },
     {
       title: "Multiple Entries Discount:",
@@ -126,7 +129,7 @@ export default function ContestPage() {
       ],
     },
     {
-      title: "Top 25 Entries",
+      title: "Top 30 Entries",
       description:
         "All finalists will be published in the exclusive Shadow Script Anthology by Penumbra Penned.",
     },
@@ -153,7 +156,7 @@ export default function ContestPage() {
           style={{ fontFamily: fonts.heading }}
           className="text-4xl sm:text-5xl md:text-6xl text-center mb-4"
         >
-          The Shadow Script Contest
+          The Penumbra Script: Shadow Edition
         </h1>
         <p
           style={{ fontFamily: fonts.body, color: colors.lightSepia }}
@@ -176,7 +179,7 @@ export default function ContestPage() {
               className="text-base md:text-lg mb-6"
             >
               Penumbra Penned invites writers to explore the shadows of
-              storytelling in our inaugural Shadow Script Contest.
+              storytelling in our inaugural The Penumbra Script: Shadow Edition.
               <br />
               <br />
               This competition seeks narratives that challenge conventions,
@@ -318,7 +321,7 @@ export default function ContestPage() {
 
             <div className="flex justify-center mt-8 md:mt-12">
               <button
-                disabled
+                onClick={() => router.push("/login-to-penumbra")}
                 style={{
                   fontFamily: fonts.button,
                   backgroundColor: colors.cream,
@@ -326,7 +329,7 @@ export default function ContestPage() {
                 }}
                 className="px-4 md:px-6 py-2 md:py-3 text-sm md:text-base rounded-md cursor-not-allowed shadow-lg"
               >
-                Submissions Open May 10th
+                Submissions Open June 1st
               </button>
             </div>
           </section>

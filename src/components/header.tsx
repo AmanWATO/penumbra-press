@@ -3,11 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Mail, Menu, X } from "lucide-react";
+import { LogIn, Menu, UserRoundPen, X } from "lucide-react";
 import { useTheme } from "@/context/ThemeProvider";
 import { useRouter } from "next/navigation";
 import { useConfig } from "@/context/ConfigProvider";
 import { colors } from "@/styles/theme";
+import useAuthState from "@/hooks/useAuthState";
 
 interface NavLinkProps {
   label: string;
@@ -58,6 +59,7 @@ export function Header() {
   const theme = useTheme();
   const router = useRouter();
   const config = useConfig();
+  const { user } = useAuthState();
 
   const handleScroll: HandleScroll = (id) => {
     const section = document.getElementById(id);
@@ -69,8 +71,8 @@ export function Header() {
 
   const navLinks = [
     {
-      label: "Shadow Script Contest",
-      action: () => router.push("/shadow-script-contest"),
+      label: "The Penumbra Script",
+      action: () => router.push("/penumbra-script-contest"),
     },
     {
       label: "Books",
@@ -94,8 +96,18 @@ export function Header() {
     {
       label: "Contact",
       action: () => router.push("/contact-us"),
-      icon: <Mail className="h-4 w-4" />,
     },
+    user
+      ? {
+          label: "Dashboard",
+          action: () => router.push("/penumbra-dashboard"),
+          icon: <UserRoundPen className="h-4 w-4" />,
+        }
+      : {
+          label: "Login",
+          action: () => router.push("/login-to-penumbra"),
+          icon: <LogIn className="h-4 w-4" />,
+        },
   ];
 
   return (

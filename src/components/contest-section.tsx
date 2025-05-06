@@ -15,7 +15,7 @@ export const ContestSection = () => {
           style={{ fontFamily: fonts.heading }}
           className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4"
         >
-          The Shadow Script Contest
+          The Penumbra Script: Shadow Edition
         </h2>
         <p
           style={{ fontFamily: fonts.body }}
@@ -60,7 +60,7 @@ export const ContestSection = () => {
               >
                 Submissions Open
               </p>
-              <p style={{ color: colors.lightSepia }}>May 10, 2025</p>
+              <p style={{ color: colors.lightSepia }}>June 1, 2025</p>
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@ export const ContestSection = () => {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            href="/shadow-script-contest#guidelines"
+            href="/penumbra-script-contest#guidelines"
             style={{
               fontFamily: fonts.button,
               backgroundColor: "transparent",

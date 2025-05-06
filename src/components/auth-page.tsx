@@ -18,7 +18,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
+import Image from "next/image";
+import CountdownTimer from "./countdown-timer";
 
 interface AuthFormProps {
   mode: "login" | "register" | "reset";
@@ -35,8 +37,19 @@ export default function AuthPage({ mode }: AuthFormProps) {
   const [successMessage, setSuccessMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showAuthForm, setShowAuthForm] = useState(false);
 
-  // Redirect if user is already logged in
+  useEffect(() => {
+    const launchDate = new Date("2025-06-01T00:00:00");
+    const now = new Date();
+
+    if (now >= launchDate) {
+      setShowAuthForm(true);
+    } else {
+      setShowAuthForm(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (user && !authLoading) {
       router.push("/penumbra-dashboard");
@@ -148,6 +161,10 @@ export default function AuthPage({ mode }: AuthFormProps) {
     }
   };
 
+  const handleTimerComplete = () => {
+    setShowAuthForm(true);
+  };
+
   if (authLoading) {
     return (
       <div
@@ -162,100 +179,121 @@ export default function AuthPage({ mode }: AuthFormProps) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-zinc-900 to-stone-800">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1
-            style={{ fontFamily: fonts.heading, color: colors.parchment }}
-            className="text-3xl md:text-4xl mb-2 "
-          >
-            {getPageTitle()}
-          </h1>
-          <p
-            style={{ fontFamily: fonts.body, color: colors.lightSepia }}
-            className="text-lg italic "
-          >
-            {getPageSubtitle()}
-          </p>
+    <div className="min-h-screen relative flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-zinc-900 to-stone-800">
+      <div
+        onClick={() => router.push("/")}
+        className="absolute top-10 max-md:left-5 left-10 cursor-pointer"
+      >
+        <Image
+          src="/penumbra_press_without_text.png"
+          alt="Penumbra Penned"
+          width={60}
+          height={60}
+          className="rounded-md"
+        />
+      </div>
+
+      {!showAuthForm ? (
+        <div className="px-20 max-lg:px-10 max-md:px-5" >
+          <CountdownTimer
+          targetDate="2025-06-01T00:00:00"
+          onComplete={handleTimerComplete}
+        />
         </div>
-
-        <Card
-          className="w-full border-2 shadow-md shadow-amber-900/20"
-          style={{
-            backgroundColor: colors.parchment,
-            borderColor: colors.inkBrown,
-          }}
-        >
-          <CardHeader>
-            <CardTitle
-              style={{ fontFamily: fonts.heading, color: colors.darkGray }}
+      ) : (
+        <div className="w-full max-w-md">
+          <div className="text-center mb-8">
+            <h1
+              style={{ fontFamily: fonts.heading, color: colors.parchment }}
+              className="text-3xl md:text-4xl mb-2 "
             >
-              {getCardTitle()}
-            </CardTitle>
-            <CardDescription style={{ color: colors.darkSepia }}>
-              {getCardDescription()}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {error && (
-              <Alert
-                className="mb-4"
-                variant="destructive"
-                style={{
-                  backgroundColor: "#fee2e2",
-                  color: colors.unavailable,
-                }}
+              {getPageTitle()}
+            </h1>
+            <p
+              style={{ fontFamily: fonts.body, color: colors.lightSepia }}
+              className="text-lg italic "
+            >
+              {getPageSubtitle()}
+            </p>
+          </div>
+
+          <Card
+            className="w-full border-2 shadow-md shadow-amber-900/20"
+            style={{
+              backgroundColor: colors.parchment,
+              borderColor: colors.inkBrown,
+            }}
+          >
+            <CardHeader>
+              <CardTitle
+                style={{ fontFamily: fonts.heading, color: colors.darkGray }}
               >
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
+                {getCardTitle()}
+              </CardTitle>
+              <CardDescription style={{ color: colors.darkSepia }}>
+                {getCardDescription()}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {error && (
+                <Alert
+                  className="mb-4"
+                  variant="destructive"
+                  style={{
+                    backgroundColor: "#fee2e2",
+                    color: colors.unavailable,
+                  }}
+                >
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
 
-            {successMessage && (
-              <Alert
-                className="mb-4"
-                style={{ backgroundColor: "#d1fae5", color: "#065f46" }}
-              >
-                <AlertDescription>{successMessage}</AlertDescription>
-              </Alert>
-            )}
+              {successMessage && (
+                <Alert
+                  className="mb-4"
+                  style={{ backgroundColor: "#d1fae5", color: "#065f46" }}
+                >
+                  <AlertDescription>{successMessage}</AlertDescription>
+                </Alert>
+              )}
 
-            <form onSubmit={handleSubmit}>
-              <div className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label
-                    htmlFor="email"
-                    style={{ fontFamily: fonts.body, color: colors.inkBrown }}
-                  >
-                    Email Address
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your.email@example.com"
-                    required
-                    style={{
-                      borderColor: colors.mediumSepia,
-                      color: colors.penumbraBlack,
-                    }}
-                    className="focus:ring-2 focus:ring-deepSepia focus:border-transparent"
-                  />
-                </div>
-
-                {mode !== "reset" && (
+              <form onSubmit={handleSubmit}>
+                <div className="grid gap-4">
                   <div className="grid gap-2">
-                    <div className="flex items-center justify-between">
-                      <Label
-                        htmlFor="password"
-                        style={{
-                          fontFamily: fonts.body,
-                          color: colors.inkBrown,
-                        }}
-                      >
-                        Password
-                      </Label>
-                      {mode === "login" && (
+                    <Label
+                      htmlFor="email"
+                      style={{ fontFamily: fonts.body, color: colors.inkBrown }}
+                    >
+                      Email Address
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="your.email@example.com"
+                      required
+                      style={{
+                        borderColor: colors.mediumSepia,
+                        color: colors.penumbraBlack,
+                      }}
+                      className="focus:ring-2 focus:ring-deepSepia focus:border-transparent"
+                    />
+                  </div>
+
+                  {mode !== "reset" && (
+                    <div className="grid gap-2">
+                      <div className="flex items-center justify-between">
+                        <Label
+                          htmlFor="password"
+                          style={{
+                            fontFamily: fonts.body,
+                            color: colors.inkBrown,
+                          }}
+                        >
+                          Password
+                        </Label>
+                        {/* {mode === "login" && (
                         <Link
                           href="/reset-password"
                           className="text-sm font-medium hover:underline"
@@ -263,159 +301,149 @@ export default function AuthPage({ mode }: AuthFormProps) {
                         >
                           Forgot password?
                         </Link>
-                      )}
+                      )} */}
+                      </div>
+                      <div className="relative">
+                        <Input
+                          id="password"
+                          type={showPassword ? "text" : "password"}
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          placeholder="••••••••"
+                          required
+                          style={{
+                            borderColor: colors.mediumSepia,
+                            color: colors.penumbraBlack,
+                          }}
+                          className="pr-10 focus:ring-2 focus:ring-deepSepia focus:border-transparent"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                          aria-label={
+                            showPassword ? "Hide password" : "Show password"
+                          }
+                        >
+                          {showPassword ? (
+                            <EyeOff size={20} className="text-gray-500" />
+                          ) : (
+                            <Eye size={20} className="text-gray-500" />
+                          )}
+                        </button>
+                      </div>
                     </div>
-                    <div className="relative">
-                      <Input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
-                        required
-                        style={{
-                          borderColor: colors.mediumSepia,
-                          color: colors.penumbraBlack,
-                        }}
-                        className="pr-10 focus:ring-2 focus:ring-deepSepia focus:border-transparent"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                        aria-label={
-                          showPassword ? "Hide password" : "Show password"
-                        }
-                      >
-                        {showPassword ? (
-                          <EyeOff size={20} className="text-gray-500" />
-                        ) : (
-                          <Eye size={20} className="text-gray-500" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                )}
+                  )}
 
-                {mode === "register" && (
-                  <div className="grid gap-2">
-                    <Label
-                      htmlFor="confirmPassword"
-                      style={{ fontFamily: fonts.body, color: colors.inkBrown }}
+                  {mode === "register" && (
+                    <div className="grid gap-2">
+                      <Label
+                        htmlFor="confirmPassword"
+                        style={{
+                          fontFamily: fonts.body,
+                          color: colors.inkBrown,
+                        }}
+                      >
+                        Confirm Password
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          id="confirmPassword"
+                          type={showConfirmPassword ? "text" : "password"}
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          placeholder="••••••••"
+                          required
+                          style={{
+                            borderColor: colors.mediumSepia,
+                            color: colors.penumbraBlack,
+                          }}
+                          className="pr-10 focus:ring-2 focus:ring-deepSepia focus:border-transparent"
+                        />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setShowConfirmPassword(!showConfirmPassword)
+                          }
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                          aria-label={
+                            showConfirmPassword
+                              ? "Hide confirm password"
+                              : "Show confirm password"
+                          }
+                        >
+                          {showConfirmPassword ? (
+                            <EyeOff size={20} className="text-gray-500" />
+                          ) : (
+                            <Eye size={20} className="text-gray-500" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    style={{
+                      fontFamily: fonts.button,
+                      backgroundColor: loading
+                        ? colors.gray500
+                        : colors.deepSepia,
+                      color: loading ? colors.gray200 : colors.cream,
+                    }}
+                    className={`w-full shadow-lg transition-all mt-4 duration-200 ${
+                      loading ? "" : " hover:bg-opacity-90"
+                    }`}
+                  >
+                    {getButtonText()}
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+            <CardFooter>
+              <div className="w-full text-center">
+                {mode === "login" && (
+                  <p style={{ color: colors.nightBlue }} className="text-sm">
+                    {`Don't have an account?`}{" "}
+                    <Link
+                      href="/register-to-penumbra"
+                      style={{ color: colors.deepSepia }}
+                      className="font-medium hover:underline"
                     >
-                      Confirm Password
-                    </Label>
-                    <div className="relative">
-                      <Input
-                        id="confirmPassword"
-                        type={showConfirmPassword ? "text" : "password"}
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="••••••••"
-                        required
-                        style={{
-                          borderColor: colors.mediumSepia,
-                          color: colors.penumbraBlack,
-                        }}
-                        className="pr-10 focus:ring-2 focus:ring-deepSepia focus:border-transparent"
-                      />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setShowConfirmPassword(!showConfirmPassword)
-                        }
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                        aria-label={
-                          showConfirmPassword
-                            ? "Hide confirm password"
-                            : "Show confirm password"
-                        }
-                      >
-                        {showConfirmPassword ? (
-                          <EyeOff size={20} className="text-gray-500" />
-                        ) : (
-                          <Eye size={20} className="text-gray-500" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
+                      Sign up
+                    </Link>
+                  </p>
                 )}
-
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  style={{
-                    fontFamily: fonts.button,
-                    backgroundColor: loading
-                      ? colors.gray500
-                      : colors.deepSepia,
-                    color: loading ? colors.gray200 : colors.cream,
-                  }}
-                  className={`w-full shadow-lg transition-all mt-4 duration-200 ${
-                    loading ? "" : " hover:bg-opacity-90"
-                  }`}
-                >
-                  {getButtonText()}
-                </Button>
+                {mode === "register" && (
+                  <p style={{ color: colors.nightBlue }} className="text-sm">
+                    Already have an account?{" "}
+                    <Link
+                      href="/login-to-penumbra"
+                      style={{ color: colors.deepSepia }}
+                      className="font-medium hover:underline"
+                    >
+                      Sign in
+                    </Link>
+                  </p>
+                )}
+                {mode === "reset" && (
+                  <p style={{ color: colors.nightBlue }} className="text-sm">
+                    Remember your password?{" "}
+                    <Link
+                      href="/login-to-penumbra"
+                      style={{ color: colors.deepSepia }}
+                      className="font-medium hover:underline"
+                    >
+                      Back to login
+                    </Link>
+                  </p>
+                )}
               </div>
-            </form>
-          </CardContent>
-          <CardFooter>
-            <div className="w-full text-center">
-              {mode === "login" && (
-                <p style={{ color: colors.nightBlue }} className="text-sm">
-                  {`Don't have an account?`}{" "}
-                  <Link
-                    href="/register-to-penumbra"
-                    style={{ color: colors.deepSepia }}
-                    className="font-medium hover:underline"
-                  >
-                    Sign up
-                  </Link>
-                </p>
-              )}
-              {mode === "register" && (
-                <p style={{ color: colors.nightBlue }} className="text-sm">
-                  Already have an account?{" "}
-                  <Link
-                    href="/login-to-penumbra"
-                    style={{ color: colors.deepSepia }}
-                    className="font-medium hover:underline"
-                  >
-                    Sign in
-                  </Link>
-                </p>
-              )}
-              {mode === "reset" && (
-                <p style={{ color: colors.nightBlue }} className="text-sm">
-                  Remember your password?{" "}
-                  <Link
-                    href="/login-to-penumbra"
-                    style={{ color: colors.deepSepia }}
-                    className="font-medium hover:underline"
-                  >
-                    Back to login
-                  </Link>
-                </p>
-              )}
-            </div>
-          </CardFooter>
-        </Card>
-
-        <div className="mt-8 text-center">
-          <Link
-            href="/"
-            style={{ color: colors.lightSepia }}
-            className="text-sm hover:underline inline-flex items-center justify-center group"
-          >
-            <ArrowLeft
-              size={16}
-              className="mr-1 group-hover:translate-x-[-2px] transition-transform"
-            />
-            Back to Contest Page
-          </Link>
+            </CardFooter>
+          </Card>
         </div>
-      </div>
+      )}
     </div>
   );
 }

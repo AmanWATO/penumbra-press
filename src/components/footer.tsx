@@ -77,7 +77,7 @@ export function Footer() {
   ];
 
   const quickLinks = [
-    { href: "/shadow-script-contest", label: "Shadow Script Contest" },
+    { href: "/penumbra-script-contest", label: "The Penumbra Script" },
     { href: "/my-book", label: "Books" },
     { href: "/penumbra-quotes", label: "Quotes" },
     { href: "/contact-us", label: "Contact" },
