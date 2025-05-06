@@ -3,13 +3,50 @@ import { useState, useEffect } from "react";
 import theme from "@/styles/theme";
 import { penumbrapennedQuotes } from "@/config/quotes";
 import { X } from "lucide-react";
+import Head from "next/head";
 
 type Quote = {
   quote: string;
   explanation: string;
 };
 
-export default function QuotesPage() {
+function QuotesPage() {
+  <Head>
+    <title>Penumbra Quotes - Unveil Your Inner Light</title>
+    <meta
+      name="description"
+      content="A curated collection of powerful quotes from the Penumbra community."
+    />
+    <meta
+      name="keywords"
+      content="Penumbra, quotes, creative writing, inspirational quotes, community writing"
+    />
+    <meta property="og:title" content="Penumbra Quotes" />
+    <meta
+      property="og:description"
+      content="A curated collection of powerful quotes from the Penumbra community."
+    />
+    <meta
+      property="og:url"
+      content={`${process.env.NEXT_WEB_URL}/penumbra-quotes`}
+    />
+    <meta property="og:type" content="website" />
+    <meta name="robots" content="index, follow" />
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "Penumbra Quotes",
+          url: `${process.env.NEXT_WEB_URL}/penumbra-quotes`,
+          description:
+            "A curated collection of powerful quotes from the Penumbra community.",
+        }),
+      }}
+    />
+  </Head>;
+
   const [columns, setColumns] = useState(3);
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -295,3 +332,5 @@ export default function QuotesPage() {
     </div>
   );
 }
+
+export default QuotesPage;

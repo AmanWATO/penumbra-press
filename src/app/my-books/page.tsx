@@ -8,6 +8,7 @@ import ColorThief from "colorthief";
 import { FaAmazon } from "react-icons/fa";
 import { SiFlipkart } from "react-icons/si";
 import { useTheme } from "@/context/ThemeProvider";
+import Head from "next/head";
 
 const booksData = [
   {
@@ -58,7 +59,57 @@ const booksData = [
   },
 ];
 
-export default function AuthorBooksPage() {
+function AuthorBooksPage() {
+  <Head>
+    <title>{`Published Works - Author's Books Collection`}</title>
+    <meta
+      name="description"
+      content="Discover a collection of published books including poetry, collections, and more by the author."
+    />
+    <meta
+      name="keywords"
+      content="books, poetry, collection, published works, author books, Grace In The Ether, The Jumbled Flow, When The Sky Meets The Sea of Souls"
+    />
+    <meta
+      property="og:title"
+      content="Published Works - Author's Books Collection"
+    />
+    <meta
+      property="og:description"
+      content="Discover a collection of published books including poetry, collections, and more by the author."
+    />
+    <meta property="og:url" content={`${process.env.NEXT_WEB_URL}/my-books`} />
+    <meta property="og:type" content="website" />
+    <meta name="robots" content="index, follow" />
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Published Works - Author's Books Collection",
+          url: `${process.env.NEXT_WEB_URL}/my-books`,
+          description:
+            "Discover a collection of published books including poetry, collections, and more by the author.",
+          mainEntity: {
+            "@type": "ItemList",
+            itemListElement: booksData.map((book, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              item: {
+                "@type": "Book",
+                name: book.title,
+                yearPublished: book.publicationYear.toString(),
+                genre: book.genre,
+                description: book.description,
+              },
+            })),
+          },
+        }),
+      }}
+    />
+  </Head>;
+
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [bookColors, setBookColors] = useState<{ [key: number]: string }>({});
   const [isLoading, setIsLoading] = useState(true);
@@ -398,3 +449,5 @@ export default function AuthorBooksPage() {
     </div>
   );
 }
+
+export default AuthorBooksPage;

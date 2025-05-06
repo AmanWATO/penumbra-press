@@ -3,6 +3,7 @@
 import React from "react";
 import { colors, fonts } from "@/styles/theme";
 import { useRouter } from "next/navigation";
+import Head from "next/head";
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
   <h2
@@ -55,7 +56,7 @@ const ListItem = ({ children }: { children: React.ReactNode }) => (
   </li>
 );
 
-export default function ContestPage() {
+function ContestPage() {
   const router = useRouter();
 
   const keyDates = [
@@ -147,194 +148,272 @@ export default function ContestPage() {
   ];
 
   return (
-    <div
-      style={{ backgroundColor: colors.penumbraBlack, color: colors.gray100 }}
-      className="min-h-screen pt-16 md:pt-24 pb-16"
-    >
-      <div className="container mx-auto px-4 max-w-4xl">
-        <h1
-          style={{ fontFamily: fonts.heading }}
-          className="text-4xl sm:text-5xl md:text-6xl text-center mb-4"
-        >
-          The Penumbra Script: Shadow Edition
-        </h1>
-        <p
-          style={{ fontFamily: fonts.body, color: colors.lightSepia }}
-          className="text-lg md:text-xl italic text-center mb-8"
-        >
-          &quot;Because the best stories often emerge from the edges of
-          light.&quot;
-        </p>
-
-        <div
-          style={{ backgroundColor: colors.deepSepia }}
-          className="w-24 h-1 mx-auto mb-12 md:mb-16"
-        ></div>
-
-        <div className="max-w-none">
-          <section className="mb-12 md:mb-16">
-            <SectionTitle>About the Contest</SectionTitle>
-            <p
-              style={{ fontFamily: fonts.body }}
-              className="text-base md:text-lg mb-6"
-            >
-              Penumbra Penned invites writers to explore the shadows of
-              storytelling in our inaugural The Penumbra Script: Shadow Edition.
-              <br />
-              <br />
-              This competition seeks narratives that challenge conventions,
-              sparks innovation, explore the liminal spaces of human experience,
-              and find beauty in the complicated truths that lie between light
-              and dark.
-            </p>
-          </section>
-
-          <section className="mb-12 md:mb-16">
-            <SectionTitle>Theme</SectionTitle>
-            <Card>
-              <CardTitle>Contest Theme</CardTitle>
-              <p
-                style={{ fontFamily: fonts.body, color: colors.deepSepia }}
-                className="text-base md:text-lg mb-2"
-              >
+    <>
+      <Head>
+        <title>The Penumbra Script: Shadow Edition - Writing Contest</title>
+        <meta
+          name="description"
+          content="Join our writing contest exploring stories that emerge from the edges of light. Compete for cash prizes, publishing opportunities, and features in the Shadow Script Anthology."
+        />
+        <meta
+          name="keywords"
+          content="writing contest, shadow edition, penumbra script, writing competition, short story contest, creative writing, fiction contest, poetry contest, Indian writers"
+        />
+        <meta
+          property="og:title"
+          content="The Penumbra Script: Shadow Edition - Writing Contest"
+        />
+        <meta
+          property="og:description"
+          content="Explore the shadows of storytelling in our inaugural writing contest with prizes up to ₹10,000 and publishing opportunities."
+        />
+        <meta
+          property="og:url"
+          content={`${process.env.NEXT_WEB_URL}/penumbra-script-contest`}
+        />
+        <meta property="og:type" content="website" />
+        <meta name="robots" content="index, follow" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Event",
+              name: "The Penumbra Script: Shadow Edition Writing Contest",
+              description:
+                "A writing competition seeking narratives that challenge conventions, spark innovation, and explore the liminal spaces of human experience.",
+              startDate: "2025-06-01",
+              endDate: "2025-08-10",
+              eventStatus: "EventScheduled",
+              eventAttendanceMode: "OnlineEventAttendanceMode",
+              organizer: {
+                "@type": "Organization",
+                name: "Penumbra Penned",
+                url: `${process.env.NEXT_WEB_URL}`,
+              },
+              location: {
+                "@type": "VirtualLocation",
+                url: `${process.env.NEXT_WEB_URL}/penumbra-script-contest`,
+              },
+              offers: [
                 {
-                  "Let your shadow speak—unveiling the mesmerizing and mysterious visions that only your light can bring to life."
-                }
-              </p>
+                  "@type": "Offer",
+                  name: "Early Bird Entry",
+                  price: "99",
+                  priceCurrency: "INR",
+                  validFrom: "2025-06-01",
+                  validThrough: "2025-06-15",
+                  availability: "PreOrder",
+                },
+                {
+                  "@type": "Offer",
+                  name: "Standard Entry",
+                  price: "149",
+                  priceCurrency: "INR",
+                  validFrom: "2025-06-16",
+                  validThrough: "2025-08-10",
+                  availability: "PreOrder",
+                },
+              ],
+            }),
+          }}
+        />
+      </Head>
+      <div
+        style={{ backgroundColor: colors.penumbraBlack, color: colors.gray100 }}
+        className="min-h-screen pt-16 md:pt-24 pb-16"
+      >
+        <div className="container mx-auto px-4 max-w-4xl">
+          <h1
+            style={{ fontFamily: fonts.heading }}
+            className="text-4xl sm:text-5xl md:text-6xl text-center mb-4"
+          >
+            The Penumbra Script: Shadow Edition
+          </h1>
+          <p
+            style={{ fontFamily: fonts.body, color: colors.lightSepia }}
+            className="text-lg md:text-xl italic text-center mb-8"
+          >
+            &quot;Because the best stories often emerge from the edges of
+            light.&quot;
+          </p>
+
+          <div
+            style={{ backgroundColor: colors.deepSepia }}
+            className="w-24 h-1 mx-auto mb-12 md:mb-16"
+          ></div>
+
+          <div className="max-w-none">
+            <section className="mb-12 md:mb-16">
+              <SectionTitle>About the Contest</SectionTitle>
               <p
-                style={{
-                  fontFamily: fonts.body,
-                  color: colors.nightBlue,
-                }}
+                style={{ fontFamily: fonts.body }}
+                className="text-base md:text-lg mb-6"
               >
-                Embrace the interplay between light and darkness. Let the unseen
-                parts of yourself reveal truths that only emerge when cast
-                against the glow of your own awareness and insight.
+                Penumbra Penned invites writers to explore the shadows of
+                storytelling in our inaugural The Penumbra Script: Shadow
+                Edition.
+                <br />
+                <br />
+                This competition seeks narratives that challenge conventions,
+                sparks innovation, explore the liminal spaces of human
+                experience, and find beauty in the complicated truths that lie
+                between light and dark.
               </p>
-            </Card>
-          </section>
+            </section>
 
-          <section className="mb-12 md:mb-16">
-            <SectionTitle>Key Dates</SectionTitle>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-              {keyDates.map((item, index) => (
-                <Card key={index}>
-                  <CardTitle>{item.title}</CardTitle>
-                  <p
-                    style={{ fontFamily: fonts.body, color: colors.deepSepia }}
-                    className="text-base md:text-lg mb-2"
-                  >
-                    {item.date}
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: fonts.body,
-                      color: colors.nightBlue,
-                    }}
-                  >
-                    {item.description}
-                  </p>
-                </Card>
-              ))}
-            </div>
-          </section>
+            <section className="mb-12 md:mb-16">
+              <SectionTitle>Theme</SectionTitle>
+              <Card>
+                <CardTitle>Contest Theme</CardTitle>
+                <p
+                  style={{ fontFamily: fonts.body, color: colors.deepSepia }}
+                  className="text-base md:text-lg mb-2"
+                >
+                  {
+                    "Let your shadow speak—unveiling the mesmerizing and mysterious visions that only your light can bring to life."
+                  }
+                </p>
+                <p
+                  style={{
+                    fontFamily: fonts.body,
+                    color: colors.nightBlue,
+                  }}
+                >
+                  Embrace the interplay between light and darkness. Let the
+                  unseen parts of yourself reveal truths that only emerge when
+                  cast against the glow of your own awareness and insight.
+                </p>
+              </Card>
+            </section>
 
-          <section className="mb-12 md:mb-16">
-            <SectionTitle>Entry Fees</SectionTitle>
-            <Card className="mb-8">
-              <ul className="space-y-4">
-                {entryFees.map((fee, index) => (
-                  <ListItem key={index}>
-                    <span
-                      style={{
-                        color: colors.deepSepia,
-                      }}
-                      className="font-bold text-base md:text-lg"
-                    >
-                      {fee.title}
-                    </span>{" "}
-                    {fee.description}
-                    <span style={{ color: colors.nightBlue }}>
-                      {fee.note && ` ${fee.note}`}
-                    </span>
-                  </ListItem>
-                ))}
-              </ul>
-            </Card>
-          </section>
-
-          <section className="mb-12 md:mb-16">
-            <SectionTitle>Prizes</SectionTitle>
-            <div className="space-y-4 md:space-y-8">
-              {prizes.map((prize, index) => (
-                <Card key={index}>
-                  <CardTitle>{prize.title}</CardTitle>
-                  {prize.benefits ? (
-                    <ul
-                      style={{
-                        fontFamily: fonts.body,
-                        color: colors.deepSepia,
-                      }}
-                      className="space-y-2"
-                    >
-                      {prize.benefits.map((benefit, idx) => (
-                        <li key={idx}>
-                          <span className="font-bold">{benefit.label}</span>{" "}
-                          {benefit.value}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
+            <section className="mb-12 md:mb-16">
+              <SectionTitle>Key Dates</SectionTitle>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                {keyDates.map((item, index) => (
+                  <Card key={index}>
+                    <CardTitle>{item.title}</CardTitle>
                     <p
                       style={{
                         fontFamily: fonts.body,
                         color: colors.deepSepia,
                       }}
+                      className="text-base md:text-lg mb-2"
                     >
-                      {prize.description}
+                      {item.date}
                     </p>
-                  )}
-                </Card>
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <SectionTitle>Submission Guidelines</SectionTitle>
-            <Card className="mb-8">
-              <ul className="space-y-4">
-                {guidelines.map((guideline, index) => (
-                  <ListItem key={index}>
-                    <span
+                    <p
                       style={{
-                        color: colors.deepSepia,
+                        fontFamily: fonts.body,
+                        color: colors.nightBlue,
                       }}
-                      className="font-bold"
                     >
-                      {guideline.label}
-                    </span>{" "}
-                    {guideline.value}
-                  </ListItem>
+                      {item.description}
+                    </p>
+                  </Card>
                 ))}
-              </ul>
-            </Card>
+              </div>
+            </section>
 
-            <div className="flex justify-center mt-8 md:mt-12">
-              <button
-                onClick={() => router.push("/login-to-penumbra")}
-                style={{
-                  fontFamily: fonts.button,
-                  backgroundColor: colors.cream,
-                  color: colors.inkBrown,
-                }}
-                className="px-4 md:px-6 py-2 md:py-3 text-sm md:text-base rounded-md cursor-not-allowed shadow-lg"
-              >
-                Submissions Open June 1st
-              </button>
-            </div>
-          </section>
+            <section className="mb-12 md:mb-16">
+              <SectionTitle>Entry Fees</SectionTitle>
+              <Card className="mb-8">
+                <ul className="space-y-4">
+                  {entryFees.map((fee, index) => (
+                    <ListItem key={index}>
+                      <span
+                        style={{
+                          color: colors.deepSepia,
+                        }}
+                        className="font-bold text-base md:text-lg"
+                      >
+                        {fee.title}
+                      </span>{" "}
+                      {fee.description}
+                      <span style={{ color: colors.nightBlue }}>
+                        {fee.note && ` ${fee.note}`}
+                      </span>
+                    </ListItem>
+                  ))}
+                </ul>
+              </Card>
+            </section>
+
+            <section className="mb-12 md:mb-16">
+              <SectionTitle>Prizes</SectionTitle>
+              <div className="space-y-4 md:space-y-8">
+                {prizes.map((prize, index) => (
+                  <Card key={index}>
+                    <CardTitle>{prize.title}</CardTitle>
+                    {prize.benefits ? (
+                      <ul
+                        style={{
+                          fontFamily: fonts.body,
+                          color: colors.deepSepia,
+                        }}
+                        className="space-y-2"
+                      >
+                        {prize.benefits.map((benefit, idx) => (
+                          <li key={idx}>
+                            <span className="font-bold">{benefit.label}</span>{" "}
+                            {benefit.value}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p
+                        style={{
+                          fontFamily: fonts.body,
+                          color: colors.deepSepia,
+                        }}
+                      >
+                        {prize.description}
+                      </p>
+                    )}
+                  </Card>
+                ))}
+              </div>
+            </section>
+
+            <section>
+              <SectionTitle>Submission Guidelines</SectionTitle>
+              <Card className="mb-8">
+                <ul className="space-y-4">
+                  {guidelines.map((guideline, index) => (
+                    <ListItem key={index}>
+                      <span
+                        style={{
+                          color: colors.deepSepia,
+                        }}
+                        className="font-bold"
+                      >
+                        {guideline.label}
+                      </span>{" "}
+                      {guideline.value}
+                    </ListItem>
+                  ))}
+                </ul>
+              </Card>
+
+              <div className="flex justify-center mt-8 md:mt-12">
+                <button
+                  onClick={() => router.push("/login-to-penumbra")}
+                  style={{
+                    fontFamily: fonts.button,
+                    backgroundColor: colors.cream,
+                    color: colors.inkBrown,
+                  }}
+                  className="px-4 md:px-6 py-2 md:py-3 text-sm md:text-base rounded-md cursor-not-allowed shadow-lg"
+                >
+                  Submissions Open June 1st
+                </button>
+              </div>
+            </section>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
+
+export default ContestPage;

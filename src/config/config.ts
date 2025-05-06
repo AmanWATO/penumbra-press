@@ -21,7 +21,7 @@ const config: Config = {
     name: "Aman Srivastava",
     email: "penumbrapress22@gmail.com",
     phoneNumber: "+91 95802 99449",
-    instaId:"https://instagram.com/wordsinshade"
+    instaId:"https://instagram.com/penumbrapenned"
   },
 };
 
