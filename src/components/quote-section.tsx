@@ -1,25 +1,28 @@
 "use client";
 import { useState, useEffect } from "react";
 import theme from "@/styles/theme";
-import { penumbrapennedQuotes } from "@/config/quotes";
+import { Quote } from "@/api/apiTypes";
+import { fetchQuotes } from "@/api/apiService";
 
 export const QuoteSection = () => {
-  const [quote, setQuote] = useState<{
-    quote: string;
-    explanation: string;
-  } | null>(null);
+  const [quote, setQuote] = useState<Quote | null>(null);
 
   useEffect(() => {
-    const today = new Date();
-    const dateString = `${today.getFullYear()}${today.getMonth()}${today.getDate()}`;
-    const dateNumber = parseInt(dateString);
+    const fetchQuoteData = async () => {
+      const today = new Date();
+      const dateString = `${today.getFullYear()}${today.getMonth()}${today.getDate()}`;
+      const dateNumber = parseInt(dateString);
 
-    const quoteIndex = dateNumber % penumbrapennedQuotes.length;
-    setQuote(penumbrapennedQuotes[quoteIndex]);
+      const quotes = await fetchQuotes();
+
+      const quoteIndex = dateNumber % quotes.length;
+      setQuote(quotes[quoteIndex]);
+    };
+
+    fetchQuoteData();
   }, []);
 
   const quotesTheme = theme.sections.quotes;
-
 
   if (!quote) return null;
 
@@ -32,16 +35,16 @@ export const QuoteSection = () => {
         <div className="text-center">
           <h2
             className={`text-2xl md:text-3xl mb-8 font-bold ${theme.fonts.heading}`}
-            style={{ color: quotesTheme.text}}
+            style={{ color: quotesTheme.text }}
           >
             Quote of the Day
           </h2>
           <div className="bg-white/10 backdrop-blur-sm p-6 md:p-8 rounded-lg shadow-lg">
             <p
               className={`text-xl md:text-2xl italic mb-4 leading-relaxed ${theme.fonts.heading}`}
-              style={{ color: quotesTheme.text}}
+              style={{ color: quotesTheme.text }}
             >
-              {`"${quote.quote}"`}
+              {`"${quote.title}"`}
             </p>
             <div
               className="h-px w-16 mx-auto my-6"

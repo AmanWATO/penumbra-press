@@ -62,18 +62,18 @@ function ContestPage() {
   const keyDates = [
     {
       title: "Submission Portal Opens",
-      date: "1st June, 2025",
+      date: "1s July, 2025",
       description: "Begin submitting your entries through our online portal.",
     },
     {
       title: "Early Bird Deadline",
-      date: "15th June, 2025",
+      date: "15th July, 2025",
       description:
         "Last day to submit entries at the reduced rate of ₹99 per entry.",
     },
     {
       title: "Final Deadline",
-      date: "10th August, 2025",
+      date: "15th August, 2025",
       description:
         "Last day to submit entries at the standard rate of ₹149 per entry.",
     },
@@ -83,12 +83,12 @@ function ContestPage() {
     {
       title: "Early Bird Rate:",
       description: "₹99 per entry",
-      note: "(June 1st to June 15th)",
+      note: "(July 1st to July 15th)",
     },
     {
       title: "Standard Rate:",
       description: "₹149 per entry",
-      note: "(June 16th to August 10th)",
+      note: "(July 16th to August 15th)",
     },
     {
       title: "Multiple Entries Discount:",
@@ -405,7 +405,7 @@ function ContestPage() {
                   }}
                   className="px-4 md:px-6 py-2 md:py-3 text-sm md:text-base rounded-md cursor-not-allowed shadow-lg"
                 >
-                  Submissions Open June 1st
+                  Submissions Open July 1st
                 </button>
               </div>
             </section>

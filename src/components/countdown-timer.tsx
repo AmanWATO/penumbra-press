@@ -237,7 +237,7 @@ const CountdownTimer = ({ targetDate, onComplete }: CountdownProps) => {
         >
           The Penumbra Penned will open its doors on{" "}
           <span style={{ color: colors.parchment, fontWeight: "bold" }}>
-            June 1st, 2025
+            July 1st, 2025
           </span>
           . Sharpen your quills and prepare your most captivating shadow scripts
           for submission.

@@ -196,7 +196,7 @@ export default function AuthPage({ mode }: AuthFormProps) {
       {!showAuthForm ? (
         <div className="px-20 max-lg:px-10 max-md:px-5" >
           <CountdownTimer
-          targetDate="2025-06-01T00:00:00"
+          targetDate="2025-07-01T00:00:00"
           onComplete={handleTimerComplete}
         />
         </div>

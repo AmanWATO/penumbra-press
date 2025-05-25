@@ -1,14 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import theme from "@/styles/theme";
-import { penumbrapennedQuotes } from "@/config/quotes";
 import { X } from "lucide-react";
 import Head from "next/head";
-
-type Quote = {
-  quote: string;
-  explanation: string;
-};
+import { Quote } from "@/api/apiTypes";
+import { fetchQuotes } from "@/api/apiService";
 
 function QuotesPage() {
   <Head>
@@ -50,6 +46,7 @@ function QuotesPage() {
   const [columns, setColumns] = useState(3);
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [layout, setLayout] = useState<Quote[][]>([]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -72,21 +69,26 @@ function QuotesPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const createMasonryLayout = () => {
-    const result = Array.from(
-      { length: columns },
-      () => [] as Array<{ quote: string; explanation: string }>
-    );
+  useEffect(() => {
+    const getAndLayoutQuotes = async () => {
+      const quotes = await fetchQuotes();
+      const masonry = createMasonryLayout(quotes);
+      setLayout(masonry);
+    };
 
-    penumbrapennedQuotes.forEach((quote, index) => {
+    getAndLayoutQuotes();
+  }, []);
+
+  const createMasonryLayout = (quotes: Quote[]): Quote[][] => {
+    const result = Array.from({ length: columns }, () => [] as Quote[]);
+
+    quotes.forEach((quote, index) => {
       const columnIndex = index % columns;
       result[columnIndex].push(quote);
     });
 
     return result;
   };
-
-  const masonryColumns = createMasonryLayout();
 
   const quotesTheme = theme.sections.quotes;
 
@@ -180,7 +182,7 @@ function QuotesPage() {
       {/* Main content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 relative z-10">
         <div className="flex flex-col md:flex-row gap-8 md:gap-12">
-          {masonryColumns.map((column, columnIndex) => (
+          {layout.map((column, columnIndex) => (
             <div key={columnIndex} className="flex-1 flex flex-col gap-8">
               {column.map((quote, quoteIndex) => {
                 const rotationDeg =
@@ -206,15 +208,14 @@ function QuotesPage() {
                           className="mb-4 text-xs tracking-widest uppercase opacity-60"
                           style={{ color: quotesTheme.quoteNumber }}
                         >
-                          Reflection{" "}
-                          {columnIndex * column.length + quoteIndex + 1}
+                          {quote?.genre}
                         </div>
 
                         <p
                           className="text-lg md:text-xl lg:text-2xl italic leading-relaxed mb-4"
                           style={{ color: quotesTheme.text }}
                         >
-                          {`"${quote.quote}"`}
+                          {`"${quote.title}"`}
                         </p>
                       </div>
 
@@ -274,7 +275,7 @@ function QuotesPage() {
 
               {/* Main quote text */}
               <p className="text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed mt-4 mb-6 text-gray-800">
-                {`"${selectedQuote.quote}"`}
+                {`"${selectedQuote.title}"`}
               </p>
 
               {/* Simple divider */}
@@ -283,7 +284,7 @@ function QuotesPage() {
               {/* Explanation with clear typography */}
               <div>
                 <h3 className="text-lg mb-3 font-medium text-gray-800">
-                  Reflection
+                  {selectedQuote?.genre}
                 </h3>
                 <p className="text-base text-gray-600">
                   {selectedQuote.explanation}
@@ -313,7 +314,6 @@ function QuotesPage() {
         </div>
       </footer>
 
-      {/* Adding a custom style for modal animation */}
       <style jsx global>{`
         @keyframes fadeIn {
           from {
