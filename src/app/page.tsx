@@ -1,7 +1,7 @@
 "use client";
 
 import { AboutSection } from "@/components/about-section";
-import { BooksSection } from "@/components/books-section";
+import BooksSection from "@/components/books-section";
 import { ContestSection } from "@/components/contest-section";
 import { HeroSection } from "@/components/hero-section";
 // import { InstagramFeed } from "@/components/insta-feed";

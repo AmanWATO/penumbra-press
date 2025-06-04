@@ -1,8 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { motion, AnimatePresence } from "framer-motion";
 import { colors } from "@/styles/theme";
 import ColorThief from "colorthief";
 import { FaAmazon } from "react-icons/fa";
@@ -59,70 +58,123 @@ const booksData = [
   },
 ];
 
-function AuthorBooksPage() {
-  <Head>
-    <title>{`Published Works - Author's Books Collection`}</title>
-    <meta
-      name="description"
-      content="Discover a collection of published books including poetry, collections, and more by the author."
-    />
-    <meta
-      name="keywords"
-      content="books, poetry, collection, published works, author books, Grace In The Ether, The Jumbled Flow, When The Sky Meets The Sea of Souls"
-    />
-    <meta
-      property="og:title"
-      content="Published Works - Author's Books Collection"
-    />
-    <meta
-      property="og:description"
-      content="Discover a collection of published books including poetry, collections, and more by the author."
-    />
-    <meta property="og:url" content={`${process.env.NEXT_WEB_URL}/my-books`} />
-    <meta property="og:type" content="website" />
-    <meta name="robots" content="index, follow" />
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          name: "Published Works - Author's Books Collection",
-          url: `${process.env.NEXT_WEB_URL}/my-books`,
-          description:
-            "Discover a collection of published books including poetry, collections, and more by the author.",
-          mainEntity: {
-            "@type": "ItemList",
-            itemListElement: booksData.map((book, index) => ({
-              "@type": "ListItem",
-              position: index + 1,
-              item: {
-                "@type": "Book",
-                name: book.title,
-                yearPublished: book.publicationYear.toString(),
-                genre: book.genre,
-                description: book.description,
-              },
-            })),
-          },
-        }),
-      }}
-    />
-  </Head>;
+// Unique animation variants
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.1,
+    },
+  },
+};
 
+const bookCardVariants = {
+  hidden: {
+    opacity: 0,
+    rotateY: -90,
+    z: -100,
+    scale: 0.8,
+  },
+  visible: {
+    opacity: 1,
+    rotateY: 0,
+    z: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+      duration: 0.8,
+    },
+  },
+  hover: {
+    y: -20,
+    rotateY: 5,
+    rotateX: 5,
+    scale: 1.05,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
+
+const genreButtonVariants = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+    scale: 0.9,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 200,
+      damping: 15,
+    },
+  },
+  hover: {
+    scale: 1.1,
+    y: -2,
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 10,
+    },
+  },
+  tap: {
+    scale: 0.95,
+  },
+};
+
+const titleVariants = {
+  hidden: {
+    opacity: 0,
+    y: -50,
+    scale: 0.9,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 150,
+      damping: 20,
+      duration: 1,
+    },
+  },
+};
+
+function AuthorBooksPage() {
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [bookColors, setBookColors] = useState<{ [key: number]: string }>({});
   const [isLoading, setIsLoading] = useState(true);
   const [colorsLoaded, setColorsLoaded] = useState(false);
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
 
   const theme = useTheme();
 
+  // Mouse tracking for gradient effect
   useEffect(() => {
-    AOS.init({
-      duration: 800,
-      once: true,
-    });
+    const handleMouseMove = (e: MouseEvent) => {
+      setMouseX(e.clientX / window.innerWidth);
+      setMouseY(e.clientY / window.innerHeight);
+    };
 
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  useEffect(() => {
     const extractColors = async () => {
       try {
         if (typeof window === "undefined") return;
@@ -218,7 +270,7 @@ function AuthorBooksPage() {
       if (!colorsLoaded) {
         applyFallbackColors();
       }
-    }, 5000); // 5 second fallback
+    }, 5000);
 
     const minLoadingTime = setTimeout(() => {
       if (colorsLoaded) {
@@ -257,196 +309,434 @@ function AuthorBooksPage() {
 
   const availableGenres = [...new Set(booksData.map((book) => book.genre))];
 
+  // Loading animation variants
+  const loadingVariants = {
+    animate: {
+      rotate: 360,
+      transition: {
+        duration: 1,
+        repeat: Infinity,
+        ease: "linear",
+      },
+    },
+  };
+
+  const gradientStyle = {
+    background: `
+      radial-gradient(circle at ${mouseX * 100}% ${mouseY * 100}%, 
+        ${colors.cream}40 0%, 
+        ${colors.parchment} 15%, 
+        ${colors.softBeige} 35%, 
+        ${colors.lightSepia} 60%, 
+        ${colors.mediumSepia} 85%, 
+        ${colors.darkSepia} 100%
+      )
+    `,
+  };
+
   return (
-    <div
-      className="min-h-screen py-10 max-md:py-5 max-md:pb-10 pb-20"
-      style={{ backgroundColor: colors?.parchment }}
-    >
-      {isLoading ? (
-        <div
-          style={{ backgroundColor: colors?.parchment }}
-          className="text-center p-4 "
-        >
-          <div className="w-10 h-10 border-4 border-[#1d1d1d] border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
-          <h3
-            style={{
-              fontFamily: theme.fonts.button,
-            }}
-            className="text-xl font-semibold text-[#1d1d1d] mb-2"
-          >
-            Loading Books
-          </h3>
-        </div>
-      ) : (
-        <div className="container mx-auto px-4">
-          <h1
-            data-aos="fade-down"
-            className="text-3xl font-bold mb-8 text-center"
-            style={{
-              fontFamily: theme.fonts.heading,
-              color: theme.text.primary,
-            }}
-          >
-            Published Works
-          </h1>
+    <>
+      <Head>
+        <title>{`Published Works - Author's Books Collection`}</title>
+        <meta
+          name="description"
+          content="Discover a collection of published books including poetry, collections, and more by the author."
+        />
+        <meta
+          name="keywords"
+          content="books, poetry, collection, published works, author books, Grace In The Ether, The Jumbled Flow, When The Sky Meets The Sea of Souls"
+        />
+        <meta
+          property="og:title"
+          content="Published Works - Author's Books Collection"
+        />
+        <meta
+          property="og:description"
+          content="Discover a collection of published books including poetry, collections, and more by the author."
+        />
+        <meta
+          property="og:url"
+          content={`${process.env.NEXT_WEB_URL}/my-books`}
+        />
+        <meta property="og:type" content="website" />
+        <meta name="robots" content="index, follow" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "CollectionPage",
+              name: "Published Works - Author's Books Collection",
+              url: `${process.env.NEXT_WEB_URL}/my-books`,
+              description:
+                "Discover a collection of published books including poetry, collections, and more by the author.",
+              mainEntity: {
+                "@type": "ItemList",
+                itemListElement: booksData.map((book, index) => ({
+                  "@type": "ListItem",
+                  position: index + 1,
+                  item: {
+                    "@type": "Book",
+                    name: book.title,
+                    yearPublished: book.publicationYear.toString(),
+                    genre: book.genre,
+                    description: book.description,
+                  },
+                })),
+              },
+            }),
+          }}
+        />
+      </Head>
 
-          <div className="flex justify-center mb-10 space-x-4 flex-wrap">
-            {["All", ...Object.keys(genreColors)].map((genre) => (
-              <button
-                key={genre}
-                onClick={() => setSelectedGenre(genre)}
-                className={`px-4 py-2 rounded-[8px] transition-all cursor-pointer duration-300 mb-2 ${
-                  selectedGenre === genre
-                    ? "bg-[#1d1d1d] text-[#f0ebe0]"
-                    : "bg-[#f1efe2] text-[#1d1d1d] hover:bg-[#dfdcd0]"
-                }`}
+      <motion.div
+        className="min-h-screen py-10 max-md:py-5 max-md:pb-10 pb-20 relative overflow-hidden"
+        style={gradientStyle}
+        animate={{
+          background: `
+            radial-gradient(circle at ${mouseX * 100}% ${mouseY * 100}%, 
+              ${colors.cream}40 0%, 
+              ${colors.parchment} 15%, 
+              ${colors.softBeige} 35%, 
+              ${colors.lightSepia} 60%, 
+              ${colors.mediumSepia} 85%, 
+              ${colors.darkSepia} 100%
+            )
+          `,
+        }}
+        transition={{ duration: 0.3 }}
+      >
+        {/* Floating background elements */}
+
+        <AnimatePresence mode="wait">
+          {isLoading ? (
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-center p-4 min-h-screen flex flex-col justify-center items-center"
+            >
+              <motion.div
+                variants={loadingVariants}
+                animate="animate"
+                className="w-16 h-16 border-4 border-t-transparent rounded-full mx-auto mb-6"
+                style={{ borderColor: colors.inkBrown }}
+              />
+              <motion.h3
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                style={{
+                  fontFamily: theme.fonts.button,
+                  color: colors.inkBrown,
+                }}
+                className="text-xl font-semibold mb-2"
               >
-                {genre}
-              </button>
-            ))}
-          </div>
-
-          {filteredBooks.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredBooks.map((book) => (
-                <div
-                  key={book.id}
-                  data-aos="fade-up"
-                  data-aos-delay={book.id * 100}
-                  className="bg-white rounded-lg overflow-hidden shadow-lg"
-                  style={{
-                    borderRight: `8px solid ${
-                      bookColors[book.id] || "#808080"
-                    }`,
-                    boxShadow: `0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px ${
-                      bookColors[book.id] || "#808080"
-                    }50`,
-                  }}
-                >
-                  <div
-                    className="relative h-48 w-full"
-                    style={{
-                      backgroundColor: bookColors[book.id] || "#f0f0f0",
-                    }}
-                  >
-                    <Image
-                      src={book.coverImage}
-                      alt={book.title}
-                      layout="fill"
-                      objectFit="contain"
-                      className="absolute inset-0"
-                    />
-                  </div>
-                  <div
-                    className="text-white px-3 py-4 h-20"
-                    style={{
-                      backgroundColor: bookColors[book.id] || "#808080",
-                    }}
-                  >
-                    <h2 className="text-xl font-bold">{book.title}</h2>
-                    <p className="text-sm">
-                      {book.genre} | {book.publicationYear}
-                    </p>
-                  </div>
-                  <div className="px-6 flex flex-col items-center justify-between py-4">
-                    <p className="text-[#232128] mb-4">{book.description}</p>
-
-                    <div className="w-full mb-4 flex items-center gap-2">
-                      <h3 className="text-[#1d1d1d]0 font-semibold mb-2">
-                        Buy Now:
-                      </h3>
-                      <div className="flex gap-4 flex-wrap">
-                        {book.availability?.amazon && (
-                          <a
-                            href={book.availability.amazonLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-4 py-[6px] bg-white border-2 border-gray-300 rounded-md hover:bg-gray-50 transition-colors w-full md:w-auto justify-center text-sm"
-                            style={{ borderColor: colors.mediumSepia }}
-                          >
-                            <FaAmazon size={18} color={colors.moonGray} />
-                          </a>
-                        )}
-
-                        {book.availability?.flipkart && (
-                          <a
-                            href={book.availability.flipkartLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-4 py-[6px] bg-white border-2 border-gray-300 rounded-md hover:bg-gray-50 transition-colors w-full md:w-auto justify-center text-sm"
-                            style={{ borderColor: colors.mediumSepia }}
-                          >
-                            <SiFlipkart size={18} color={"#F8D706"} />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={() => console.log("object")}
-                      style={{
-                        fontFamily: theme.fonts.body,
-                        color: theme.text.light,
-                      }}
-                      className="block w-full text-center px-4 py-2 bg-[#5d5a4e]  rounded-sm hover:bg-[#7d7a6e] transition-colors cursor-pointer"
-                    >
-                      Learn More
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+                Curating Literary Collection
+              </motion.h3>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                style={{ color: colors.deepSepia }}
+                className="text-sm"
+              >
+                Preparing your reading journey...
+              </motion.p>
+            </motion.div>
           ) : (
-            <div data-aos="fade-up" className="p-4 text-center">
-              <h2
-                className="text-2xl font-bold mb-4"
-                style={{ color: colors.unavailable }}
+            <motion.div
+              key="content"
+              initial="hidden"
+              animate="visible"
+              variants={containerVariants}
+              className="container mx-auto px-4 relative z-10"
+            >
+              <motion.h1
+                variants={titleVariants}
+                className="text-3xl font-bold mb-8 text-center"
+                style={{
+                  fontFamily: theme.fonts.heading,
+                  color: theme.text.primary,
+                  textShadow: `2px 2px 4px ${colors.cream}50`,
+                }}
               >
-                Currently Unavailable
-              </h2>
+                Published Works
+              </motion.h1>
 
-              {availableGenres.length > 1 && (
-                <div className="mt-4">
-                  <p className="mb-3 text-[#232128]">
-                    Explore books available in these genres:
-                  </p>
-                  <ul className="list-disc list-inside text-left max-w-md mx-auto">
-                    {availableGenres.map((genre) => (
-                      <li key={genre} className="mb-2 text-[#232128]">
-                        <button
-                          onClick={() => setSelectedGenre(genre)}
-                          className="font-medium hover:underline cursor-pointer"
-                        >
-                          {genre}
-                        </button>
-                        <span className="text-sm text-gray-600 ml-2">
-                          (
-                          {
-                            booksData.filter((book) => book.genre === genre)
-                              .length
-                          }{" "}
-                          {booksData.filter((book) => book.genre === genre)
-                            .length === 1
-                            ? "book"
-                            : "books"}
-                          )
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                    onClick={() => setSelectedGenre("All")}
-                    className="mt-6 px-6 py-2 bg-[#5d5a4e] text-white rounded hover:bg-[#7d7a6e] transition-colors"
+              <motion.div
+                className="flex justify-center mb-10 space-x-4 flex-wrap"
+                variants={containerVariants}
+              >
+                {["All", ...Object.keys(genreColors)].map((genre) => (
+                  <motion.button
+                    key={genre}
+                    variants={genreButtonVariants}
+                    whileHover="hover"
+                    whileTap="tap"
+                    onClick={() => setSelectedGenre(genre)}
+                    className={`px-4 py-2 rounded-[8px] transition-all cursor-pointer duration-300 mb-2 backdrop-blur-sm ${
+                      selectedGenre === genre
+                        ? "text-white shadow-lg"
+                        : "hover:shadow-md"
+                    }`}
+                    style={{
+                      backgroundColor:
+                        selectedGenre === genre
+                          ? colors.inkBrown
+                          : `${colors.cream}80`,
+                      color:
+                        selectedGenre === genre
+                          ? colors.cream
+                          : colors.inkBrown,
+                      border: `2px solid ${
+                        selectedGenre === genre
+                          ? colors.inkBrown
+                          : colors.mediumSepia
+                      }50`,
+                    }}
                   >
-                    View All Books
-                  </button>
-                </div>
-              )}
-            </div>
+                    {genre}
+                  </motion.button>
+                ))}
+              </motion.div>
+
+              <AnimatePresence mode="wait">
+                {filteredBooks.length > 0 ? (
+                  <motion.div
+                    key={selectedGenre}
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                  >
+                    {filteredBooks.map((book) => (
+                      <motion.div
+                        key={book.id}
+                        variants={bookCardVariants}
+                        whileHover="hover"
+                        className="bg-white rounded-lg overflow-hidden shadow-lg backdrop-blur-sm"
+                        style={{
+                          borderRight: `8px solid ${
+                            bookColors[book.id] || "#808080"
+                          }`,
+                          boxShadow: `0 10px 25px -5px ${
+                            bookColors[book.id] || "#808080"
+                          }30, 0 4px 6px -1px rgba(0, 0, 0, 0.1)`,
+                          transformStyle: "preserve-3d",
+                        }}
+                      >
+                        <motion.div
+                          className="relative h-48 w-full overflow-hidden"
+                          style={{
+                            backgroundColor: bookColors[book.id] || "#f0f0f0",
+                          }}
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <Image
+                            src={book.coverImage}
+                            alt={book.title}
+                            layout="fill"
+                            objectFit="contain"
+                            className="absolute inset-0"
+                          />
+                        </motion.div>
+
+                        <motion.div
+                          className="text-white px-3 py-4 h-20"
+                          style={{
+                            backgroundColor: bookColors[book.id] || "#808080",
+                          }}
+                          whileHover={{
+                            boxShadow: `inset 0 0 20px rgba(255,255,255,0.1)`,
+                          }}
+                        >
+                          <motion.h2
+                            className="text-xl font-bold"
+                            whileHover={{ x: 5 }}
+                            transition={{ type: "spring", stiffness: 300 }}
+                          >
+                            {book.title}
+                          </motion.h2>
+                          <p className="text-sm">
+                            {book.genre} | {book.publicationYear}
+                          </p>
+                        </motion.div>
+
+                        <div className="px-6 flex flex-col items-center justify-between py-4">
+                          <motion.p
+                            className="mb-4"
+                            style={{ color: colors.nightBlue }}
+                            initial={{ opacity: 0.8 }}
+                            whileHover={{ opacity: 1 }}
+                          >
+                            {book.description}
+                          </motion.p>
+
+                          <div className="w-full mb-4 flex items-center gap-2">
+                            <h3
+                              className="font-semibold mb-2"
+                              style={{ color: colors.inkBrown }}
+                            >
+                              Buy Now:
+                            </h3>
+                            <div className="flex gap-4 flex-wrap">
+                              {book.availability?.amazon && (
+                                <motion.a
+                                  href={book.availability.amazonLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-2 px-4 py-[6px] bg-white border-2 rounded-md transition-colors w-full md:w-auto justify-center text-sm"
+                                  style={{ borderColor: colors.mediumSepia }}
+                                  whileHover={{
+                                    scale: 1.05,
+                                    boxShadow: `0 5px 15px ${colors.mediumSepia}30`,
+                                  }}
+                                  whileTap={{ scale: 0.98 }}
+                                >
+                                  <FaAmazon size={18} color={colors.moonGray} />
+                                </motion.a>
+                              )}
+
+                              {book.availability?.flipkart && (
+                                <motion.a
+                                  href={book.availability.flipkartLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-2 px-4 py-[6px] bg-white border-2 rounded-md transition-colors w-full md:w-auto justify-center text-sm"
+                                  style={{ borderColor: colors.mediumSepia }}
+                                  whileHover={{
+                                    scale: 1.05,
+                                    boxShadow: `0 5px 15px ${colors.mediumSepia}30`,
+                                  }}
+                                  whileTap={{ scale: 0.98 }}
+                                >
+                                  <SiFlipkart size={18} color={"#F8D706"} />
+                                </motion.a>
+                              )}
+                            </div>
+                          </div>
+
+                          <motion.button
+                            onClick={() => console.log("Learn more clicked")}
+                            style={{
+                              fontFamily: theme.fonts.body,
+                              backgroundColor: colors.gray800,
+                              color: theme.text.light,
+                            }}
+                            className="block w-full text-center px-4 py-2 rounded-sm transition-all cursor-pointer"
+                            whileHover={{
+                              backgroundColor: colors.gray700,
+                              scale: 1.02,
+                              boxShadow: `0 5px 15px ${colors.gray800}40`,
+                            }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            Learn More
+                          </motion.button>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="empty"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="p-4 text-center"
+                  >
+                    <motion.h2
+                      className="text-2xl font-bold mb-4"
+                      style={{ color: colors.unavailable }}
+                      animate={{
+                        textShadow: [
+                          `0 0 5px ${colors.unavailable}40`,
+                          `0 0 10px ${colors.unavailable}60`,
+                          `0 0 5px ${colors.unavailable}40`,
+                        ],
+                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      Currently Unavailable
+                    </motion.h2>
+
+                    {availableGenres.length > 1 && (
+                      <motion.div
+                        className="mt-4"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                      >
+                        <p className="mb-3" style={{ color: colors.nightBlue }}>
+                          Explore books available in these genres:
+                        </p>
+                        <ul className="list-disc list-inside text-left max-w-md mx-auto">
+                          {availableGenres.map((genre, index) => (
+                            <motion.li
+                              key={genre}
+                              className="mb-2"
+                              style={{ color: colors.nightBlue }}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 + 0.5 }}
+                            >
+                              <motion.button
+                                onClick={() => setSelectedGenre(genre)}
+                                className="font-medium hover:underline cursor-pointer"
+                                whileHover={{
+                                  scale: 1.05,
+                                  color: colors.deepSepia,
+                                }}
+                              >
+                                {genre}
+                              </motion.button>
+                              <span
+                                className="text-sm ml-2"
+                                style={{ color: colors.gray600 }}
+                              >
+                                (
+                                {
+                                  booksData.filter(
+                                    (book) => book.genre === genre
+                                  ).length
+                                }{" "}
+                                {booksData.filter(
+                                  (book) => book.genre === genre
+                                ).length === 1
+                                  ? "book"
+                                  : "books"}
+                                )
+                              </span>
+                            </motion.li>
+                          ))}
+                        </ul>
+                        <motion.button
+                          onClick={() => setSelectedGenre("All")}
+                          className="mt-6 px-6 py-2 text-white rounded transition-colors"
+                          style={{ backgroundColor: colors.gray800 }}
+                          whileHover={{
+                            backgroundColor: colors.gray700,
+                            scale: 1.05,
+                            boxShadow: `0 5px 15px ${colors.gray800}40`,
+                          }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          View All Books
+                        </motion.button>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           )}
-        </div>
-      )}
-    </div>
+        </AnimatePresence>
+      </motion.div>
+    </>
   );
 }
 

@@ -23,6 +23,8 @@ export const colors = {
   nightBlue: "#232128",
   penumbraBlack: "#171717",
   unavailable: "#FF4C4C",
+  gold: "#FFBE00",
+  purple: "#4C3F91",
 };
 
 export const fonts = {

@@ -4,9 +4,14 @@ import React from "react";
 import { colors, fonts } from "@/styles/theme";
 import { useRouter } from "next/navigation";
 import Head from "next/head";
+import { motion } from "framer-motion";
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-  <h2
+  <motion.h2
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6 }}
     style={{
       fontFamily: fonts.heading,
       color: colors.parchment,
@@ -15,25 +20,32 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
     className="text-3xl mb-6 border-b pb-2"
   >
     {children}
-  </h2>
+  </motion.h2>
 );
 
 const Card = ({
   children,
   className = "",
+  delay = 0,
 }: {
   children: React.ReactNode;
   className?: string;
+  delay?: number;
 }) => (
-  <div
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6, delay }}
+    whileHover={{ y: -5, transition: { duration: 0.2 } }}
     style={{
       backgroundColor: colors.parchment,
       borderColor: colors.nightBlue,
     }}
-    className={`p-6 rounded-lg border ${className}`}
+    className={`p-6 rounded-lg border ${className} shadow-lg hover:shadow-xl transition-shadow duration-300`}
   >
     {children}
-  </div>
+  </motion.div>
 );
 
 const CardTitle = ({ children }: { children: React.ReactNode }) => (
@@ -49,11 +61,17 @@ const CardTitle = ({ children }: { children: React.ReactNode }) => (
 );
 
 const ListItem = ({ children }: { children: React.ReactNode }) => (
-  <li className="flex items-start">
+  <motion.li 
+    initial={{ opacity: 0, x: -20 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.4 }}
+    className="flex items-start"
+  >
     <div style={{ fontFamily: fonts.body, color: colors.deepSepia }}>
       {children}
     </div>
-  </li>
+  </motion.li>
 );
 
 function ContestPage() {
@@ -62,7 +80,7 @@ function ContestPage() {
   const keyDates = [
     {
       title: "Submission Portal Opens",
-      date: "1s July, 2025",
+      date: "1st July, 2025",
       description: "Begin submitting your entries through our online portal.",
     },
     {
@@ -139,6 +157,7 @@ function ContestPage() {
   const guidelines = [
     { label: "Word Count:", value: "1,500 to 5,000 words" },
     { label: "Genre:", value: "Open to all fiction that aligns with theme" },
+    { label: "Language:", value: "English only" },
     { label: "Eligibility:", value: "Open to all Indian writers, ages 16+" },
     {
       label: "Accepted Formats:",
@@ -146,6 +165,26 @@ function ContestPage() {
         "Poetry, Fiction, Epistolary, Creative Non-fiction, Flash Fiction, Short Stories",
     },
   ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6 },
+    },
+  };
 
   return (
     <>
@@ -220,33 +259,105 @@ function ContestPage() {
         />
       </Head>
       <div
-        style={{ backgroundColor: colors.penumbraBlack, color: colors.gray100 }}
-        className="min-h-screen pt-16 md:pt-24 pb-16"
+        style={{ 
+          background: `linear-gradient(135deg, ${colors.penumbraBlack} 0%, ${colors.nightBlue} 25%, ${colors.moonGray} 50%, ${colors.nightBlue} 75%, ${colors.penumbraBlack} 100%)`,
+          color: colors.gray100 
+        }}
+        className="min-h-screen pt-16 md:pt-24 pb-16 relative overflow-hidden"
       >
-        <div className="container mx-auto px-4 max-w-4xl">
-          <h1
-            style={{ fontFamily: fonts.heading }}
-            className="text-4xl sm:text-5xl md:text-6xl text-center mb-4"
-          >
-            The Penumbra Script: Shadow Edition
-          </h1>
-          <p
-            style={{ fontFamily: fonts.body, color: colors.lightSepia }}
-            className="text-lg md:text-xl italic text-center mb-8"
-          >
-            &quot;Because the best stories often emerge from the edges of
-            light.&quot;
-          </p>
+        {/* Animated background elements */}
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.2, 0.1],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute top-0 left-0 w-96 h-96 rounded-full"
+          style={{
+            background: `radial-gradient(circle, ${colors.deepSepia}20 0%, transparent 70%)`,
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+        <motion.div
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.05, 0.15, 0.05],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2,
+          }}
+          className="absolute bottom-0 right-0 w-80 h-80 rounded-full"
+          style={{
+            background: `radial-gradient(circle, ${colors.lightSepia}15 0%, transparent 70%)`,
+            transform: "translate(50%, 50%)",
+          }}
+        />
 
-          <div
+        <div className="container mx-auto px-4 max-w-4xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="text-center mb-12 md:mb-16"
+          >
+            <motion.h1
+              style={{ fontFamily: fonts.heading }}
+              className="text-4xl sm:text-5xl md:text-6xl mb-4"
+              animate={{
+                textShadow: [
+                  `0 0 10px ${colors.lightSepia}40`,
+                  `0 0 20px ${colors.lightSepia}60`,
+                  `0 0 10px ${colors.lightSepia}40`,
+                ],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              The Penumbra Script: Shadow Edition
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              style={{ fontFamily: fonts.body, color: colors.lightSepia }}
+              className="text-lg md:text-xl italic"
+            >
+              &quot;Because the best stories often emerge from the edges of
+              light.&quot;
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 1, delay: 0.8 }}
             style={{ backgroundColor: colors.deepSepia }}
             className="w-24 h-1 mx-auto mb-12 md:mb-16"
-          ></div>
+          />
 
-          <div className="max-w-none">
-            <section className="mb-12 md:mb-16">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="max-w-none"
+          >
+            <motion.section variants={itemVariants} className="mb-12 md:mb-16">
               <SectionTitle>About the Contest</SectionTitle>
-              <p
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
                 style={{ fontFamily: fonts.body }}
                 className="text-base md:text-lg mb-6"
               >
@@ -259,10 +370,10 @@ function ContestPage() {
                 sparks innovation, explore the liminal spaces of human
                 experience, and find beauty in the complicated truths that lie
                 between light and dark.
-              </p>
-            </section>
+              </motion.p>
+            </motion.section>
 
-            <section className="mb-12 md:mb-16">
+            <motion.section variants={itemVariants} className="mb-12 md:mb-16">
               <SectionTitle>Theme</SectionTitle>
               <Card>
                 <CardTitle>Contest Theme</CardTitle>
@@ -285,13 +396,13 @@ function ContestPage() {
                   cast against the glow of your own awareness and insight.
                 </p>
               </Card>
-            </section>
+            </motion.section>
 
-            <section className="mb-12 md:mb-16">
+            <motion.section variants={itemVariants} className="mb-12 md:mb-16">
               <SectionTitle>Key Dates</SectionTitle>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                 {keyDates.map((item, index) => (
-                  <Card key={index}>
+                  <Card key={index} delay={index * 0.1}>
                     <CardTitle>{item.title}</CardTitle>
                     <p
                       style={{
@@ -313,9 +424,9 @@ function ContestPage() {
                   </Card>
                 ))}
               </div>
-            </section>
+            </motion.section>
 
-            <section className="mb-12 md:mb-16">
+            <motion.section variants={itemVariants} className="mb-12 md:mb-16">
               <SectionTitle>Entry Fees</SectionTitle>
               <Card className="mb-8">
                 <ul className="space-y-4">
@@ -337,13 +448,13 @@ function ContestPage() {
                   ))}
                 </ul>
               </Card>
-            </section>
+            </motion.section>
 
-            <section className="mb-12 md:mb-16">
+            <motion.section variants={itemVariants} className="mb-12 md:mb-16">
               <SectionTitle>Prizes</SectionTitle>
               <div className="space-y-4 md:space-y-8">
                 {prizes.map((prize, index) => (
-                  <Card key={index}>
+                  <Card key={index} delay={index * 0.15}>
                     <CardTitle>{prize.title}</CardTitle>
                     {prize.benefits ? (
                       <ul
@@ -354,10 +465,16 @@ function ContestPage() {
                         className="space-y-2"
                       >
                         {prize.benefits.map((benefit, idx) => (
-                          <li key={idx}>
+                          <motion.li
+                            key={idx}
+                            initial={{ opacity: 0, x: -10 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: idx * 0.1 }}
+                          >
                             <span className="font-bold">{benefit.label}</span>{" "}
                             {benefit.value}
-                          </li>
+                          </motion.li>
                         ))}
                       </ul>
                     ) : (
@@ -373,9 +490,9 @@ function ContestPage() {
                   </Card>
                 ))}
               </div>
-            </section>
+            </motion.section>
 
-            <section>
+            <motion.section variants={itemVariants}>
               <SectionTitle>Submission Guidelines</SectionTitle>
               <Card className="mb-8">
                 <ul className="space-y-4">
@@ -396,20 +513,25 @@ function ContestPage() {
               </Card>
 
               <div className="flex justify-center mt-8 md:mt-12">
-                <button
+                <motion.button
+                  whileHover={{ 
+                    scale: 1.05,
+                    boxShadow: `0 10px 25px ${colors.cream}30`,
+                  }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => router.push("/login-to-penumbra")}
                   style={{
                     fontFamily: fonts.button,
                     backgroundColor: colors.cream,
                     color: colors.inkBrown,
                   }}
-                  className="px-4 md:px-6 py-2 md:py-3 text-sm md:text-base rounded-md cursor-not-allowed shadow-lg"
+                  className="px-4 md:px-6 py-2 md:py-3 text-sm md:text-base rounded-md cursor-not-allowed shadow-lg transition-all duration-300"
                 >
                   Submissions Open July 1st
-                </button>
+                </motion.button>
               </div>
-            </section>
-          </div>
+            </motion.section>
+          </motion.div>
         </div>
       </div>
     </>
