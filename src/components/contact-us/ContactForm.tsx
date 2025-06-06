@@ -2,7 +2,7 @@ import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/context/ThemeProvider";
 import { FormField } from "./FormField";
-import { ContactFormData } from "@/app/contact-us/page";
+import { ContactFormData } from "@/app/contact-us/ContactUsPage";
 
 interface ContactFormProps {
   formData: ContactFormData;
