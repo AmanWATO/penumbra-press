@@ -15,9 +15,9 @@ interface NavLinkProps {
   action: () => void;
   icon?: React.ReactNode;
 }
-interface HandleScroll {
-  (id: string): void;
-}
+// interface HandleScroll {
+//   (id: string): void;
+// }
 
 const NavLink: React.FC<NavLinkProps> = ({ label, action, icon }) => {
   const theme = useTheme();
@@ -61,13 +61,13 @@ export function Header() {
   const config = useConfig();
   const { user } = useAuthState();
 
-  const handleScroll: HandleScroll = (id) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-      setMobileMenuOpen(false);
-    }
-  };
+  // const handleScroll: HandleScroll = (id) => {
+  //   const section = document.getElementById(id);
+  //   if (section) {
+  //     section.scrollIntoView({ behavior: "smooth", block: "start" });
+  //     setMobileMenuOpen(false);
+  //   }
+  // };
 
   const navLinks = [
     {
