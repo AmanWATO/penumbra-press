@@ -83,6 +83,12 @@ export function Footer() {
     { href: "/contact-us", label: "Contact" },
   ];
 
+  const support = [
+    { href: "/terms-and-conditions", label: "Terms and Conditions" },
+    { href: "/privacy-policy", label: "Privacy Policy" },
+    { href: "/faq", label: "FAQs" },
+  ];
+
   return (
     <footer
       className="py-16 max-md:py-8 border-t mt-auto"
@@ -92,9 +98,9 @@ export function Footer() {
         fontFamily: theme.fonts.body,
       }}
     >
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
+      <div className="container mx-auto px-4 max-w-7xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          <div className="lg:col-span-1">
             <Link href="/" className="flex items-center space-x-3 mb-4">
               <Image
                 src="/penumbra_press_without_text.png"
@@ -114,7 +120,7 @@ export function Footer() {
               </span>
             </Link>
             <p
-              className="text-sm"
+              className="text-sm leading-relaxed"
               style={{ color: theme.sections.headFoot.text }}
             >
               Where words dwell between light and shadow — a haven for poetry,
@@ -145,6 +151,24 @@ export function Footer() {
               className="font-semibold mb-4"
               style={{ color: theme.sections.headFoot.text }}
             >
+              Support
+            </h3>
+            <nav className="flex flex-col space-y-2 text-sm">
+              {support.map((link, index) => (
+                <FooterLink
+                  key={`support-${index}`}
+                  href={link.href}
+                  label={link.label}
+                />
+              ))}
+            </nav>
+          </div>
+
+          <div>
+            <h3
+              className="font-semibold mb-4"
+              style={{ color: theme.sections.headFoot.text }}
+            >
               Connect
             </h3>
             <div className="flex space-x-4">
@@ -160,7 +184,7 @@ export function Footer() {
           </div>
         </div>
         <div
-          className="mt-8 pt-6 border-t text-center text-sm"
+          className="mt-12 pt-8 border-t text-center text-sm"
           style={{
             borderColor: theme.border.light,
             color: theme.sections.headFoot.text,

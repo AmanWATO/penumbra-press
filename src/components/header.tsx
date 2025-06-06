@@ -89,10 +89,10 @@ export function Header() {
       action: () => router.push("/penumbra-quotes"),
     },
 
-    {
-      label: "About",
-      action: () => handleScroll("about-author"),
-    },
+    // {
+    //   label: "About",
+    //   action: () => handleScroll("about-author"),
+    // },
     {
       label: "Contact",
       action: () => router.push("/contact-us"),
