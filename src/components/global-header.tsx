@@ -3,7 +3,7 @@
 import { Header } from "@/components/header";
 import { usePathname } from "next/navigation";
 
-const HIDDEN_HEADER_ROUTES = ["/login", "/register", "/reset"];
+const HIDDEN_HEADER_ROUTES = ["/login", "/register", "/reset", "/penumbra-dashboard"];
 
 export function GlobalHeader() {
   const pathname = usePathname();

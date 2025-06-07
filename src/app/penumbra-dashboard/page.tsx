@@ -1,217 +1,247 @@
-"use client";
+'use client'
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import useAuthState from "@/hooks/useAuthState";
-import { logOut } from "@/lib/firebase";
-import { colors, fonts } from "@/styles/theme";
+import DashboardLayout from "@/components/layouts/DashboardLayout";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { dashboardTheme } from "@/styles/theme";
 
 export default function DashboardPage() {
+  const hasSubmissions = false; 
   const router = useRouter();
-  const { user, loading } = useAuthState();
-  const [countdown, setCountdown] = useState(10);
-  const [loggingOut, setLoggingOut] = useState(false);
-
-  useEffect(() => {
-    if (!loading && !user) {
-      const timer = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            router.replace("/login-to-penumbra");
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-
-      return () => clearInterval(timer);
-    }
-  }, [loading, user, router]);
-
-  const handleLogout = async () => {
-    setLoggingOut(true);
-    try {
-      await logOut();
-      router.push("/login-to-penumbra");
-    } catch (error) {
-      console.error("Logout failed:", error);
-      setLoggingOut(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div
-        style={{ backgroundColor: colors.penumbraBlack, color: colors.gray100 }}
-        className="min-h-screen flex items-center justify-center"
-      >
-        <p style={{ fontFamily: fonts.body }}>Loading...</p>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div
-        style={{ backgroundColor: colors.penumbraBlack, color: colors.gray100 }}
-        className="min-h-screen flex items-center justify-center p-4"
-      >
-        <Card
-          style={{
-            backgroundColor: colors.parchment,
-            borderColor: colors.inkBrown,
-          }}
-          className="w-full max-w-md"
-        >
-          <CardHeader>
-            <CardTitle
-              style={{ fontFamily: fonts.heading, color: colors.inkBrown }}
-            >
-              Authentication Required
-            </CardTitle>
-            <CardDescription style={{ color: colors.darkSepia }}>
-              You need to be logged in to view this page
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center" style={{ color: colors.inkBrown }}>
-              <p className="mb-4">
-                You will be redirected to the login page in {countdown} seconds.
-              </p>
-              <Button
-                onClick={() => router.push("/login-to-penumbra")}
-                style={{
-                  fontFamily: fonts.button,
-                  backgroundColor: colors.deepSepia,
-                  color: colors.cream,
-                }}
-                className="shadow-lg hover:brightness-110 transition-all duration-200"
-              >
-                Go to Login
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   return (
-    <div
-      style={{ backgroundColor: colors.penumbraBlack, color: colors.gray100 }}
-      className="min-h-screen p-4 md:p-8"
-    >
-      <div className="max-w-6xl mx-auto">
-        <header className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1
-              style={{ fontFamily: fonts.heading, color: colors.parchment }}
-              className="text-3xl md:text-4xl mb-2"
+    <DashboardLayout>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: dashboardTheme.animation.ease }}
+      >
+        {/* Header Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          style={{ marginBottom: dashboardTheme.spacing.xxl }}
+        >
+          <h1 
+            className="text-4xl font-bold mb-2"
+            style={{ 
+              fontFamily: dashboardTheme.fonts.heading,
+              color: dashboardTheme.colors.textPrimary,
+              background: `linear-gradient(135deg, ${dashboardTheme.colors.textPrimary} 0%, ${dashboardTheme.colors.accent} 100%)`,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Welcome to Your Writing Sanctuary
+          </h1>
+          <p 
+            className="text-lg"
+            style={{ 
+              color: dashboardTheme.colors.textSecondary,
+              fontFamily: dashboardTheme.fonts.body 
+            }}
+          >
+            Where stories come to life in the Penumbra Writing Contest
+          </p>
+        </motion.div>
+
+        {!hasSubmissions ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="relative overflow-hidden"
+            style={{
+              padding: `${dashboardTheme.spacing.xxl} ${dashboardTheme.spacing.xl}`,
+              backgroundColor: dashboardTheme.colors.cardBg,
+              border: `1px solid ${dashboardTheme.colors.cardBorder}`,
+              borderRadius: dashboardTheme.radius.xl,
+              boxShadow: dashboardTheme.colors.cardShadow,
+              textAlign: "center"
+            }}
+          >
+            {/* Decorative background elements */}
+            <div 
+              className="absolute top-0 left-0 w-full h-full pointer-events-none"
+              style={{
+                background: dashboardTheme.colors.subtleGradient,
+                opacity: 0.3
+              }}
+            />
+            
+            {/* Floating decorative elements */}
+            <motion.div
+              animate={{ 
+                rotate: [0, 10, -10, 0],
+                scale: [1, 1.05, 0.95, 1]
+              }}
+              transition={{ 
+                duration: 8, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+              className="absolute top-6 right-6 text-4xl opacity-20"
             >
-              Penumbra Dashboard
-            </h1>
-            <p
-              style={{ fontFamily: fonts.body, color: colors.lightSepia }}
-              className="text-lg italic"
+              ✍️
+            </motion.div>
+            
+            <motion.div
+              animate={{ 
+                rotate: [0, -15, 15, 0],
+                y: [0, -5, 5, 0]
+              }}
+              transition={{ 
+                duration: 6, 
+                repeat: Infinity, 
+                ease: "easeInOut",
+                delay: 2
+              }}
+              className="absolute bottom-6 left-6 text-3xl opacity-20"
             >
-              Welcome, {user.email}
+              📚
+            </motion.div>
+
+            <div className="relative z-10">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
+                className="mb-6 text-6xl"
+              >
+                📖
+              </motion.div>
+              
+              <motion.h2
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.4 }}
+                className="text-2xl font-semibold mb-4"
+                style={{ 
+                  fontFamily: dashboardTheme.fonts.heading,
+                  color: dashboardTheme.colors.textPrimary 
+                }}
+              >
+                Your Literary Journey Begins Here
+              </motion.h2>
+              
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.4 }}
+                className="text-lg mb-8"
+                style={{ 
+                  color: dashboardTheme.colors.textSecondary,
+                  fontFamily: dashboardTheme.fonts.body,
+                  lineHeight: "1.6"
+                }}
+              >
+                {`You haven't shared your literary masterpiece yet. Every great story starts with a single word—make yours count in the Penumbra Writing Contest.`}
+              </motion.p>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7, duration: 0.4 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Button
+                  className="relative overflow-hidden px-8 py-4 text-lg font-semibold transition-all duration-300"
+                  style={{
+                    backgroundColor: dashboardTheme.colors.accent,
+                    color: dashboardTheme.colors.activeText,
+                    border: "none",
+                    borderRadius: dashboardTheme.radius.lg,
+                    fontFamily: dashboardTheme.fonts.body,
+                    boxShadow: dashboardTheme.components.button.primary.shadow,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = dashboardTheme.colors.accentDark;
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                    e.currentTarget.style.boxShadow = "0 8px 25px rgba(139, 110, 87, 0.35)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = dashboardTheme.colors.accent;
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = dashboardTheme.components.button.primary.shadow;
+                  }}
+                  onClick={() => router.push("/penumbra-dashboard/submit")}
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    Begin Your Submission
+                    <motion.span
+                      animate={{ x: [0, 4, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                      ✨
+                    </motion.span>
+                  </span>
+                  
+                  {/* Animated background shimmer */}
+                  <motion.div
+                    className="absolute inset-0"
+                    style={{
+                      background: "linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)",
+                      transform: "translateX(-100%)"
+                    }}
+                    animate={{ transform: "translateX(200%)" }}
+                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                  />
+                </Button>
+              </motion.div>
+              
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1, duration: 0.4 }}
+                className="mt-6 text-sm"
+                style={{ 
+                  color: dashboardTheme.colors.textTertiary,
+                  fontFamily: dashboardTheme.fonts.body 
+                }}
+              >
+                Ready to let your creativity flow? Your story awaits.
+              </motion.p>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            style={{
+              padding: dashboardTheme.spacing.xl,
+              backgroundColor: dashboardTheme.colors.cardBg,
+              border: `1px solid ${dashboardTheme.colors.cardBorder}`,
+              borderRadius: dashboardTheme.radius.xl,
+              boxShadow: dashboardTheme.colors.cardShadow,
+            }}
+          >
+            <h2 
+              className="text-xl font-semibold mb-4"
+              style={{ 
+                fontFamily: dashboardTheme.fonts.heading,
+                color: dashboardTheme.colors.textPrimary 
+              }}
+            >
+              Your Submissions
+            </h2>
+            {/* Submission cards will be mapped here */}
+            <p 
+              style={{ 
+                color: dashboardTheme.colors.textSecondary,
+                fontFamily: dashboardTheme.fonts.body 
+              }}
+            >
+              Your creative works will appear here once submitted.
             </p>
-          </div>
-          <Button
-            onClick={handleLogout}
-            disabled={loggingOut}
-            style={{
-              fontFamily: fonts.button,
-              backgroundColor: loggingOut ? colors.gray500 : colors.deepSepia,
-              color: colors.cream,
-            }}
-            className="mt-4 md:mt-0 shadow-lg hover:brightness-110 transition-all duration-200"
-          >
-            {loggingOut ? "Logging out..." : "Sign Out"}
-          </Button>
-        </header>
+          </motion.div>
+        )}
 
-        {/* Dashboard content would go here */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <Card
-            style={{
-              backgroundColor: colors.parchment,
-              borderColor: colors.inkBrown,
-            }}
-          >
-            <CardHeader>
-              <CardTitle
-                style={{ fontFamily: fonts.heading, color: colors.inkBrown }}
-              >
-                My Submissions
-              </CardTitle>
-              <CardDescription style={{ color: colors.darkSepia }}>
-                Manage your contest entries
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p style={{ color: colors.moonGray }}>
-                You have not submitted any entries yet.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card
-            style={{
-              backgroundColor: colors.parchment,
-              borderColor: colors.inkBrown,
-            }}
-          >
-            <CardHeader>
-              <CardTitle
-                style={{ fontFamily: fonts.heading, color: colors.inkBrown }}
-              >
-                Contest Status
-              </CardTitle>
-              <CardDescription style={{ color: colors.darkSepia }}>
-                Current submissions and deadlines
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p style={{ color: colors.moonGray }}>
-                Submissions are open until July 25, 2025.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card
-            style={{
-              backgroundColor: colors.parchment,
-              borderColor: colors.inkBrown,
-            }}
-          >
-            <CardHeader>
-              <CardTitle
-                style={{ fontFamily: fonts.heading, color: colors.inkBrown }}
-              >
-                Account Settings
-              </CardTitle>
-              <CardDescription style={{ color: colors.darkSepia }}>
-                Manage your profile
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p style={{ color: colors.moonGray }}>
-                Update your account details and preferences.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </div>
+     
+      </motion.div>
+    </DashboardLayout>
   );
 }

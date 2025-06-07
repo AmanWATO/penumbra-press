@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Poppins, Space_Grotesk } from "next/font/google";
+import {
+  IBM_Plex_Sans,
+  Inter,
+  Playfair_Display,
+  Poppins,
+  Space_Grotesk,
+} from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeProvider";
 import { ConfigProvider } from "@/context/ConfigProvider";
@@ -21,6 +27,20 @@ const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const ibmPlexSans = IBM_Plex_Sans({
+  variable: "--font-ibm-plex-sans",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 const GTM_ID = "GTM-K6S8HL33";
@@ -50,7 +70,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body
-        className={`${playfair.variable} ${spaceGrotesk.variable} ${poppins.variable} antialiased`}
+        className={`${playfair.variable} ${spaceGrotesk.variable} ${poppins.variable} ${inter.variable} ${ibmPlexSans.variable} antialiased`}
       >
         <noscript
           dangerouslySetInnerHTML={{
