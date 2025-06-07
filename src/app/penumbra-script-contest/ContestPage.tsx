@@ -153,7 +153,15 @@ function ContestPage() {
             <motion.section variants={itemVariants} className="mb-12 md:mb-16">
               <SectionTitle>Theme</SectionTitle>
               <ContestCard>
-                <CardTitle>Contest Theme</CardTitle>
+                <CardTitle
+                  style={{
+                    color: colors.nightBlue,
+                    fontFamily: fonts.heading,
+                  }}
+                  className="mb-4"
+                >
+                  Contest Theme
+                </CardTitle>
                 <p
                   style={{ fontFamily: fonts.body, color: colors.deepSepia }}
                   className="text-base md:text-lg mb-2"
@@ -180,7 +188,15 @@ function ContestPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                 {keyDates.map((item, index) => (
                   <ContestCard key={index} delay={index * 0.1}>
-                    <CardTitle>{item.title}</CardTitle>
+                    <CardTitle
+                      style={{
+                        color: colors.nightBlue,
+                        fontFamily: fonts.heading,
+                      }}
+                      className="mb-3"
+                    >
+                      {item.title}
+                    </CardTitle>
                     <p
                       style={{
                         fontFamily: fonts.body,
@@ -232,7 +248,15 @@ function ContestPage() {
               <div className="space-y-4 md:space-y-8">
                 {prizes.map((prize, index) => (
                   <ContestCard key={index} delay={index * 0.15}>
-                    <CardTitle>{prize.title}</CardTitle>
+                    <CardTitle
+                      style={{
+                        color: colors.nightBlue,
+                        fontFamily: fonts.heading,
+                      }}
+                      className="mb-4"
+                    >
+                      {prize.title}
+                    </CardTitle>
                     {prize.benefits ? (
                       <ul
                         style={{
