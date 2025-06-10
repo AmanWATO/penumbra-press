@@ -1,3 +1,6 @@
+'use client'
+
+
 import React from "react";
 import { BookOpen, ArrowRight, Sparkles } from "lucide-react";
 import { BookProps, books } from "@/lib/utils";

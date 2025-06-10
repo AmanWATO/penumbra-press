@@ -9,7 +9,7 @@ import { useConfig } from "@/context/ConfigProvider";
 import { colors } from "@/styles/theme";
 import { motion } from "framer-motion";
 
-export function AboutSection() {
+function AboutSection() {
   const theme = useTheme();
   const config = useConfig();
 
@@ -98,3 +98,5 @@ export function AboutSection() {
     </section>
   );
 }
+
+export default AboutSection;

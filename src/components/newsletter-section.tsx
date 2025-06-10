@@ -3,9 +3,15 @@
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/context/ThemeProvider";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
-export function NewsletterSection() {
+function NewsletterSection() {
   const theme = useTheme();
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -14,6 +20,35 @@ export function NewsletterSection() {
       y: 0,
       transition: { duration: 0.6, ease: "easeOut", delay },
     }),
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const ref = collection(db, "subscribers");
+      const check = query(ref, where("email", "==", email.toLowerCase()));
+      const snapshot = await getDocs(check);
+
+      if (!snapshot.empty) {
+        setError("You've already subscribed.");
+        return;
+      }
+
+      await addDoc(ref, {
+        email: email.toLowerCase(),
+        subscribedAt: new Date(),
+      });
+
+      setSubmitted(true);
+      setEmail("");
+      setError("");
+
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch (err) {
+      console.error("Subscription error:", err);
+      setError("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -45,10 +80,12 @@ export function NewsletterSection() {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          Subscribe to receive updates on new releases, literary events, and exclusive content.
+          Subscribe to receive updates on new releases, literary events, and
+          exclusive content.
         </motion.p>
 
         <motion.form
+          onSubmit={handleSubmit}
           className="flex flex-col sm:flex-row gap-4 items-center max-w-md mx-auto"
           initial="hidden"
           whileInView="visible"
@@ -63,6 +100,8 @@ export function NewsletterSection() {
               color: theme.text.primary,
             }}
             required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             variants={fadeInUp}
             custom={0.4}
           />
@@ -76,12 +115,28 @@ export function NewsletterSection() {
                 color: theme.text.primary,
                 fontFamily: theme.fonts.body,
               }}
+              disabled={submitted}
             >
-              Subscribe
+              {submitted ? "✅ Subscribed!" : "Subscribe"}
             </Button>
           </motion.div>
         </motion.form>
+
+        {error && <p className="text-sm text-red-400 mt-4">{error}</p>}
+
+        {submitted && (
+          <motion.p
+            className="text-green-400 mt-4 text-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {`You're now subscribed to Penumbra Penned. ✨ Our team has received your email.`}
+          </motion.p>
+        )}
       </div>
     </section>
   );
 }
+
+export default NewsletterSection;

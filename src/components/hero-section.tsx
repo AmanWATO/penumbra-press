@@ -1,8 +1,11 @@
+'use client'
+
+
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeProvider";
 import { motion } from "framer-motion";
 
-export function HeroSection() {
+ function HeroSection() {
   const theme = useTheme();
 
   const handleScroll = (id: string) => {
@@ -109,3 +112,6 @@ export function HeroSection() {
     </section>
   );
 }
+
+
+export default HeroSection

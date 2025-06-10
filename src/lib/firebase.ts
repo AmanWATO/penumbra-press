@@ -9,6 +9,18 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 
+import {
+  addDoc,
+  collection,
+  doc,
+  getFirestore,
+  setDoc,
+  Timestamp,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
+
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -22,10 +34,32 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 // Authentication functions
 interface UserCredentialResponse {
   user: import("firebase/auth").User | null;
+  error: string | null;
+}
+
+export interface WeeklyContestEntry {
+  themeTitle: string;
+  themePrompt: string;
+  userName: string;
+  userEmail: string;
+  userStoryTitle: string;
+  userStoryContent: string;
+  userStoryGenre: string;
+  userCity?: string; // Optional field
+  submittedAt: Timestamp;
+  weekNumber: "week-1" | "week-2" | "week-3";
+}
+
+interface AuthCallback {
+  (user: import("firebase/auth").User | null): void;
+}
+
+interface ResetPasswordResponse {
   error: string | null;
 }
 
@@ -70,10 +104,6 @@ export const logOut = async () => {
   }
 };
 
-interface ResetPasswordResponse {
-  error: string | null;
-}
-
 export const resetPassword = async (
   email: string
 ): Promise<ResetPasswordResponse> => {
@@ -86,14 +116,105 @@ export const resetPassword = async (
 };
 
 // Auth state observer hook
-interface AuthCallback {
-  (user: import("firebase/auth").User | null): void;
-}
-
 export const useAuth = (callback: AuthCallback): void => {
   onAuthStateChanged(auth, (user) => {
     callback(user);
   });
 };
 
-export { auth };
+export const weeklyContestDB = {
+  // Check how many submissions a user has made for a specific week
+  async getUserSubmissionCount(
+    weekNumber: "week-1" | "week-2" | "week-3",
+    userEmail: string
+  ): Promise<{ count: number; error?: any }> {
+    try {
+      const q = query(
+        collection(db, "weekly-contests", weekNumber, "entries"),
+        where("userEmail", "==", userEmail)
+      );
+      
+      const querySnapshot = await getDocs(q);
+      return { count: querySnapshot.size };
+    } catch (error) {
+      console.error("Error getting user submission count: ", error);
+      return { count: 0, error };
+    }
+  },
+
+  async submitEntry(
+    weekNumber: "week-1" | "week-2" | "week-3",
+    entryData: Omit<WeeklyContestEntry, "submittedAt" | "weekNumber">
+  ) {
+    try {
+      // Check submission limit first
+      const submissionCheck = await this.getUserSubmissionCount(
+        weekNumber,
+        entryData.userEmail
+      );
+
+      if (submissionCheck.error) {
+        return { 
+          success: false, 
+          error: "Failed to check submission count",
+          details: submissionCheck.error 
+        };
+      }
+
+      if (submissionCheck.count >= 3) {
+        return { 
+          success: false, 
+          error: "Maximum submission limit reached. You can only submit 3 stories per week.",
+          limitReached: true 
+        };
+      }
+
+      const entry: WeeklyContestEntry = {
+        ...entryData,
+        weekNumber,
+        submittedAt: Timestamp.now(),
+      };
+
+      const docRef = await addDoc(
+        collection(db, "weekly-contests", weekNumber, "entries"),
+        entry
+      );
+      
+      console.log("Entry submitted successfully with ID: ", docRef.id);
+      return { 
+        success: true, 
+        id: docRef.id,
+        submissionCount: submissionCheck.count + 1 
+      };
+    } catch (error) {
+      console.error("Error submitting entry: ", error);
+      return { success: false, error };
+    }
+  },
+
+  async initializeWeekStructure() {
+    try {
+      const weeks: ("week-1" | "week-2" | "week-3")[] = [
+        "week-1",
+        "week-2",
+        "week-3",
+      ];
+
+      for (const week of weeks) {
+        await setDoc(doc(db, "weekly-contests", week), {
+          createdAt: Timestamp.now(),
+          weekNumber: week,
+          description: `Weekly writing contest - ${week}`,
+          isActive: true,
+        });
+      }
+
+      return { success: true };
+    } catch (error) {
+      console.error("Error initializing week structure: ", error);
+      return { success: false, error };
+    }
+  },
+};
+
+export { auth, db };

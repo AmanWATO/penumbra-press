@@ -75,6 +75,10 @@ export function Header() {
       action: () => router.push("/penumbra-script-contest"),
     },
     {
+      label: "Penumbra Weekly",
+      action: () => router.push("/penumbra-weekly"),
+    },
+    {
       label: "Books",
       // Keeping the commented code as requested
       // action: () => handleScroll("books"),
@@ -93,10 +97,10 @@ export function Header() {
     //   label: "About",
     //   action: () => handleScroll("about-author"),
     // },
-    {
-      label: "Contact",
-      action: () => router.push("/contact-us"),
-    },
+    // {
+    //   label: "Contact",
+    //   action: () => router.push("/contact-us"),
+    // },
     user
       ? {
           label: "Dashboard",
