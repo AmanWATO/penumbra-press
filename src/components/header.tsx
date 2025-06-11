@@ -15,9 +15,6 @@ interface NavLinkProps {
   action: () => void;
   icon?: React.ReactNode;
 }
-// interface HandleScroll {
-//   (id: string): void;
-// }
 
 const NavLink: React.FC<NavLinkProps> = ({ label, action, icon }) => {
   const theme = useTheme();
@@ -61,55 +58,38 @@ export function Header() {
   const config = useConfig();
   const { user } = useAuthState();
 
-  // const handleScroll: HandleScroll = (id) => {
-  //   const section = document.getElementById(id);
-  //   if (section) {
-  //     section.scrollIntoView({ behavior: "smooth", block: "start" });
-  //     setMobileMenuOpen(false);
-  //   }
-  // };
+  // Helper function to handle navigation and close mobile menu
+  const handleNavigation = (path: string) => {
+    router.push(path);
+    setMobileMenuOpen(false);
+  };
 
   const navLinks = [
     {
       label: "The Penumbra Script",
-      action: () => router.push("/penumbra-script-contest"),
+      action: () => handleNavigation("/penumbra-script-contest"),
     },
     {
       label: "Penumbra Weekly",
-      action: () => router.push("/penumbra-weekly"),
+      action: () => handleNavigation("/penumbra-weekly"),
     },
     {
       label: "Books",
-      // Keeping the commented code as requested
-      // action: () => handleScroll("books"),
-      action: () => router.push("/my-books"),
+      action: () => handleNavigation("/my-books"),
     },
-    // {
-    //   label: "Instagram",
-    //   action: () => handleScroll("instagram-feed"),
-    // },
     {
       label: "Quotes",
-      action: () => router.push("/penumbra-quotes"),
+      action: () => handleNavigation("/penumbra-quotes"),
     },
-
-    // {
-    //   label: "About",
-    //   action: () => handleScroll("about-author"),
-    // },
-    // {
-    //   label: "Contact",
-    //   action: () => router.push("/contact-us"),
-    // },
     user
       ? {
           label: "Dashboard",
-          action: () => router.push("/penumbra-dashboard"),
+          action: () => handleNavigation("/penumbra-dashboard"),
           icon: <UserRoundPen className="h-4 w-4" />,
         }
       : {
           label: "Login",
-          action: () => router.push("/login-to-penumbra"),
+          action: () => handleNavigation("/login-to-penumbra"),
           icon: <LogIn className="h-4 w-4" />,
         },
   ];
@@ -125,7 +105,7 @@ export function Header() {
     >
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div
-          onClick={() => router.push("/")}
+          onClick={() => handleNavigation("/")}
           className="flex items-center space-x-3 cursor-pointer"
         >
           <Image

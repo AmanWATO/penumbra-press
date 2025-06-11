@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { weeklyThemes } from "@/lib/weeklyChallenge";
 
 export const getCurrentWeek = () => {

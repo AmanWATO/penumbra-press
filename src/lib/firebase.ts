@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -133,12 +132,64 @@ export const weeklyContestDB = {
         collection(db, "weekly-contests", weekNumber, "entries"),
         where("userEmail", "==", userEmail)
       );
-      
+
       const querySnapshot = await getDocs(q);
       return { count: querySnapshot.size };
     } catch (error) {
       console.error("Error getting user submission count: ", error);
       return { count: 0, error };
+    }
+  },
+
+  // Get total entries across all weeks
+  async getTotalEntries(): Promise<{ totalEntries: number; error?: any }> {
+    try {
+      const weeks: ("week-1" | "week-2" | "week-3")[] = [
+        "week-1",
+        "week-2",
+        "week-3",
+      ];
+      let totalEntries = 0;
+
+      for (const week of weeks) {
+        const querySnapshot = await getDocs(
+          collection(db, "weekly-contests", week, "entries")
+        );
+        totalEntries += querySnapshot.size;
+      }
+
+      return { totalEntries };
+    } catch (error) {
+      console.error("Error getting total entries: ", error);
+      return { totalEntries: 0, error };
+    }
+  },
+
+  async getTotalAuthors(): Promise<{ totalAuthors: number; error?: any }> {
+    try {
+      const weeks: ("week-1" | "week-2" | "week-3")[] = [
+        "week-1",
+        "week-2",
+        "week-3",
+      ];
+
+      const uniqueEmails = new Set<string>();
+
+      for (const week of weeks) {
+        const querySnapshot = await getDocs(
+          collection(db, "weekly-contests", week, "entries")
+        );
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data() as WeeklyContestEntry;
+          uniqueEmails.add(data.userEmail);
+        });
+      }
+
+      return { totalAuthors: uniqueEmails.size };
+    } catch (error) {
+      console.error("Error getting total authors: ", error);
+      return { totalAuthors: 0, error };
     }
   },
 
@@ -154,18 +205,19 @@ export const weeklyContestDB = {
       );
 
       if (submissionCheck.error) {
-        return { 
-          success: false, 
+        return {
+          success: false,
           error: "Failed to check submission count",
-          details: submissionCheck.error 
+          details: submissionCheck.error,
         };
       }
 
       if (submissionCheck.count >= 3) {
-        return { 
-          success: false, 
-          error: "Maximum submission limit reached. You can only submit 3 stories per week.",
-          limitReached: true 
+        return {
+          success: false,
+          error:
+            "Maximum submission limit reached. You can only submit 3 stories per week.",
+          limitReached: true,
         };
       }
 
@@ -179,12 +231,12 @@ export const weeklyContestDB = {
         collection(db, "weekly-contests", weekNumber, "entries"),
         entry
       );
-      
+
       console.log("Entry submitted successfully with ID: ", docRef.id);
-      return { 
-        success: true, 
+      return {
+        success: true,
         id: docRef.id,
-        submissionCount: submissionCheck.count + 1 
+        submissionCount: submissionCheck.count + 1,
       };
     } catch (error) {
       console.error("Error submitting entry: ", error);

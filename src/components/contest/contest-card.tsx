@@ -20,7 +20,7 @@ const ContestCard = ({
       backgroundColor: colors.parchment,
       borderColor: colors.nightBlue,
     }}
-    className={`p-6 rounded-lg border ${className} shadow-lg hover:shadow-xl transition-shadow duration-300`}
+    className={`p-6 max-md:p-4 rounded-lg border ${className} shadow-lg hover:shadow-xl transition-shadow duration-300`}
   >
     {children}
   </motion.div>

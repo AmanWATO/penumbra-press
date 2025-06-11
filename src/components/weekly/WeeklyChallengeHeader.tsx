@@ -24,15 +24,15 @@ const WeeklyChallengeHeader: React.FC<WeeklyChallengeHeaderProps> = ({
       }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-4 py-4 sm:py-6">
-        <div className="flex flex-row items-center justify-between gap-4">
+        <div className="flex max-md:flex-col max-md:items-start max-md:w-full flex-row items-center justify-between gap-4">
           <motion.div
-            className="flex items-center space-x-3"
+            className="flex items-center space-x-3 max-md:space-x-2"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <motion.div
-              className="w-10 h-10 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-400 to-orange-400 rounded-lg flex items-center justify-center shadow-lg"
+              className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-400 to-orange-400 rounded-lg flex items-center justify-center shadow-lg"
               whileHover={{ scale: 1.05, rotate: 5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
@@ -61,7 +61,7 @@ const WeeklyChallengeHeader: React.FC<WeeklyChallengeHeaderProps> = ({
           </motion.div>
 
           <motion.div
-            className="text-right"
+            className="text-right max-md:text-right max-md:self-end"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}

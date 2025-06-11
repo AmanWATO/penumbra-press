@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Quote } from "./apiTypes";
 
 const apiUrl = "https://cms-dev.penumbrapenned.com/api";

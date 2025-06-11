@@ -1,7 +1,11 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  AnimatePresence,
+} from "framer-motion";
 import theme from "@/styles/theme";
 import { Quote } from "@/api/apiTypes";
 import { fetchQuotes } from "@/api/apiService";
@@ -62,7 +66,7 @@ function QuotesPage() {
         const masonry = createMasonryLayout(quotes);
         setLayout(masonry);
       } catch (error) {
-        console.error('Failed to fetch quotes:', error);
+        console.error("Failed to fetch quotes:", error);
         setIsLoading(false);
       }
     };
@@ -72,16 +76,19 @@ function QuotesPage() {
     }
   }, [columns, isLoading]);
 
-  const createMasonryLayout = useCallback((quotes: Quote[]): Quote[][] => {
-    const result = Array.from({ length: columns }, () => [] as Quote[]);
+  const createMasonryLayout = useCallback(
+    (quotes: Quote[]): Quote[][] => {
+      const result = Array.from({ length: columns }, () => [] as Quote[]);
 
-    quotes.forEach((quote, index) => {
-      const columnIndex = index % columns;
-      result[columnIndex].push(quote);
-    });
+      quotes.forEach((quote, index) => {
+        const columnIndex = index % columns;
+        result[columnIndex].push(quote);
+      });
 
-    return result;
-  }, [columns]);
+      return result;
+    },
+    [columns]
+  );
 
   const quotesTheme = theme.sections.quotes;
 
@@ -96,12 +103,19 @@ function QuotesPage() {
   }, []);
 
   // Memoized background style for performance
-  const backgroundStyle = useMemo(() => ({
-    background: `
-      radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, ${quotesTheme.decorativeElements}40, transparent 50%),
-      radial-gradient(circle at ${100 - mousePosition.x}% ${100 - mousePosition.y}%, ${quotesTheme.decorativeElements}20, transparent 60%)
+  const backgroundStyle = useMemo(
+    () => ({
+      background: `
+      radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, ${
+        quotesTheme.decorativeElements
+      }40, transparent 50%),
+      radial-gradient(circle at ${100 - mousePosition.x}% ${
+        100 - mousePosition.y
+      }%, ${quotesTheme.decorativeElements}20, transparent 60%)
     `,
-  }), [mousePosition.x, mousePosition.y, quotesTheme.decorativeElements]);
+    }),
+    [mousePosition.x, mousePosition.y, quotesTheme.decorativeElements]
+  );
 
   // Animation variants
   const loadingVariants = {
@@ -374,7 +388,8 @@ function QuotesPage() {
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 0.6, x: 0 }}
                             transition={{
-                              delay: 0.4 + (columnIndex * 3 + quoteIndex) * 0.05,
+                              delay:
+                                0.4 + (columnIndex * 3 + quoteIndex) * 0.05,
                             }}
                           >
                             {quote?.genre}
@@ -386,7 +401,8 @@ function QuotesPage() {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{
-                              delay: 0.5 + (columnIndex * 3 + quoteIndex) * 0.05,
+                              delay:
+                                0.5 + (columnIndex * 3 + quoteIndex) * 0.05,
                             }}
                           >
                             {`"${quote.title}"`}
@@ -399,7 +415,8 @@ function QuotesPage() {
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: 1 }}
                             transition={{
-                              delay: 0.6 + (columnIndex * 3 + quoteIndex) * 0.05,
+                              delay:
+                                0.6 + (columnIndex * 3 + quoteIndex) * 0.05,
                             }}
                           >
                             <div
@@ -428,7 +445,8 @@ function QuotesPage() {
                             initial={{ opacity: 0, y: 5 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{
-                              delay: 0.7 + (columnIndex * 3 + quoteIndex) * 0.05,
+                              delay:
+                                0.7 + (columnIndex * 3 + quoteIndex) * 0.05,
                             }}
                           >
                             {quote.explanation}
