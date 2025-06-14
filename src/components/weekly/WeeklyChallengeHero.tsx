@@ -280,7 +280,7 @@ const WeeklyChallengeHero: React.FC = () => {
     weeklyPerks[(getWeekNumber() || 1) as 1 | 2 | 3] || [];
 
   return (
-    <section className="py-12 sm:py-16 relative overflow-hidden">
+    <section className="py-10 sm:py-16 relative overflow-hidden">
       {/* Background gradient */}
       <div
         className="absolute inset-0 opacity-30"

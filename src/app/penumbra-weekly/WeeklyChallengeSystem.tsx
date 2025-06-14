@@ -9,7 +9,7 @@ import { syncFirebaseToStrapi } from "@/utils/Strapi-Migration";
 
 export default function WeeklyChallengeSystem() {
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
-  // const [syncStatus, setSyncStatus] = useState<string>("Syncing...");
+  const [syncStatus, setSyncStatus] = useState<string>("Syncing...");
 
   // useEffect(() => {
   //   const performSync = async () => {

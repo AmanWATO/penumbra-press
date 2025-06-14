@@ -36,7 +36,7 @@ export default function GeoMessagePromo() {
           href="/penumbra-script-contest"
           className="ml-2 inline-block bg-[#5D4037] text-[#f0ebe0] px-4 py-2 rounded-full text-sm font-semibold hover:bg-[#2D2A26] transition-all duration-300"
         >
-          Submit Before July 1st →
+          Submit Starts After July 1st →
         </Link>
       </div>
     </motion.div>
