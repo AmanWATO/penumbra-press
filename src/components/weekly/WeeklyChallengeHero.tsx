@@ -150,15 +150,6 @@ const WeeklyChallengeHero: React.FC = () => {
             {`This week's challenge offers three unique themes. Select the one that calls to your creative spirit and craft your 100-word masterpiece.`}
           </motion.p>
 
-          <motion.p
-            className="text-base sm:text-lg font-medium text-yellow-600 mb-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.75 }}
-          >
-           ⏳ Week 1 extended! Submissions close tonight (June 17)
-          </motion.p>
-
           {/* Features */}
           <motion.div
             className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8 sm:mb-12"

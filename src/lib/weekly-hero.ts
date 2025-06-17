@@ -52,7 +52,7 @@ export const weeklyPerks: Record<1 | 2 | 3, FeatureItem[]> = {
     },
     {
       icon: CheckCircle,
-      text: "Unlock the Penumbra eBook: Tales, tips, and voices to inspire",
+      text: "Unlock the Penumbra Prism eBook",
       delay: 0.2,
     },
   ],

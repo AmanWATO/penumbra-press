@@ -52,14 +52,7 @@ const WeeklyChallengeHub: React.FC<WeeklyChallengeHubProps> = ({
                 onSelect={onSelectTheme}
               />
             ))}
-            {week1.themes.map((theme: Theme, index: number) => (
-              <ThemeCard
-                key={theme.id}
-                theme={theme}
-                index={index}
-                onSelect={onSelectTheme}
-              />
-            ))}
+           
           </motion.div>
         </div>
       </section>
