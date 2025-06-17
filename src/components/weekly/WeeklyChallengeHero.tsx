@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import {
-  Clock,
-  Users,
-  Star,
-  Gift,
-  CheckCircle,
-  PenTool,
-  BookOpen,
-  LucideIcon,
-} from "lucide-react";
+import { PenTool, BookOpen, LucideIcon } from "lucide-react";
 import { dashboardTheme } from "@/styles/theme";
 import { getWeekNumber } from "@/utils/Helper";
 import { weeklyContestDB } from "@/lib/firebase";
+import { features, weeklyPerks } from "@/lib/weekly-hero";
+import StatCard from "./StatCard";
+import FeatureCard from "./FeatureCard";
 
 interface StatsData {
   totalWritingSubmitted: number;
@@ -21,146 +15,12 @@ interface StatsData {
   error: string | null;
 }
 
-interface FeatureItem {
-  icon: LucideIcon;
-  text: string;
-  delay: number;
-}
-
 interface StatConfig {
   icon: LucideIcon;
   value: number;
   label: string;
   loading: boolean;
 }
-
-const FeatureCard = ({
-  item,
-  index,
-  baseDelay = 0,
-}: {
-  item: FeatureItem;
-  index: number;
-  baseDelay?: number;
-}) => (
-  <motion.div
-    key={index}
-    className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-full backdrop-blur-sm border"
-    style={{
-      backgroundColor: dashboardTheme.colors.glassOverlay,
-      borderColor: dashboardTheme.colors.borderLight,
-      boxShadow: dashboardTheme.colors.cardShadow,
-    }}
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{
-      duration: 0.6,
-      delay: baseDelay + item.delay,
-      type: "spring",
-      stiffness: 200,
-    }}
-    whileHover={{
-      scale: 1.05,
-      boxShadow: dashboardTheme.colors.cardHover,
-    }}
-  >
-    <item.icon
-      className="w-4 h-4 sm:w-5 sm:h-5"
-      style={{ color: dashboardTheme.colors.accent }}
-    />
-    <span
-      className="text-xs sm:text-sm font-medium"
-      style={{
-        color: dashboardTheme.colors.textSecondary,
-        fontFamily: dashboardTheme.fonts.body,
-      }}
-    >
-      {item.text}
-    </span>
-  </motion.div>
-);
-
-const AnimatedCounter = ({
-  value,
-  loading,
-}: {
-  value: number;
-  loading: boolean;
-}) => {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!loading && value > 0) {
-      const duration = 2000;
-      const steps = 60;
-      const increment = value / steps;
-      let current = 0;
-
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= value) {
-          setCount(value);
-          clearInterval(timer);
-        } else {
-          setCount(Math.floor(current));
-        }
-      }, duration / steps);
-
-      return () => clearInterval(timer);
-    }
-  }, [value, loading]);
-
-  if (loading) {
-    return (
-      <div className="w-8 h-8 mx-auto">
-        <div
-          className="animate-spin rounded-full h-full w-full border-2 border-t-transparent"
-          style={{
-            borderColor: dashboardTheme.colors.accent,
-            borderTopColor: "transparent",
-          }}
-        />
-      </div>
-    );
-  }
-
-  return <span>{count.toLocaleString()}</span>;
-};
-
-const StatCard = ({ config, delay }: { config: StatConfig; delay: number }) => (
-  <motion.div
-    className="text-center"
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.6, delay }}
-    whileHover={{ scale: 1.05 }}
-  >
-    <div className="flex items-center justify-center gap-2 mb-2">
-      <config.icon
-        className="w-4 h-4 sm:w-5 sm:h-5"
-        style={{ color: dashboardTheme.colors.accent }}
-      />
-      <span
-        className="text-2xl sm:text-3xl font-bold"
-        style={{
-          color: dashboardTheme.colors.textPrimary,
-          fontFamily: dashboardTheme.fonts.heading,
-        }}
-      >
-        <AnimatedCounter value={config.value} loading={config.loading} />
-      </span>
-    </div>
-    <p
-      className="text-xs sm:text-sm font-medium opacity-75"
-      style={{
-        color: dashboardTheme.colors.textSecondary,
-        fontFamily: dashboardTheme.fonts.body,
-      }}
-    >
-      {config.label}
-    </p>
-  </motion.div>
-);
 
 const WeeklyChallengeHero: React.FC = () => {
   const [stats, setStats] = useState<StatsData>({
@@ -202,64 +62,6 @@ const WeeklyChallengeHero: React.FC = () => {
 
     fetchStats();
   }, []);
-
-
-  const features: FeatureItem[] = [
-    {
-      icon: Clock,
-      text: "100 words maximum",
-      delay: 0.1,
-    },
-    {
-      icon: Users,
-      text: "Open to Indian writers, 16+ only",
-      delay: 0.2,
-    },
-    {
-      icon: Star,
-      text: "Winner gets featured",
-      delay: 0.3,
-    },
-  ];
-
-  const weeklyPerks: Record<1 | 2 | 3, FeatureItem[]> = {
-    1: [
-      {
-        icon: Gift,
-        text: "Free entry to main contest (1 entry only)",
-        delay: 0.1,
-      },
-      {
-        icon: CheckCircle,
-        text: "10% Discount on Submission for Main Contest",
-        delay: 0.2,
-      },
-    ],
-    2: [
-      {
-        icon: Gift,
-        text: "Early access to next Main Contest themes",
-        delay: 0.1,
-      },
-      {
-        icon: CheckCircle,
-        text: "Chance to be featured as 'Writer to Watch'",
-        delay: 0.2,
-      },
-    ],
-    3: [
-      {
-        icon: Gift,
-        text: "3 free entries to main contest",
-        delay: 0.1,
-      },
-      {
-        icon: CheckCircle,
-        text: "Guaranteed anthology spot (if entry not already top 30)",
-        delay: 0.2,
-      },
-    ],
-  };
 
   const statConfigs: StatConfig[] = [
     {
@@ -347,6 +149,15 @@ const WeeklyChallengeHero: React.FC = () => {
           >
             {`This week's challenge offers three unique themes. Select the one that calls to your creative spirit and craft your 100-word masterpiece.`}
           </motion.p>
+
+          <motion.p
+  className="text-base sm:text-lg font-medium text-yellow-600 mb-6"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.6, delay: 0.75 }}
+>
+  🏆 Week 1 results soon to be out — stay tuned!
+</motion.p>
 
           {/* Features */}
           <motion.div

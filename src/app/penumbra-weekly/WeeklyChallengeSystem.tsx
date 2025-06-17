@@ -1,14 +1,17 @@
-
 "use client";
 
 import WeeklyChallengeForm from "@/components/weekly/WeeklyChallengeForm";
 import WeeklyChallengeHub from "@/components/weekly/WeeklyChallengeHub";
 import { useState, useEffect } from "react";
-import { Theme } from "@/types/weekly-challenge";
+import { Theme, WeekData } from "@/types/weekly-challenge";
 import { syncFirebaseToStrapi } from "@/utils/Strapi-Migration";
+import { getCurrentWeekKey } from "@/utils/Helper";
+import { weeklyThemes } from "@/lib/weeklyChallenge";
 
 export default function WeeklyChallengeSystem() {
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
+  const [currentWeek, setCurrentWeek] = useState<WeekData | null>(null);
+
   const [syncStatus, setSyncStatus] = useState<string>("Syncing...");
 
   // useEffect(() => {
@@ -31,6 +34,13 @@ export default function WeeklyChallengeSystem() {
   //   performSync();
   // }, []);
 
+  useEffect(() => {
+    const weekKey = getCurrentWeekKey();
+    if (weekKey && weekKey in weeklyThemes) {
+      setCurrentWeek(weeklyThemes[weekKey as keyof typeof weeklyThemes]);
+    }
+  }, []);
+
   if (selectedTheme) {
     return (
       <WeeklyChallengeForm
@@ -44,7 +54,7 @@ export default function WeeklyChallengeSystem() {
     <div>
       <WeeklyChallengeHub
         onSelectTheme={setSelectedTheme}
-        selectedWeek={null}
+        selectedWeek={currentWeek}
       />
     </div>
   );
