@@ -8,12 +8,15 @@ import WeeklyChallengeHero from "./WeeklyChallengeHero";
 import ThemeCard from "./ThemeCard";
 import ContestTimeline from "./ContestTimeline";
 import { getCurrentWeek } from "@/utils/Helper";
+import { weeklyThemes } from "@/lib/weeklyChallenge";
 
-const WeeklyChallengeHub: React.FC<WeeklyChallengeHubProps> = ({ 
-  onSelectTheme, 
-  selectedWeek 
+const WeeklyChallengeHub: React.FC<WeeklyChallengeHubProps> = ({
+  onSelectTheme,
+  selectedWeek,
 }) => {
   const currentWeek = selectedWeek || getCurrentWeek();
+
+  const week1 = weeklyThemes["June 10-16, 2025"];
 
   return (
     <motion.div
@@ -42,6 +45,14 @@ const WeeklyChallengeHub: React.FC<WeeklyChallengeHubProps> = ({
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             {currentWeek.themes.map((theme: Theme, index: number) => (
+              <ThemeCard
+                key={theme.id}
+                theme={theme}
+                index={index}
+                onSelect={onSelectTheme}
+              />
+            ))}
+            {week1.themes.map((theme: Theme, index: number) => (
               <ThemeCard
                 key={theme.id}
                 theme={theme}

@@ -16,7 +16,7 @@ interface WeeklyChallengeFormProps {
 const WeeklyChallengeForm: React.FC<WeeklyChallengeFormProps> = ({
   selectedTheme,
   onBack,
-  currentWeek = "week-1",
+  currentWeek = "week-2",
 }) => {
   const [formData, setFormData] = useState<Partial<FormData>>({
     name: "",
