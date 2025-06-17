@@ -13,11 +13,30 @@ interface WeeklyChallengeFormProps {
   currentWeek?: "week-1" | "week-2" | "week-3";
 }
 
+const themeToWeekMapping: Record<string, "week-1" | "week-2" | "week-3"> = {
+  // Week 1 themes
+  "light-that-waited": "week-1",
+  "reflections-uninvited": "week-1",
+  "the-promise-buried": "week-1",
+
+  // Week 2 themes
+  "words-beneath": "week-2",
+  "the-lantern-listens": "week-2",
+  "the-unwritten-hour": "week-2",
+
+  // Week 3 themes
+  "ink-and-ember": "week-3",
+  "door-of-breath": "week-3",
+  "shadows-unborn": "week-3",
+};
+
 const WeeklyChallengeForm: React.FC<WeeklyChallengeFormProps> = ({
   selectedTheme,
   onBack,
   currentWeek = "week-2",
 }) => {
+  const targetWeek = themeToWeekMapping[selectedTheme.id] || currentWeek;
+
   const [formData, setFormData] = useState<Partial<FormData>>({
     name: "",
     email: "",
@@ -44,7 +63,7 @@ const WeeklyChallengeForm: React.FC<WeeklyChallengeFormProps> = ({
         setCheckingLimit(true);
         try {
           const result = await weeklyContestDB.getUserSubmissionCount(
-            currentWeek,
+            targetWeek,
             formData.email
           );
 
@@ -54,7 +73,9 @@ const WeeklyChallengeForm: React.FC<WeeklyChallengeFormProps> = ({
 
             if (result.count >= 3) {
               setSubmitError(
-                "You have reached the maximum limit of 3 submissions for this week."
+                `You have reached the maximum limit of 3 submissions for ${targetWeek
+                  .replace("-", " ")
+                  .toUpperCase()}.`
               );
             } else {
               setSubmitError("");
@@ -73,7 +94,7 @@ const WeeklyChallengeForm: React.FC<WeeklyChallengeFormProps> = ({
 
     const timeoutId = setTimeout(checkSubmissionCount, 500); // Debounce
     return () => clearTimeout(timeoutId);
-  }, [formData.email, currentWeek]);
+  }, [formData.email, targetWeek]); // Use targetWeek instead of currentWeek
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -134,8 +155,8 @@ const WeeklyChallengeForm: React.FC<WeeklyChallengeFormProps> = ({
           userCity: formData.city || undefined, // Optional field
         };
 
-      // Submit to Firebase
-      const result = await weeklyContestDB.submitEntry(currentWeek, entryData);
+      // Submit to Firebase using the target week
+      const result = await weeklyContestDB.submitEntry(targetWeek, entryData);
 
       if (result.success) {
         setIsSubmitted(true);
@@ -219,7 +240,8 @@ const WeeklyChallengeForm: React.FC<WeeklyChallengeFormProps> = ({
                   fontFamily: dashboardTheme.fonts.body,
                 }}
               >
-                Submit your 100-word story
+                Submit your 100-word story for{" "}
+                {targetWeek.replace("-", " ").toUpperCase()}
               </p>
             </div>
           </div>
@@ -256,7 +278,7 @@ const WeeklyChallengeForm: React.FC<WeeklyChallengeFormProps> = ({
                     ? "Submission Limit Reached"
                     : `You have ${submissionCount} submission${
                         submissionCount === 1 ? "" : "s"
-                      } this week`}
+                      } for ${targetWeek.replace("-", " ").toUpperCase()}`}
                 </p>
                 <p
                   className={`text-sm ${
@@ -264,10 +286,12 @@ const WeeklyChallengeForm: React.FC<WeeklyChallengeFormProps> = ({
                   }`}
                 >
                   {isLimitReached
-                    ? "You cannot submit more stories this week. Maximum 3 per week."
+                    ? `You cannot submit more stories for ${targetWeek
+                        .replace("-", " ")
+                        .toUpperCase()}. Maximum 3 per week.`
                     : `You can submit ${3 - submissionCount} more stor${
                         3 - submissionCount === 1 ? "y" : "ies"
-                      } this week.`}
+                      } for ${targetWeek.replace("-", " ").toUpperCase()}.`}
                 </p>
               </div>
             </motion.div>
@@ -445,7 +469,7 @@ const WeeklyChallengeForm: React.FC<WeeklyChallengeFormProps> = ({
                   ? dashboardTheme.colors.textSecondary
                   : dashboardTheme.colors.accent,
                 color: "white",
-                fontFamily: dashboardTheme.fonts.accent,
+                fontFamily: dashboardTheme.colors.accent,
                 opacity: isSubmitting || isLimitReached ? 0.7 : 1,
               }}
               whileHover={
