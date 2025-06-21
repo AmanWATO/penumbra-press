@@ -78,6 +78,10 @@ export function Header() {
       action: () => handleNavigation("/my-books"),
     },
     {
+      label: "Insights",
+      action: () => handleNavigation("/insights"),
+    },
+    {
       label: "Quotes",
       action: () => handleNavigation("/penumbra-quotes"),
     },

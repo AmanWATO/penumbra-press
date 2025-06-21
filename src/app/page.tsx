@@ -71,9 +71,9 @@ export default function Home() {
       <div className="min-h-screen flex flex-col">
         <HeroSection />
         <BooksSection />
-        <BlogSection />
-        <QuoteSection />
         <ContestSection />
+        <QuoteSection />
+        <BlogSection />
         <AboutSection />
         <NewsletterSection />
         <GeoMessage />

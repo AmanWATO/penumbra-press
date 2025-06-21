@@ -2,14 +2,15 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { colors, fonts } from "@/styles/theme";
+import { colors } from "@/styles/theme";
 import ColorThief from "colorthief";
-import { FaAmazon } from "react-icons/fa";
+import { FaAmazon, FaBookOpen } from "react-icons/fa";
 import { SiFlipkart } from "react-icons/si";
+import { IoIosArrowForward } from "react-icons/io";
 import { useTheme } from "@/context/ThemeProvider";
 import { booksData } from "@/lib/books";
 
-// Animation variants
+// Enhanced animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -24,8 +25,8 @@ const containerVariants = {
 const bookCardVariants = {
   hidden: {
     opacity: 0,
-    y: 30,
-    scale: 0.9,
+    y: 20,
+    scale: 0.95,
   },
   visible: {
     opacity: 1,
@@ -34,34 +35,31 @@ const bookCardVariants = {
     transition: {
       type: "spring",
       stiffness: 120,
-      damping: 20,
-      duration: 0.6,
+      damping: 15,
+      duration: 0.7,
     },
   },
   hover: {
     y: -8,
     scale: 1.02,
+    boxShadow:
+      "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
     transition: {
       type: "spring",
-      stiffness: 300,
-      damping: 25,
+      stiffness: 400,
+      damping: 20,
     },
   },
 };
 
 const genreButtonVariants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-    scale: 0.9,
-  },
+  hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
       type: "spring",
-      stiffness: 200,
+      stiffness: 300,
       damping: 20,
     },
   },
@@ -70,29 +68,21 @@ const genreButtonVariants = {
     y: -2,
     transition: {
       type: "spring",
-      stiffness: 400,
-      damping: 15,
+      stiffness: 500,
     },
   },
-  tap: {
-    scale: 0.95,
-  },
+  tap: { scale: 0.98 },
 };
 
 const titleVariants = {
-  hidden: {
-    opacity: 0,
-    y: -30,
-    scale: 0.95,
-  },
+  hidden: { opacity: 0, y: -20 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
       type: "spring",
-      stiffness: 150,
-      damping: 25,
+      stiffness: 200,
+      damping: 20,
       duration: 0.8,
     },
   },
@@ -103,8 +93,20 @@ function AuthorPage() {
   const [bookColors, setBookColors] = useState<{ [key: number]: string }>({});
   const [isLoading, setIsLoading] = useState(true);
   const [colorsLoaded, setColorsLoaded] = useState(false);
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
 
   const theme = useTheme();
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMouseX(e.clientX / window.innerWidth);
+      setMouseY(e.clientY / window.innerHeight);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   useEffect(() => {
     const extractColors = async () => {
@@ -128,7 +130,7 @@ function AuthorPage() {
               } catch (error) {
                 resolve({
                   id: book.id,
-                  color: colors.mediumSepia,
+                  color: colors.gray700,
                 });
               }
               return;
@@ -144,7 +146,7 @@ function AuthorPage() {
               } catch (error) {
                 resolve({
                   id: book.id,
-                  color: colors.mediumSepia,
+                  color: colors.gray700,
                 });
               }
             };
@@ -152,7 +154,7 @@ function AuthorPage() {
             img.onerror = () => {
               resolve({
                 id: book.id,
-                color: colors.mediumSepia,
+                color: colors.gray700,
               });
             };
           });
@@ -170,13 +172,19 @@ function AuthorPage() {
         setBookColors(colorMap);
         setColorsLoaded(true);
       } catch (error) {
+        console.error("Error in color extraction:", error);
         applyFallbackColors();
       }
     };
 
     const applyFallbackColors = () => {
       const fallbackColors = booksData.reduce((acc, book) => {
-        acc[book.id] = colors.mediumSepia;
+        acc[book.id] =
+          book.genre === "Poetry"
+            ? colors.softBeige
+            : book.genre === "Collection"
+            ? colors.deepTeal
+            : colors.gray700;
         return acc;
       }, {} as { [key: number]: string });
 
@@ -190,19 +198,25 @@ function AuthorPage() {
       if (!colorsLoaded) {
         applyFallbackColors();
       }
-    }, 5000);
+    }, 3000);
 
-    return () => clearTimeout(timeoutId);
+    const minLoadingTime = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearTimeout(minLoadingTime);
+    };
   }, [colorsLoaded]);
 
-  useEffect(() => {
-    if (colorsLoaded) {
-      const hideLoader = setTimeout(() => {
-        setIsLoading(false);
-      }, 800);
-      return () => clearTimeout(hideLoader);
-    }
-  }, [colorsLoaded]);
+  const genreColors = {
+    Poetry: colors.softBeige,
+    Prose: colors.deepSepia,
+    Collection: colors.deepTeal,
+    Anthology: colors.softEggshell,
+    Essay: colors.gray700,
+  };
 
   const filteredBooks =
     selectedGenre === "All"
@@ -215,30 +229,44 @@ function AuthorPage() {
     animate: {
       rotate: 360,
       transition: {
-        duration: 1,
+        duration: 1.2,
         repeat: Infinity,
         ease: "linear",
       },
     },
   };
 
+  const gradientStyle = {
+    background: `
+      radial-gradient(circle at ${mouseX * 100}% ${mouseY * 100}%, 
+        ${colors.cream}20 0%, 
+        ${colors.parchment} 20%, 
+        ${colors.softBeige} 40%, 
+        ${colors.lightSepia} 70%, 
+        ${colors.mediumSepia} 90%, 
+        ${colors.darkSepia} 100%
+      )
+    `,
+  };
+
   return (
     <motion.div
-      className="min-h-screen py-8 md:py-16 relative overflow-hidden"
-      style={{
-        background: `linear-gradient(135deg, ${colors.cream} 0%, ${colors.softEggshell} 25%, ${colors.parchment} 50%, ${colors.lightSepia} 75%, ${colors.mediumSepia} 100%)`,
+      className="min-h-screen py-12 max-md:py-6 pb-16 relative overflow-hidden"
+      style={gradientStyle}
+      animate={{
+        background: `
+          radial-gradient(circle at ${mouseX * 100}% ${mouseY * 100}%, 
+            ${colors.cream}20 0%, 
+            ${colors.parchment} 20%, 
+            ${colors.softBeige} 40%, 
+            ${colors.lightSepia} 70%, 
+            ${colors.mediumSepia} 90%, 
+            ${colors.darkSepia} 100%
+          )
+        `,
       }}
+      transition={{ duration: 0.4 }}
     >
-      {/* Background decorative elements */}
-      <div
-        className="absolute top-20 left-4 md:left-10 w-32 h-32 md:w-64 md:h-64 rounded-full opacity-6 blur-3xl"
-        style={{ backgroundColor: colors.deepTeal }}
-      />
-      <div
-        className="absolute bottom-20 right-4 md:right-10 w-40 h-40 md:w-96 md:h-96 rounded-full opacity-6 blur-3xl"
-        style={{ backgroundColor: colors.purple }}
-      />
-
       <AnimatePresence mode="wait">
         {isLoading ? (
           <motion.div
@@ -246,35 +274,32 @@ function AuthorPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="min-h-screen flex flex-col justify-center items-center px-4"
+            className="text-center p-4 min-h-screen flex flex-col justify-center items-center"
           >
             <motion.div
               variants={loadingVariants}
               animate="animate"
-              className="w-12 h-12 md:w-16 md:h-16 border-4 border-t-transparent rounded-full mb-6"
+              className="w-14 h-14 border-4 border-t-transparent rounded-full mx-auto mb-6"
               style={{ borderColor: colors.inkBrown }}
             />
             <motion.h3
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               style={{
-                fontFamily: fonts.heading,
+                fontFamily: theme.fonts.button,
                 color: colors.inkBrown,
               }}
-              className="text-lg md:text-xl font-semibold mb-2 text-center"
+              className="text-xl font-semibold mb-2"
             >
-              Curating Literary Collection
+              Curating Collection
             </motion.h3>
             <motion.p
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              animate={{ opacity: 0.7 }}
               transition={{ delay: 0.4 }}
-              style={{ 
-                color: colors.deepSepia,
-                fontFamily: fonts.body,
-              }}
-              className="text-sm text-center"
+              style={{ color: colors.deepSepia }}
+              className="text-sm"
             >
               Preparing your reading journey...
             </motion.p>
@@ -285,22 +310,21 @@ function AuthorPage() {
             initial="hidden"
             animate="visible"
             variants={containerVariants}
-            className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
+            className="container mx-auto px-4 max-sm:px-3 relative z-10"
           >
             <motion.h1
               variants={titleVariants}
-              className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 md:mb-12 text-center"
+              className="text-4xl max-sm:text-3xl font-bold mb-10 max-sm:mb-8 text-center"
               style={{
-                fontFamily: fonts.heading,
-                color: colors.penumbraBlack,
+                fontFamily: theme.fonts.heading,
+                color: theme.text.primary,
               }}
             >
               Published Works
             </motion.h1>
 
-            {/* Genre Filter Buttons */}
             <motion.div
-              className="flex justify-center mb-8 md:mb-12 gap-2 md:gap-4 flex-wrap px-2"
+              className="flex justify-center mb-12 max-sm:mb-8 gap-3 max-sm:gap-2 flex-wrap max-sm:px-2"
               variants={containerVariants}
             >
               {["All", ...availableGenres].map((genre) => (
@@ -310,26 +334,23 @@ function AuthorPage() {
                   whileHover="hover"
                   whileTap="tap"
                   onClick={() => setSelectedGenre(genre)}
-                  className={`px-3 md:px-4 py-2 rounded-lg text-sm md:text-base font-medium transition-all duration-300 mb-2 ${
+                  className={`px-5 max-sm:px-3 py-2.5 max-sm:py-2 rounded-lg transition-all cursor-pointer text-sm max-sm:text-xs font-medium ${
                     selectedGenre === genre
-                      ? "shadow-lg scale-105"
-                      : "hover:shadow-md"
+                      ? "text-white shadow-md"
+                      : "hover:shadow-sm"
                   }`}
                   style={{
                     backgroundColor:
                       selectedGenre === genre
                         ? colors.inkBrown
-                        : colors.cream,
+                        : `${colors.cream}90`,
                     color:
-                      selectedGenre === genre
-                        ? colors.cream
-                        : colors.inkBrown,
-                    border: `2px solid ${
+                      selectedGenre === genre ? colors.cream : colors.inkBrown,
+                    border: `1px solid ${
                       selectedGenre === genre
                         ? colors.inkBrown
-                        : colors.mediumSepia
-                    }40`,
-                    fontFamily: fonts.button,
+                        : `${colors.mediumSepia}30`
+                    }`,
                   }}
                 >
                   {genre}
@@ -345,141 +366,180 @@ function AuthorPage() {
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8"
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-sm:gap-6"
                 >
                   {filteredBooks.map((book) => (
                     <motion.div
                       key={book.id}
                       variants={bookCardVariants}
                       whileHover="hover"
-                      className="group"
+                      className="bg-white rounded-xl overflow-hidden shadow-md border border-gray-100"
+                      style={{
+                        transformStyle: "preserve-3d",
+                      }}
                     >
                       <div
-                        className="bg-white rounded-xl overflow-hidden shadow-lg h-full flex flex-col"
                         style={{
-                          backgroundColor: colors.cream,
-                          border: `1px solid ${colors.gray300}`,
-                          boxShadow: `0 8px 25px ${bookColors[book.id] || colors.mediumSepia}20, 0 4px 6px rgba(0, 0, 0, 0.1)`,
+                          backgroundColor:
+                            bookColors[book.id] || colors.gray800,
                         }}
+                        className="relative h-60 max-md:h-full max-sm:h-48 w-full overflow-hidden group"
                       >
-                        {/* Book Cover */}
-                        <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
-                          <Image
-                            src={book.coverImage}
-                            alt={book.title}
-                            fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-                          <div
-                            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                            style={{
-                              background: `linear-gradient(to bottom, transparent 70%, ${bookColors[book.id] || colors.mediumSepia}20)`,
-                            }}
-                          />
-                        </div>
-
-                        {/* Book Info */}
+                        {/* Enhanced gradient overlay for better text visibility */}
                         <div
-                          className="p-3 md:p-4 text-white flex-shrink-0"
+                          className="absolute inset-0 z-10"
                           style={{
-                            backgroundColor: bookColors[book.id] || colors.mediumSepia,
+                            background: `linear-gradient(to bottom, 
+                              rgba(0,0,0,0.1) 0%, 
+                              rgba(0,0,0,0.2) 40%, 
+                              rgba(0,0,0,0.4) 70%, 
+                              ${
+                                bookColors[book.id]
+                                  ? `${bookColors[book.id]}CC`
+                                  : "rgba(0,0,0,0.7)"
+                              } 100%)`,
                           }}
-                        >
-                          <h2
-                            className="text-sm md:text-base lg:text-lg font-bold leading-tight mb-1"
-                            style={{ fontFamily: fonts.heading }}
+                        />
+
+                        <Image
+                          src={book.coverImage}
+                          alt={book.title}
+                          layout="fill"
+                          className="object-contain object-top transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute bottom-0 left-0 right-0 p-4 max-sm:p-3 z-20">
+                          <motion.h2
+                            className="text-xl max-sm:text-lg font-bold text-white mb-1"
+                            style={{
+                              textShadow:
+                                "0 2px 8px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.9)",
+                            }}
                           >
                             {book.title}
-                          </h2>
-                          <p className="text-xs opacity-90">
-                            {book.genre} | {book.publicationYear}
-                          </p>
-                        </div>
-
-                        {/* Book Details */}
-                        <div className="p-3 md:p-4 flex flex-col flex-grow">
-                          <p
-                            className="text-xs md:text-sm leading-relaxed mb-3 md:mb-4 flex-grow"
-                            style={{ 
-                              color: colors.gray700,
-                              fontFamily: fonts.body,
-                            }}
-                          >
-                            {book.description.length > 100
-                              ? book.description.substring(0, 100) + "..."
-                              : book.description}
-                          </p>
-
-                          {/* Purchase Links */}
-                          <div className="space-y-2 md:space-y-3">
-                            <h3
-                              className="text-xs md:text-sm font-semibold"
-                              style={{ 
-                                color: colors.inkBrown,
-                                fontFamily: fonts.button,
+                          </motion.h2>
+                          <div className="flex justify-between items-center mt-1">
+                            <span
+                              className="text-sm max-sm:text-xs text-white font-medium"
+                              style={{
+                                textShadow: "0 1px 4px rgba(0,0,0,0.8)",
                               }}
                             >
-                              Available on:
-                            </h3>
-                            <div className="flex gap-2">
-                              {book.availability?.amazon && (
-                                <motion.a
-                                  href={book.availability.amazonLink}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center justify-center p-2 md:p-3 rounded-lg border-2 transition-all duration-300"
-                                  style={{ 
-                                    borderColor: colors.gray300,
-                                    backgroundColor: colors.gray100,
-                                  }}
-                                  whileHover={{
-                                    scale: 1.05,
-                                    backgroundColor: colors.gray200,
-                                  }}
-                                  whileTap={{ scale: 0.95 }}
-                                >
-                                  <FaAmazon size={16} color={colors.gray800} />
-                                </motion.a>
-                              )}
+                              {book.publicationYear}
+                            </span>
+                            <span
+                              className="text-xs px-2 py-1 rounded-full font-medium"
+                              style={{
+                                backgroundColor: "rgba(255,255,255,0.25)",
+                                backdropFilter: "blur(8px)",
+                                color: "white",
+                                textShadow: "0 1px 2px rgba(0,0,0,0.5)",
+                                border: "1px solid rgba(255,255,255,0.2)",
+                              }}
+                            >
+                              {book.genre}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
 
-                              {book.availability?.flipkart && (
-                                <motion.a
-                                  href={book.availability.flipkartLink}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center justify-center p-2 md:p-3 rounded-lg border-2 transition-all duration-300"
-                                  style={{ 
-                                    borderColor: colors.gray300,
-                                    backgroundColor: colors.gray100,
-                                  }}
-                                  whileHover={{
-                                    scale: 1.05,
-                                    backgroundColor: colors.gray200,
-                                  }}
-                                  whileTap={{ scale: 0.95 }}
-                                >
-                                  <SiFlipkart size={16} color="#F8D706" />
-                                </motion.a>
-                              )}
-                            </div>
+                      <div className="p-4 max-sm:p-5 flex flex-col h-auto">
+                        <motion.p
+                          className="text-gray-600 mb-4 max-sm:mb-3 line-clamp-3 text-sm max-sm:text-xs leading-relaxed"
+                          initial={{ opacity: 0.8 }}
+                          whileHover={{ opacity: 1 }}
+                        >
+                          {book.description}
+                        </motion.p>
+
+                        <div className="flex flex-col justify-between h-36 max-md:h-28 gap-3 max-sm:gap-2 mt-auto">
+                          {/* Purchase Links */}
+                          <div className="flex flex-col gap-2">
+                            {book.availability?.amazon && (
+                              <motion.a
+                                href={book.availability.amazonLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center justify-between px-4 max-sm:px-3 py-2.5 max-sm:py-2 bg-gray-50 rounded-lg transition-colors text-sm max-sm:text-xs font-medium"
+                                style={{ color: colors.gray800 }}
+                                whileHover={{
+                                  backgroundColor: colors.gray100,
+                                }}
+                                whileTap={{ scale: 0.98 }}
+                              >
+                                <div className="flex items-center gap-3 max-sm:gap-2">
+                                  <FaAmazon
+                                    size={16}
+                                    color="#FF9900"
+                                    className="max-sm:w-3 max-sm:h-3"
+                                  />
+                                  <span>Buy on Amazon</span>
+                                </div>
+                                <IoIosArrowForward
+                                  size={14}
+                                  className="max-sm:w-3 max-sm:h-3"
+                                />
+                              </motion.a>
+                            )}
+
+                            {book.availability?.flipkart && (
+                              <motion.a
+                                href={book.availability.flipkartLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center justify-between px-4 max-sm:px-3 py-2.5 max-sm:py-2 bg-gray-50 rounded-lg transition-colors text-sm max-sm:text-xs font-medium"
+                                style={{ color: colors.gray800 }}
+                                whileHover={{
+                                  backgroundColor: colors.gray100,
+                                }}
+                                whileTap={{ scale: 0.98 }}
+                              >
+                                <div className="flex items-center gap-3 max-sm:gap-2">
+                                  <SiFlipkart
+                                    size={16}
+                                    color="#F8D706"
+                                    className="max-sm:w-3 max-sm:h-3"
+                                  />
+                                  <span>Buy on Flipkart</span>
+                                </div>
+                                <IoIosArrowForward
+                                  size={14}
+                                  className="max-sm:w-3 max-sm:h-3"
+                                />
+                              </motion.a>
+                            )}
                           </div>
 
-                          {/* Learn More Button */}
+                          {/* Read More Button - Full Width with Space Between */}
                           <motion.button
-                            onClick={() => console.log("Learn more clicked")}
-                            className="mt-3 md:mt-4 w-full py-2 md:py-3 px-4 rounded-lg text-xs md:text-sm font-semibold transition-all duration-300"
+                            className="flex items-center justify-between w-full px-4 max-sm:px-3 py-2.5 max-sm:py-2 rounded-lg transition-colors text-sm max-sm:text-xs font-medium mt-2"
                             style={{
-                              backgroundColor: colors.penumbraBlack,
-                              color: colors.cream,
-                              fontFamily: fonts.button,
+                              backgroundColor:
+                                bookColors[book.id] || colors.gray800,
+                              color: "white",
                             }}
                             whileHover={{
-                              backgroundColor: colors.gray800,
+                              backgroundColor: bookColors[book.id]
+                                ? `${bookColors[book.id]}dd`
+                                : colors.gray700,
                               scale: 1.02,
                             }}
                             whileTap={{ scale: 0.98 }}
+                            onClick={() => {
+                              // Handle read more functionality
+                              console.log(`Read more about ${book.title}`);
+                            }}
                           >
-                            Learn More
+                            <div className="flex items-center gap-2">
+                              <FaBookOpen
+                                size={14}
+                                className="max-sm:w-3 max-sm:h-3"
+                              />
+                              <span>Read More</span>
+                            </div>
+                            <IoIosArrowForward
+                              size={14}
+                              className="max-sm:w-3 max-sm:h-3"
+                            />
                           </motion.button>
                         </div>
                       </div>
@@ -488,46 +548,36 @@ function AuthorPage() {
                 </motion.div>
               ) : (
                 <motion.div
-                  key="empty"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  className="text-center py-12 md:py-20 px-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-center py-16 max-sm:py-12"
                 >
-                  <motion.h2
-                    className="text-xl md:text-2xl font-bold mb-4"
-                    style={{ 
-                      color: colors.penumbraBlack,
-                      fontFamily: fonts.heading,
-                    }}
+                  <motion.div
+                    className="w-24 h-24 max-sm:w-20 max-sm:h-20 mx-auto mb-6 max-sm:mb-4 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: `${colors.softBeige}40` }}
                   >
-                    No books found in this genre
-                  </motion.h2>
-                  <motion.p
-                    className="text-sm md:text-base mb-6"
-                    style={{ 
-                      color: colors.gray700,
-                      fontFamily: fonts.body,
-                    }}
-                  >
-                    Try selecting a different genre or view all books.
-                  </motion.p>
-                  <motion.button
-                    onClick={() => setSelectedGenre("All")}
-                    className="px-6 py-3 rounded-lg font-semibold transition-all duration-300"
+                    <FaBookOpen
+                      size={32}
+                      color={colors.mediumSepia}
+                      className="max-sm:w-6 max-sm:h-6"
+                    />
+                  </motion.div>
+                  <h3
+                    className="text-xl max-sm:text-lg font-semibold mb-2"
                     style={{
-                      backgroundColor: colors.inkBrown,
-                      color: colors.cream,
-                      fontFamily: fonts.button,
+                      color: colors.inkBrown,
+                      fontFamily: theme.fonts.heading,
                     }}
-                    whileHover={{
-                      backgroundColor: colors.deepSepia,
-                      scale: 1.05,
-                    }}
-                    whileTap={{ scale: 0.95 }}
                   >
-                    View All Books
-                  </motion.button>
+                    No books found
+                  </h3>
+                  <p
+                    className="text-sm max-sm:text-xs opacity-70 max-sm:px-4"
+                    style={{ color: colors.deepSepia }}
+                  >
+                    No books match the selected genre. Try selecting a different
+                    category.
+                  </p>
                 </motion.div>
               )}
             </AnimatePresence>
