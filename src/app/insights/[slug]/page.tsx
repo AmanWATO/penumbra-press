@@ -3,11 +3,15 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/blogs";
 import BlogPostPage from "./BlogPostPage";
 
+type Params = {
+  params: {
+    slug: string;
+  };
+};
+
 export async function generateMetadata({
   params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
+}: Params): Promise<Metadata> {
   const blog = getBlogBySlug(params.slug);
 
   if (!blog) {
@@ -37,8 +41,8 @@ export async function generateMetadata({
   };
 }
 
-export default function Page({ params }: { params: { slug: string } }) {
-  const blog = getBlogBySlug(params.slug);
+export default function Page({ params: { slug } }: Params) {
+  const blog = getBlogBySlug(slug);
   if (!blog) notFound();
   return <BlogPostPage blog={blog} />;
 }
