@@ -1,17 +1,13 @@
-// src/app/insights/[slug]/page.tsx
-
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/blogs";
 import BlogPostPage from "./BlogPostPage";
 
-type PageProps = {
-  params: {
-    slug: string;
-  };
-};
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
   const blog = await getBlogBySlug(params.slug);
 
   if (!blog) {
@@ -22,7 +18,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: `${blog.title} | Penumbra Penned`,
-    description: blog.excerpt || "Read this reflective piece from the Penumbra.",
+    description:
+      blog.excerpt || "Read this reflective piece from the Penumbra.",
     alternates: {
       canonical: `https://penumbrapenned.com/insights/${params.slug}`,
     },
@@ -33,20 +30,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       type: "article",
       publishedTime: blog.publishedAt,
     },
-    twitter: {
-      card: "summary_large_image",
-      title: blog.title,
-      description: blog.excerpt,
-    },
     robots: {
       index: true,
       follow: true,
     },
-    metadataBase: new URL("https://penumbrapenned.com"),
   };
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: { params: { slug: string } }) {
   const blog = await getBlogBySlug(params.slug);
   if (!blog) notFound();
   return <BlogPostPage blog={blog} />;
