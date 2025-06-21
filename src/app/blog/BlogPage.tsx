@@ -150,54 +150,71 @@ export default function BlogPage() {
       {/* Blog Grid */}
       <section className="pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
             {filteredBlogs.map((blog, index) => (
               <motion.article
                 key={blog.id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
-                className="group"
+                className="group h-full"
               >
-                <Link href={`/blog/${blog.slug}`}>
+                <Link href={`/blog/${blog.slug}`} className="block h-full">
                   <div
-                    className="rounded-2xl overflow-hidden shadow-lg transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 bg-white"
+                    className="rounded-2xl overflow-hidden shadow-lg transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 bg-white h-full flex flex-col"
                     style={{
-                      backgroundColor: colors.gray100,
+                      backgroundColor: colors.cream,
+                      border: `1px solid ${colors.gray300}`,
                     }}
                   >
                     {/* Image */}
-                    <div className="relative h-48 overflow-hidden">
+                    <div className="relative aspect-video overflow-hidden">
                       <Image
                         src={blog.imageUrl}
                         alt={blog.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                      <div 
+                        className="absolute inset-0"
+                        style={{
+                          background: `linear-gradient(to bottom, transparent 60%, ${colors.penumbraBlack}10)`,
+                        }}
+                      />
                     </div>
 
                     {/* Content */}
-                    <div className="p-6">
+                    <div className="p-5 lg:p-6 flex flex-col flex-grow">
                       {/* Tags */}
                       <div className="flex flex-wrap gap-2 mb-3">
-                        {blog.tags.map((tag) => (
+                        {blog.tags.slice(0, 3).map((tag) => (
                           <span
                             key={tag}
                             className="px-2 py-1 rounded-full text-xs font-medium"
                             style={{
-                              backgroundColor: colors.gray300,
+                              backgroundColor: colors.lightSepia,
                               color: colors.penumbraBlack,
                             }}
                           >
                             {tag}
                           </span>
                         ))}
+                        {blog.tags.length > 3 && (
+                          <span
+                            className="px-2 py-1 rounded-full text-xs font-medium"
+                            style={{
+                              backgroundColor: colors.gray400,
+                              color: colors.gray700,
+                            }}
+                          >
+                            +{blog.tags.length - 3}
+                          </span>
+                        )}
                       </div>
 
                       {/* Title */}
                       <h3
-                        className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-opacity-80 transition-all duration-300"
+                        className="text-lg lg:text-xl font-bold mb-3 line-clamp-2 group-hover:text-opacity-80 transition-all duration-300 flex-shrink-0"
                         style={{
                           fontFamily: fonts.heading,
                           color: colors.penumbraBlack,
@@ -208,7 +225,7 @@ export default function BlogPage() {
 
                       {/* Excerpt */}
                       <p
-                        className="text-sm leading-relaxed mb-4 line-clamp-3"
+                        className="text-sm leading-relaxed mb-4 line-clamp-3 flex-grow"
                         style={{
                           fontFamily: fonts.body,
                           color: colors.gray700,
@@ -219,11 +236,16 @@ export default function BlogPage() {
 
                       {/* Meta */}
                       <div
-                        className="flex items-center justify-between text-xs"
-                        style={{ color: colors.gray600 }}
+                        className="flex items-center justify-between text-xs mt-auto pt-3 border-t flex-shrink-0"
+                        style={{ 
+                          color: colors.gray600,
+                          borderColor: colors.gray300,
+                        }}
                       >
-                        <span>{blog.readTime}</span>
-                        <span>{new Date(blog.publishedAt).toLocaleDateString()}</span>
+                        <span style={{ fontFamily: fonts.body }}>{blog.readTime}</span>
+                        <span style={{ fontFamily: fonts.body }}>
+                          {new Date(blog.publishedAt).toLocaleDateString()}
+                        </span>
                       </div>
                     </div>
                   </div>
