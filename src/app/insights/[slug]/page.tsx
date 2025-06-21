@@ -2,15 +2,16 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/blogs";
 import BlogPostPage from "./BlogPostPage";
 import { Metadata } from "next";
-
 import Head from "next/head";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
-  const blog = getBlogBySlug(params.slug);
+type Props = {
+  params: {
+    slug: string;
+  };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const blog = await getBlogBySlug(params.slug); // Ensure this is async if needed
 
   if (!blog) {
     return {
@@ -38,9 +39,8 @@ export async function generateMetadata({
   };
 }
 
-// Component definition
-export default function Page({ params }: { params: { slug: string } }) {
-  const blog = getBlogBySlug(params.slug);
+export default async function Page({ params }: Props) {
+  const blog = await getBlogBySlug(params.slug); // Again, ensure this is async
 
   if (!blog) {
     notFound();
@@ -57,7 +57,7 @@ export default function Page({ params }: { params: { slug: string } }) {
         />
         <meta property="og:type" content="article" />
         <meta property="og:published_time" content={blog.publishedAt} />
-        <meta name="author" content={"Aman Srivastava"} />
+        <meta name="author" content="Aman Srivastava" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
