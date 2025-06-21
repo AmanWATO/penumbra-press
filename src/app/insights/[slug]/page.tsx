@@ -9,10 +9,8 @@ type Params = {
   };
 };
 
-export async function generateMetadata({
-  params,
-}: Params): Promise<Metadata> {
-  const blog = getBlogBySlug(params.slug);
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const blog = await getBlogBySlug(params.slug); // ✅ Await it
 
   if (!blog) {
     return {
@@ -22,8 +20,7 @@ export async function generateMetadata({
 
   return {
     title: `${blog.title} | Penumbra Penned`,
-    description:
-      blog.excerpt || "Read this reflective piece from the Penumbra.",
+    description: blog.excerpt || "Read this reflective piece from the Penumbra.",
     alternates: {
       canonical: `https://penumbrapenned.com/insights/${params.slug}`,
     },
@@ -41,8 +38,8 @@ export async function generateMetadata({
   };
 }
 
-export default function Page({ params: { slug } }: Params) {
-  const blog = getBlogBySlug(slug);
+export default async function Page({ params: { slug } }: Params) {
+  const blog = await getBlogBySlug(slug); // ✅ Await it
   if (!blog) notFound();
   return <BlogPostPage blog={blog} />;
 }
