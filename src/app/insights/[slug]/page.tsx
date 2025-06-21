@@ -3,18 +3,15 @@
 import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/blogs";
 import BlogPostPage from "./BlogPostPage";
-import Head from "next/head";
 import type { Metadata } from "next";
 
-// This is the correct typing from Next.js App Router
-interface PageProps {
-  params: { slug: string };
-}
+type Props = {
+  params: {
+    slug: string;
+  };
+};
 
-// ✅ This works fine with Next.js App Directory!
-export async function generateMetadata(
-  { params }: PageProps
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const blog = await getBlogBySlug(params.slug);
 
   if (!blog) {
@@ -34,55 +31,27 @@ export async function generateMetadata(
       description: blog.excerpt,
       url: `https://penumbrapenned.com/insights/${params.slug}`,
       type: "article",
+      publishedTime: blog.publishedAt,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: blog.title,
+      description: blog.excerpt,
     },
     robots: {
       index: true,
       follow: true,
     },
+    metadataBase: new URL("https://penumbrapenned.com"),
   };
 }
 
-// ✅ Must match the same prop typing pattern
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: Props) {
   const blog = await getBlogBySlug(params.slug);
 
   if (!blog) {
     notFound();
   }
 
-  return (
-    <>
-      <Head>
-        <meta
-          name="keywords"
-          content={`Penumbra Penned, blog, ${blog.title}, ${blog.tags?.join(", ")}`}
-        />
-        <meta property="og:type" content="article" />
-        <meta property="og:published_time" content={blog.publishedAt} />
-        <meta name="author" content="Aman Srivastava" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BlogPosting",
-              headline: blog.title,
-              datePublished: blog.publishedAt,
-              description: blog.excerpt,
-              author: {
-                "@type": "Person",
-                name: "Aman Srivastava",
-              },
-              mainEntityOfPage: {
-                "@type": "WebPage",
-                "@id": `https://penumbrapenned.com/insights/${params.slug}`,
-              },
-            }),
-          }}
-        />
-      </Head>
-
-      <BlogPostPage blog={blog} />
-    </>
-  );
+  return <BlogPostPage blog={blog} />;
 }
