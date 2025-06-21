@@ -8,7 +8,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const blog = await getBlogBySlug(params.slug);
+  const blog = getBlogBySlug(params.slug);
 
   if (!blog) {
     return {
@@ -38,7 +38,7 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const blog = await getBlogBySlug(params.slug);
+  const blog = getBlogBySlug(params.slug);
   if (!blog) notFound();
   return <BlogPostPage blog={blog} />;
 }
