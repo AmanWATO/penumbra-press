@@ -1,17 +1,21 @@
+// src/app/insights/[slug]/page.tsx
+
 import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/blogs";
 import BlogPostPage from "./BlogPostPage";
-import { Metadata } from "next";
 import Head from "next/head";
+import type { Metadata } from "next";
 
-type Props = {
-  params: {
-    slug: string;
-  };
-};
+// This is the correct typing from Next.js App Router
+interface PageProps {
+  params: { slug: string };
+}
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const blog = await getBlogBySlug(params.slug); // Ensure this is async if needed
+// ✅ This works fine with Next.js App Directory!
+export async function generateMetadata(
+  { params }: PageProps
+): Promise<Metadata> {
+  const blog = await getBlogBySlug(params.slug);
 
   if (!blog) {
     return {
@@ -21,8 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${blog.title} | Penumbra Penned`,
-    description:
-      blog.excerpt || "Read this reflective piece from the Penumbra.",
+    description: blog.excerpt || "Read this reflective piece from the Penumbra.",
     alternates: {
       canonical: `https://penumbrapenned.com/insights/${params.slug}`,
     },
@@ -39,8 +42,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Page({ params }: Props) {
-  const blog = await getBlogBySlug(params.slug); // Again, ensure this is async
+// ✅ Must match the same prop typing pattern
+export default async function Page({ params }: PageProps) {
+  const blog = await getBlogBySlug(params.slug);
 
   if (!blog) {
     notFound();
@@ -51,9 +55,7 @@ export default async function Page({ params }: Props) {
       <Head>
         <meta
           name="keywords"
-          content={`Penumbra Penned, blog, ${blog.title}, ${blog.tags?.join(
-            ", "
-          )}`}
+          content={`Penumbra Penned, blog, ${blog.title}, ${blog.tags?.join(", ")}`}
         />
         <meta property="og:type" content="article" />
         <meta property="og:published_time" content={blog.publishedAt} />
