@@ -1,3 +1,7 @@
+The code is modified to fix mobile responsiveness for the my-books page by updating grid layouts, modal styling, and modal content layout.
+```
+
+```replit_final_file
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";

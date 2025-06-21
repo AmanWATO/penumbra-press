@@ -5,6 +5,7 @@ import CountdownBanner from "@/components/countdown-banner";
 
 const HeroSection = dynamic(() => import("@/components/hero-section"));
 const BooksSection = dynamic(() => import("@/components/books-section"));
+const BlogSection = dynamic(() => import("@/components/blog-section"));
 const QuoteSection = dynamic(() => import("@/components/quote-section"));
 const ContestSection = dynamic(() => import("@/components/contest-section"));
 const AboutSection = dynamic(() => import("@/components/about-section"));
@@ -70,6 +71,7 @@ export default function Home() {
       <div className="min-h-screen flex flex-col">
         <HeroSection />
         <BooksSection />
+        <BlogSection />
         <QuoteSection />
         <ContestSection />
         <AboutSection />
