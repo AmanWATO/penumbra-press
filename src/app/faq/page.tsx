@@ -1,6 +1,17 @@
 import { faqItems } from "@/lib/faq";
 import Head from "next/head";
 import FAQPage from "./FAQPage";
+import { Metadata } from "next";
+
+
+export const metadata: Metadata = {
+  title: "FAQs | Penumbra Penned",
+  description:
+    "Get answers to frequently asked questions about Penumbra Penned writing contests. Learn about participation, entry fees, submission guidelines, and more.",
+  alternates: {
+    canonical: "https://penumbrapenned.com/faq",
+  },
+};
 
 export default function FAQ() {
   return (

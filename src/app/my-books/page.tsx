@@ -3,6 +3,16 @@ import React from "react";
 import Head from "next/head";
 import { booksData } from "@/lib/books";
 import AuthorPage from "./AuthorPage";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Aman Published Work | Penumbra Penned",
+  description:
+    "Explore Aman's published works — a curated collection of evocative quotes and poetic insights shaped within the Penumbra community. Where every word carries depth, and every line echoes a journey.",
+  alternates: {
+    canonical: "https://penumbrapenned.com/my-books",
+  },
+};
 
 function AuthorBooksPage() {
   return (

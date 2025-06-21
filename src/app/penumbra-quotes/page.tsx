@@ -1,5 +1,15 @@
 import Head from "next/head";
 import QuotesPage from "./QuotesPage";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Penumbra Quotes | Penumbra Penned",
+  description:
+    "A curated collection of powerful quotes from the Penumbra community.",
+  alternates: {
+    canonical: "https://penumbrapenned.com/penumbra-quotes",
+  },
+};
 
 function Page() {
   return (

@@ -1,5 +1,15 @@
 import Head from "next/head";
 import TNCPage from "./TNCPage";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Terms and Conditions | Penumbra Penned",
+  description:
+    "Step into the space where creativity meets clarity. Discover the terms that guide your journey through Penumbra Penned — a literary realm shaped by stories, poetry, and thoughtful connection.",
+  alternates: {
+    canonical: "https://penumbrapenned.com/terms-and-conditions",
+  },
+};
 
 export default function TermsPage() {
   return (

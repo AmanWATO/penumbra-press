@@ -49,6 +49,9 @@ export const metadata: Metadata = {
   title: "Penumbra Penned",
   description:
     "Where words dwell between light and shadow — a haven for poetry, storytelling, and literary reflections. Explore the interplay of ink and ether.",
+  alternates: {
+    canonical: "https://penumbrapenned.com",
+  },
 };
 
 export default function RootLayout({

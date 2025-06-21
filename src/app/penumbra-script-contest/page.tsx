@@ -1,6 +1,16 @@
 import React from "react";
 import Head from "next/head";
 import ContestPage from "./ContestPage";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Penumbra Script Contest | Penumbra Penned",
+  description:
+    "Unleash your imagination in the Penumbra Script Contest — where stories breathe between light and shadow. Explore evocative themes, respond to thought-provoking prompts, and let your words find their place in the realm of poetic expression.",
+  alternates: {
+    canonical: "https://penumbrapenned.com/penumbra-script-contest",
+  },
+};
 
 function Page() {
   return (

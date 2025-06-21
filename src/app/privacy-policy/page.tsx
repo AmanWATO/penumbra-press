@@ -1,5 +1,15 @@
 import Head from "next/head";
 import PrivacyPage from "./PrivacyPage";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | Penumbra Penned",
+  description:
+    "Learn how Penumbra Penned protects your privacy and data. We believe your words are yours and your data is yours. Read our transparent privacy policy.",
+  alternates: {
+    canonical: "https://penumbrapenned.com/privacy-policy",
+  },
+};
 
 export default function PrivacyPolicyPage() {
   return (

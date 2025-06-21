@@ -1,5 +1,15 @@
 import Head from "next/head";
 import ContactUsPage from "./ContactUsPage";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact Us | Penumbra Penned",
+  description:
+    "Reach out to us with questions, feedback, or inquiries. We'd love to hear from you!",
+  alternates: {
+    canonical: "https://penumbrapenned.com/contact-us",
+  },
+};
 
 function ContactPage() {
   return (

@@ -1,12 +1,22 @@
 import Head from "next/head";
 import WeeklyChallengeSystem from "./WeeklyChallengeSystem";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Ink Rite Banner | Penumbra Penned",
+  description:
+    "Join the Ink Rite Banner and embark on a journey of creativity and expression. Discover the themes and prompts that will guide your writing.",
+  alternates: {
+    canonical: "https://penumbrapenned.com/penumbra-weekly",
+  },
+};
 
 export default function WeeklyChallengesPage() {
   return (
     <>
       <Head>
         <title>
-          Penumbra Prologue Weekly Writing Challenges - Penumbra Penned
+          Ink Rite Banner Weekly Writing Challenges - Penumbra Penned
         </title>
         <meta
           name="description"
