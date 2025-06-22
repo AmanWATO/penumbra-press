@@ -2,6 +2,8 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import GeoMessage from "@/components/geo-message";
 import CountdownBanner from "@/components/countdown-banner";
+import PDFDownloadButton from "@/components/temp/PDFDownloadButton";
+import WeeklyContestResults from "@/components/weekly/WeeklyContestResults";
 
 const HeroSection = dynamic(() => import("@/components/hero-section"));
 const BooksSection = dynamic(() => import("@/components/books-section"));
@@ -66,7 +68,7 @@ export default function Home() {
         />
       </Head>
 
-       <CountdownBanner />
+      <CountdownBanner />
 
       <div className="min-h-screen flex flex-col">
         <HeroSection />

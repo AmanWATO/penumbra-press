@@ -103,7 +103,7 @@ export default function ModernBlogSection() {
       onMouseLeave={() => setIsAutoPlaying(true)}
     >
       {/* Enhanced background elements */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute binset-0 overflow-hidden">
         <motion.div
           className="absolute top-20 left-10 w-32 h-32 md:w-48 md:h-48 rounded-full opacity-5"
           style={{ backgroundColor: colors.deepTeal }}
@@ -134,7 +134,7 @@ export default function ModernBlogSection() {
             ease: "linear",
           }}
         />
-        {/* Additional floating elements */}
+
         <motion.div
           className="absolute top-1/2 left-1/4 w-20 h-20 md:w-28 md:h-28 rounded-full opacity-3"
           style={{ backgroundColor: colors.gold }}
@@ -151,7 +151,7 @@ export default function ModernBlogSection() {
         />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container  mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header with enhanced animation */}
         <motion.div
           className="text-center mb-12 md:mb-16"
@@ -200,7 +200,7 @@ export default function ModernBlogSection() {
         </motion.div>
 
         {/* Parallax Slider Container */}
-        <div className="relative max-w-6xl mx-auto">
+        <div className="relative max-w-6xl  mx-auto">
           <div className="relative h-[400px] sm:h-[480px] md:h-[520px] lg:h-[580px] overflow-hidden rounded-2xl md:rounded-3xl">
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
@@ -238,7 +238,6 @@ export default function ModernBlogSection() {
                       />
                     </motion.div>
 
-                    {/* Enhanced gradient overlay */}
                     <div
                       className="absolute inset-0"
                       style={{
@@ -247,10 +246,8 @@ export default function ModernBlogSection() {
                     />
                   </div>
 
-                  {/* Content overlay with perfect text shadows */}
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 md:p-10 lg:p-12">
+                  <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-8 md:p-10 lg:p-12">
                     <div className="max-w-4xl">
-                      {/* Tags with enhanced styling */}
                       <motion.div
                         variants={textVariants}
                         initial="hidden"

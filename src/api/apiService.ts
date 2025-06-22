@@ -1,4 +1,4 @@
-import { Quote } from "./apiTypes";
+import { Quote, WeeklyContestEntry } from "./apiTypes";
 
 const apiUrl = "https://cms-dev.penumbrapenned.com/api";
 
@@ -27,5 +27,99 @@ export const fetchQuotes = async (): Promise<Quote[]> => {
   } catch (error) {
     console.error("[fetchQuotes] Error:", error);
     return [];
+  }
+};
+
+export const fetchWeeklyContestEntries = async (
+): Promise<WeeklyContestEntry[]> => {
+  try {
+    const endpoint =`${apiUrl}/weekly-contests`;
+
+    const res = await fetch(endpoint, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(
+        `Failed to fetch weekly contest entries: ${res.statusText}`
+      );
+    }
+
+
+    const data = await res.json();
+
+
+
+    return (
+      data?.data?.map((item: WeeklyContestEntry) => ({
+        id: item.id,
+        title: item.title,
+        author_name: item.author_name,
+        author_email: item.author_email,
+        city: item.city,
+        theme: item.theme,
+        genre: item.genre,
+        content: item.content,
+        judge_notes: item.judge_notes,
+        spotlight_ranks: item.spotlight_rank,
+        is_winner: item.is_winner,
+        week: item.week || 1, // Default to week 1 if not specified
+        created_at: item.created_at,
+      })) || []
+    );
+  } catch (error) {
+    console.error("[fetchWeeklyContestEntries] Error:", error);
+    return [];
+  }
+};
+
+export const fetchWeeklyContestStats = async () => {
+  try {
+    const entries = await fetchWeeklyContestEntries();
+
+    const uniqueEmails = new Set(entries.map((entry) => entry.author_email));
+    const uniqueAuthors = new Set(
+      entries.map((entry) => entry.author_name.toLowerCase())
+    );
+
+    return {
+      totalEntries: entries.length,
+      uniqueEntries: uniqueEmails.size,
+      uniqueAuthors: uniqueAuthors.size,
+      winners: entries.filter((entry) => entry.is_winner),
+      topFive: entries
+        .filter(
+          (entry) => entry.spotlight_rank && entry.spotlight_rank !== "NONE"
+        )
+        .sort((a, b) => {
+          // Fixed: Use uppercase keys to match the actual data
+          const rankOrder = {
+            FIRST: 1,
+            SECOND: 2,
+            THIRD: 3,
+            FOURTH: 4,
+            FIFTH: 5,
+          };
+          const aRank =
+            rankOrder[a.spotlight_rank as keyof typeof rankOrder] || 6;
+          const bRank =
+            rankOrder[b.spotlight_rank as keyof typeof rankOrder] || 6;
+          return aRank - bRank;
+        }),
+      allEntries: entries,
+    };
+  } catch (error) {
+    console.error("[fetchWeeklyContestStats] Error:", error);
+    return {
+      totalEntries: 0,
+      uniqueEntries: 0,
+      uniqueAuthors: 0,
+      winners: [],
+      topFive: [],
+      allEntries: [],
+    };
   }
 };
