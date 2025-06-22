@@ -1,173 +1,374 @@
 import React from "react";
-import { Trophy, Medal, Award, Star, User, MapPin, Eye } from "lucide-react";
+import {
+  Trophy,
+  Medal,
+  Award,
+  Star,
+  User,
+  MapPin,
+  Eye,
+  Crown,
+  Sparkles,
+} from "lucide-react";
 import { dashboardTheme } from "@/styles/theme";
 import { extractTextContent } from "@/utils/Helper";
+import { motion } from "framer-motion";
 
 interface WinnerCardProps {
   entry: any;
   index: number;
   isActive: boolean;
   onOpenPopup: (entry: any) => void;
+  isPodium?: boolean;
 }
 
 const getRankIcon = (rank: string | null) => {
-  const iconProps = { className: "w-3 h-3 md:w-4 md:h-4" };
+  const iconProps = { className: "w-4 h-4 md:w-5 md:h-5" };
   const normalized = rank?.toUpperCase().trim();
 
   switch (normalized) {
-    case "FIRST": return <Trophy {...iconProps} />;
+    case "FIRST":
+      return <Crown {...iconProps} />;
     case "SECOND":
-    case "THIRD": return <Medal {...iconProps} />;
+      return <Medal {...iconProps} />;
+    case "THIRD":
+      return <Medal {...iconProps} />;
     case "FOURTH":
-    case "FIFTH": return <Star {...iconProps} />;
-    default: return <Award {...iconProps} />;
+    case "FIFTH":
+      return <Star {...iconProps} />;
+    default:
+      return <Award {...iconProps} />;
   }
 };
 
 const getRankDisplayName = (rank: string | null, index: number) => {
   const normalized = rank?.toUpperCase().trim();
   const names: Record<string, string> = {
-    FIRST: "1st Place",
-    SECOND: "2nd Place",
-    THIRD: "3rd Place",
+    FIRST: "Champion",
+    SECOND: "Runner-up",
+    THIRD: "Third Place",
     FOURTH: "4th Place",
     FIFTH: "5th Place",
   };
-  return names[normalized || ""] || `${index + 1}${getOrdinalSuffix(index + 1)}`;
+  return (
+    names[normalized || ""] || `${index + 1}${getOrdinalSuffix(index + 1)}`
+  );
 };
 
 const getRankColors = (rank: string | null) => {
   const normalized = rank?.toUpperCase().trim();
   switch (normalized) {
-    case "FIRST": return { bg: "#D4AF37", text: "#FFFFFF" };
-    case "SECOND": return { bg: "#C0C0C0", text: "#FFFFFF" };
-    case "THIRD": return { bg: "#CD7F32", text: "#FFFFFF" };
-    case "FOURTH": return { bg: dashboardTheme.colors.info, text: "#FFFFFF" };
-    case "FIFTH": return { bg: dashboardTheme.colors.success, text: "#FFFFFF" };
-    default: return { bg: dashboardTheme.colors.accent, text: dashboardTheme.colors.activeText };
+    case "FIRST":
+      return {
+        bg: "linear-gradient(135deg, #FFD700, #FFA500)",
+        text: "#FFFFFF",
+        glow: "0 0 10px rgba(255, 215, 0, 0.2)",
+      };
+    case "SECOND":
+      return {
+        bg: "linear-gradient(135deg, #C0C0C0, #808080)",
+        text: "#FFFFFF",
+        glow: "0 0 10px rgba(192, 192, 192, 0.2)",
+      };
+    case "THIRD":
+      return {
+        bg: "linear-gradient(135deg, #CD7F32, #8B4513)",
+        text: "#FFFFFF",
+        glow: "0 0 10px rgba(205, 127, 50, 0.2)",
+      };
+    case "FOURTH":
+      return {
+        bg: `linear-gradient(135deg, ${dashboardTheme.colors.info}, #3B82F6)`,
+        text: "#FFFFFF",
+        glow: "0 0 10px rgba(59, 130, 246, 0.3)",
+      };
+    case "FIFTH":
+      return {
+        bg: `linear-gradient(135deg, ${dashboardTheme.colors.success}, #10B981)`,
+        text: "#FFFFFF",
+        glow: "0 0 10px rgba(16, 185, 129, 0.3)",
+      };
+    default:
+      return {
+        bg: `linear-gradient(135deg, ${dashboardTheme.colors.accent}, #8B5CF6)`,
+        text: dashboardTheme.colors.activeText,
+        glow: "0 0 10px rgba(139, 92, 246, 0.3)",
+      };
   }
 };
 
 const getOrdinalSuffix = (num: number) => {
-  const j = num % 10, k = num % 100;
+  const j = num % 10,
+    k = num % 100;
   if (j === 1 && k !== 11) return "st";
   if (j === 2 && k !== 12) return "nd";
   if (j === 3 && k !== 13) return "rd";
   return "th";
 };
 
-const WinnerCard: React.FC<WinnerCardProps> = ({ entry, index, onOpenPopup }) => {
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+};
+
+const hoverVariants = {
+  hover: {
+    y: -8,
+    scale: 1.02,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
+
+const WinnerCard: React.FC<WinnerCardProps> = ({
+  entry,
+  index,
+  onOpenPopup,
+  isPodium = false,
+}) => {
   const text = extractTextContent(entry.content);
-  const preview = text.length > 100 ? text.substring(0, 100) + "..." : text;
+  const preview = text.length > 120 ? text.substring(0, 120) + "..." : text;
   const rankColors = getRankColors(entry.spotlight_rank);
+  const isTopThree = index < 3;
 
   return (
-    <div
-      className="relative cursor-pointer group w-full md:w-auto md:flex-1 h-[400px] transition-transform duration-200 hover:scale-[1.02]"
+    <motion.div
+      className={`relative cursor-pointer group w-full ${
+        isPodium ? "max-w-sm mx-auto" : ""
+      } `}
       onClick={() => onOpenPopup(entry)}
+      variants={cardVariants}
+      initial="hidden"
+      animate="visible"
+      whileHover="hover"
     >
-      <div
-        className="w-full h-full rounded-xl overflow-hidden transition-all duration-300"
+      <motion.div
+        className="w-full h-full rounded-xl md:rounded-2xl overflow-hidden relative"
         style={{
           backgroundColor: dashboardTheme.colors.cardBg,
-          border: `1px solid ${dashboardTheme.colors.cardBorder}`,
-          boxShadow: dashboardTheme.colors.cardShadow,
+          border: `2px solid ${
+            isTopThree ? "transparent" : dashboardTheme.colors.cardBorder
+          }`,
+          background: isTopThree
+            ? `linear-gradient(135deg, ${dashboardTheme.colors.cardBg}, ${dashboardTheme.colors.parchment})`
+            : dashboardTheme.colors.cardBg,
+          boxShadow: isTopThree
+            ? `${dashboardTheme.colors.cardShadow}, ${rankColors.glow}`
+            : dashboardTheme.colors.cardShadow,
         }}
+        variants={hoverVariants}
       >
+        <motion.div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{
+            background: `linear-gradient(135deg, ${dashboardTheme.colors.accent}08, transparent, ${dashboardTheme.colors.accent}05)`,
+          }}
+        />
+
         <div className="absolute top-3 left-3 z-20">
-          <div
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full font-semibold text-xs transition-transform duration-200 hover:scale-105"
-            style={{ backgroundColor: rankColors.bg, color: rankColors.text }}
+          <motion.div
+            className="flex items-center gap-2 px-3 py-2 max-md:gap-1 rounded-full font-bold text-sm shadow-lg"
+            style={{
+              background: rankColors.bg,
+              color: rankColors.text,
+              boxShadow: rankColors.glow,
+            }}
+            whileHover={{ scale: 1.05 }}
+            animate={
+              isTopThree
+                ? {
+                    boxShadow: [
+                      rankColors.glow,
+                      `${rankColors.glow}, 0 0 30px ${rankColors.text}20`,
+                    ],
+                  }
+                : {}
+            }
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
           >
             {getRankIcon(entry.spotlight_rank)}
-            <span className="font-bold">{getRankDisplayName(entry.spotlight_rank, index)}</span>
-          </div>
+            <span className="font-bold max-md:text-xs">
+              {getRankDisplayName(entry.spotlight_rank, index)}
+            </span>
+            {isTopThree && <Sparkles className="w-3 h-3 max-md:hidden ml-1" />}
+          </motion.div>
         </div>
 
+        {/* Genre Badge */}
         {entry.genre && (
           <div className="absolute top-3 right-3 z-20">
-            <span className="px-2.5 py-1 rounded-full text-xs font-medium" style={{
-              backgroundColor: dashboardTheme.colors.parchment,
-              color: dashboardTheme.colors.textSecondary,
-              border: `1px solid ${dashboardTheme.colors.borderLight}`,
-            }}>
+            <motion.span
+              className="px-3 py-1.5 rounded-full text-xs font-medium backdrop-blur-sm"
+              style={{
+                backgroundColor: `${dashboardTheme.colors.parchment}ee`,
+                color: dashboardTheme.colors.textSecondary,
+                border: `1px solid ${dashboardTheme.colors.borderLight}`,
+              }}
+              whileHover={{ scale: 1.05 }}
+            >
               {entry.genre}
-            </span>
+            </motion.span>
           </div>
         )}
 
-        <div className="p-4 h-full flex flex-col">
-          <div className="mt-8 mb-3">
-            <h3 className="text-lg font-bold leading-tight line-clamp-2 group-hover:opacity-80 transition-opacity" style={{
-              color: dashboardTheme.colors.textPrimary,
-              fontFamily: dashboardTheme.fonts.heading,
-            }}>
+        {/* Main Content */}
+        <div className="p-4 md:p-5 h-full flex flex-col">
+          {/* Title Section */}
+          <div className="mt-10 max-md:mb-2 mb-4">
+            <motion.h3
+              className={`font-bold leading-tight line-clamp-2 group-hover:text-opacity-90 transition-all duration-300 ${
+                isTopThree ? "text-lg md:text-xl" : "text-base md:text-lg"
+              }`}
+              style={{
+                color: dashboardTheme.colors.textPrimary,
+                fontFamily: dashboardTheme.fonts.heading,
+              }}
+              whileHover={{ scale: 1.01 }}
+            >
               {entry.title}
-            </h3>
+            </motion.h3>
           </div>
 
+          {/* Author and Location */}
           <div className="flex items-center justify-between mb-4 text-sm">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: dashboardTheme.colors.accent }}>
-                <User className="w-3 h-3" style={{ color: dashboardTheme.colors.activeText }} />
+            <motion.div
+              className="flex items-center gap-2"
+              whileHover={{ x: 2 }}
+            >
+              <div
+                className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: dashboardTheme.colors.accent }}
+              >
+                <User
+                  className="w-3.5 h-3.5"
+                  style={{ color: dashboardTheme.colors.activeText }}
+                />
               </div>
-              <span className="font-medium text-sm truncate" style={{ color: dashboardTheme.colors.textPrimary }}>
+              <span
+                className="font-medium text-sm truncate"
+                style={{ color: dashboardTheme.colors.textPrimary }}
+              >
                 {entry.author_name}
               </span>
-            </div>
+            </motion.div>
+
             {entry.city && (
-              <div className="flex items-center gap-1 flex-shrink-0">
-                <MapPin className="w-3 h-3" style={{ color: dashboardTheme.colors.textTertiary }} />
-                <span className="text-xs" style={{ color: dashboardTheme.colors.textTertiary }}>
+              <motion.div
+                className="flex items-center gap-1 flex-shrink-0"
+                whileHover={{ x: -2 }}
+              >
+                <MapPin
+                  className="w-3 h-3"
+                  style={{ color: dashboardTheme.colors.textTertiary }}
+                />
+                <span
+                  className="text-xs"
+                  style={{ color: dashboardTheme.colors.textTertiary }}
+                >
                   {entry.city}
                 </span>
-              </div>
+              </motion.div>
             )}
           </div>
 
           <div className="flex-1 mb-4">
-            <div className="p-3 rounded-lg h-full flex flex-col justify-between min-h-[160px]" style={{
-              backgroundColor: dashboardTheme.colors.parchment,
-              border: `1px solid ${dashboardTheme.colors.borderLight}`,
-            }}>
-              <p className="text-sm leading-relaxed flex-1" style={{
-                color: dashboardTheme.colors.textSecondary,
-                fontFamily: dashboardTheme.fonts.body,
-                display: '-webkit-box',
-                WebkitLineClamp: 6,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-              }}>
+            <motion.div
+              className={`p-4 max-md:p-3 max-md:pb-6 rounded-lg h-fit flex flex-col`}
+              style={{
+                backgroundColor: dashboardTheme.colors.parchment,
+                border: `1px solid ${dashboardTheme.colors.borderLight}`,
+              }}
+              whileHover={{
+                backgroundColor: `${dashboardTheme.colors.parchment}dd`,
+                scale: 1.01,
+              }}
+            >
+              <p
+                className={`leading-relaxed flex-1 ${
+                  isTopThree ? "text-sm" : "text-xs md:text-sm"
+                }`}
+                style={{
+                  color: dashboardTheme.colors.textSecondary,
+                  fontFamily: dashboardTheme.fonts.body,
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }}
+              >
                 {preview}
               </p>
-              <div className="flex items-center gap-2 text-xs font-medium mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <Eye className="w-3 h-3" style={{ color: dashboardTheme.colors.accent }} />
-                <span style={{ color: dashboardTheme.colors.accent }}>Read Full Story</span>
-              </div>
-            </div>
+
+              <motion.div
+                className="flex items-center gap-2 max-md:-mt-1 text-xs font-medium mt-3 md:opacity-0 group-hover:opacity-100 transition-all duration-300"
+                initial={{ y: 10 }}
+                whileHover={{ y: 0 }}
+              >
+                <Eye
+                  className="w-3 h-3"
+                  style={{ color: dashboardTheme.colors.accent }}
+                />
+                <span style={{ color: dashboardTheme.colors.accent }}>
+                  Read Full Story
+                </span>
+              </motion.div>
+            </motion.div>
           </div>
 
           {entry.judge_notes && (
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{
-              backgroundColor: `${dashboardTheme.colors.warning}15`,
-              border: `1px solid ${dashboardTheme.colors.warning}30`,
-            }}>
-              <Star className="w-3 h-3" style={{ color: dashboardTheme.colors.warning }} />
-              <span className="text-xs font-medium" style={{ color: dashboardTheme.colors.warning }}>
+            <motion.div
+              className="flex items-center gap-2 px-3 py-2 rounded-lg"
+              style={{
+                backgroundColor: `${dashboardTheme.colors.warning}15`,
+                border: `1px solid ${dashboardTheme.colors.warning}30`,
+              }}
+              whileHover={{ scale: 1.02 }}
+              animate={{
+                backgroundColor: [
+                  `${dashboardTheme.colors.warning}15`,
+                  `${dashboardTheme.colors.warning}25`,
+                  `${dashboardTheme.colors.warning}15`,
+                ],
+              }}
+              transition={{ duration: 3, repeat: Infinity }}
+            >
+              <Star
+                className="w-3 h-3"
+                style={{ color: dashboardTheme.colors.warning }}
+              />
+              <span
+                className="text-xs font-medium"
+                style={{ color: dashboardTheme.colors.warning }}
+              >
                 Note Available
               </span>
-            </div>
+            </motion.div>
           )}
         </div>
 
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-xl"
+        {/* Hover Overlay Effect */}
+        <motion.div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl"
           style={{
-            background: `linear-gradient(to top, ${dashboardTheme.colors.accent}08, transparent)`,
+            background: `linear-gradient(to top, ${dashboardTheme.colors.accent}12, transparent)`,
           }}
         />
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

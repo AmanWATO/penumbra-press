@@ -84,7 +84,7 @@ const WeeklyContestResults = () => {
       className="min-h-screen"
       style={{ backgroundColor: dashboardTheme.colors.primary }}
     >
-      <div className="max-w-7xl mx-auto px-4 max-md:px-5 py-8 max-md:py-6">
+      <div className="max-w-7xl mx-auto  py-8 max-md:py-6">
         <ContestHeader />
 
         {contestData.winners.length > 0 && (

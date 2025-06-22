@@ -1,8 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Trophy } from "lucide-react";
+import { ArrowRight, Trophy } from "lucide-react";
 import { WeekData } from "@/types/weekly-challenge";
 import { dashboardTheme } from "@/styles/theme";
+import Link from "next/link";
 
 interface WeeklyChallengeHeaderProps {
   currentWeek: WeekData;
@@ -86,6 +87,28 @@ const WeeklyChallengeHeader: React.FC<WeeklyChallengeHeaderProps> = ({
             </p>
           </motion.div>
         </div>
+
+        <motion.div
+          className="mt-4 flex max-md:w-full max-md:justify-end sm:justify-end"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <Link href="/weekly-results">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+              className=" text-white px-4 py-2 rounded-lg text-sm sm:text-base font-semibold shadow-sm transition-colors flex items-center gap-1 cursor-pointer"
+              style={{
+                fontFamily: dashboardTheme.fonts.accent,
+                backgroundColor: dashboardTheme.colors.error,
+              }}
+            >
+              <span>View Weekly Results</span>
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+            </motion.button>
+          </Link>
+        </motion.div>
       </div>
     </motion.header>
   );

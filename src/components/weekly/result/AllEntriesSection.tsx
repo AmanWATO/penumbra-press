@@ -25,7 +25,7 @@ export const AllEntriesSection: React.FC<AllEntriesSectionProps> = ({
   };
 
   return (
-    <>
+    <section className="px-4 max-md:px-5">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <div className="text-center mb-8 max-md:mb-4">
           <h2
@@ -34,6 +34,13 @@ export const AllEntriesSection: React.FC<AllEntriesSectionProps> = ({
           >
             All Entries
           </h2>
+
+            <p
+                className="text-sm md:text-base"
+                style={{ color: dashboardTheme.colors.textSecondary }}
+              >
+                Every voice inked, every soul shared — this is where stories find their first breath.
+              </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -52,6 +59,6 @@ export const AllEntriesSection: React.FC<AllEntriesSectionProps> = ({
       {selectedEntry && (
         <EntryPopup entry={selectedEntry} onClose={handleClosePopup} />
       )}
-    </>
+    </section>
   );
 };
