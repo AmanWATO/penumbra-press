@@ -64,9 +64,8 @@ export const fetchWeeklyContestEntries = async (
         genre: item.genre,
         content: item.content,
         judge_notes: item.judge_notes,
-        spotlight_ranks: item.spotlight_rank,
+        spotlight_ranks: item.spotlight_ranks,
         is_winner: item.is_winner,
-        week: item.week || 1, // Default to week 1 if not specified
         created_at: item.created_at,
       })) || []
     );
@@ -92,7 +91,7 @@ export const fetchWeeklyContestStats = async () => {
       winners: entries.filter((entry) => entry.is_winner),
       topFive: entries
         .filter(
-          (entry) => entry.spotlight_rank && entry.spotlight_rank !== "NONE"
+          (entry) => entry.spotlight_ranks && entry.spotlight_ranks!== "NONE"
         )
         .sort((a, b) => {
           // Fixed: Use uppercase keys to match the actual data
@@ -104,9 +103,9 @@ export const fetchWeeklyContestStats = async () => {
             FIFTH: 5,
           };
           const aRank =
-            rankOrder[a.spotlight_rank as keyof typeof rankOrder] || 6;
+            rankOrder[a.spotlight_ranks as keyof typeof rankOrder] || 6;
           const bRank =
-            rankOrder[b.spotlight_rank as keyof typeof rankOrder] || 6;
+            rankOrder[b.spotlight_ranks as keyof typeof rankOrder] || 6;
           return aRank - bRank;
         }),
       allEntries: entries,

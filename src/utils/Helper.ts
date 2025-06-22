@@ -43,3 +43,82 @@ export function getCurrentWeekKey(): string | null {
 
   return null;
 }
+
+
+
+  // Improved text extraction function
+  export const extractTextContent = (content: any): string => {
+    if (typeof content === "string") {
+      return content;
+    }
+
+    if (typeof content === "object" && content !== null) {
+      // Handle rich text editor format (like Slate.js)
+      if (Array.isArray(content)) {
+        return content
+          .map((node) => extractTextFromNode(node))
+          .filter(Boolean)
+          .join("\n\n");
+      }
+
+      // Handle document structure
+      if (content.type === "doc" && Array.isArray(content.content)) {
+        return content.content
+          .map((node: any) => extractTextFromNode(node))
+          .filter(Boolean)
+          .join("\n\n");
+      }
+
+      // Handle single text node
+      if (content.text) return content.text;
+      if (content.content) return extractTextContent(content.content);
+
+      try {
+        return JSON.stringify(content);
+      } catch {
+        return "[Rich content]";
+      }
+    }
+
+    return String(content || "");
+  };
+
+  // Enhanced text extraction from nodes
+  export const extractTextFromNode = (node: any): string => {
+    if (typeof node === "string") return node;
+    if (!node || typeof node !== "object") return "";
+
+    // Handle direct text nodes
+    if (node.type === "text") {
+      return node.text || "";
+    }
+
+    // Handle paragraph nodes with children
+    if (node.type === "paragraph" && Array.isArray(node.children)) {
+      return node.children
+        .map((child: any) => extractTextFromNode(child))
+        .filter(Boolean)
+        .join("");
+    }
+
+    // Handle other node types with children
+    if (Array.isArray(node.children)) {
+      return node.children
+        .map((child: any) => extractTextFromNode(child))
+        .filter(Boolean)
+        .join(" ");
+    }
+
+    // Handle legacy content structure
+    if (Array.isArray(node.content)) {
+      return node.content
+        .map((child: any) => extractTextFromNode(child))
+        .filter(Boolean)
+        .join(" ");
+    }
+
+    // Handle direct text property
+    if (node.text) return node.text;
+
+    return "";
+  };

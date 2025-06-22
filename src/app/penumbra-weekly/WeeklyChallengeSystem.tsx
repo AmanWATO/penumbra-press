@@ -30,10 +30,11 @@ export default function WeeklyChallengeSystem() {
 
   return (
     <div>
-      <WeeklyChallengeHub
+      {/* <WeeklyChallengeHub
         onSelectTheme={setSelectedTheme}
         selectedWeek={currentWeek}
-      />
+      /> */}
+      <WeeklyContestResults/>
     </div>
   );
 }
