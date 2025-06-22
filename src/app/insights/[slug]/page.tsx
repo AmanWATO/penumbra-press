@@ -41,5 +41,5 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function Page({ params: { slug } }: Params) {
   const blog = await getBlogBySlug(slug); // ✅ Await it
   if (!blog) notFound();
-  return <BlogPostPage blog={blog} />;
+  return <BlogPostPage blog={blog} key={blog.id.toString()} />;
 }
