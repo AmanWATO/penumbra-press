@@ -142,7 +142,6 @@ export const WinnersSection: React.FC<WinnersSectionProps> = ({
         animate="visible"
         variants={podiumVariants}
       >
-        {/* Enhanced Header */}
         <motion.div
           className="text-center mb-6 md:mb-10 px-5"
           variants={cardVariants}
