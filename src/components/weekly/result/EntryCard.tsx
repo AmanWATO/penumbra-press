@@ -9,14 +9,14 @@ interface EntryCardProps {
   entry: any;
   index: number;
   isExpanded: boolean;
-  onToggleExpansion: (id: number) => void;
+  onOpenPopup: (entry: any) => void;
 }
 
 export const EntryCard: React.FC<EntryCardProps> = ({
   entry,
   index,
   isExpanded,
-  onToggleExpansion,
+  onOpenPopup,
 }) => {
   const plainTextContent = extractTextContent(entry.content);
   const displayContent = isExpanded
@@ -25,7 +25,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({
 
   return (
     <motion.div
-      className="p-6 rounded-xl transition-all duration-300 hover:scale-105"
+      className="p-5 max-md:p-4 rounded-xl cursor-pointer transition-all duration-300 hover:scale-105"
       style={{
         backgroundColor: dashboardTheme.colors.cardBg,
         border: `1px solid ${dashboardTheme.colors.cardBorder}`,
@@ -34,15 +34,16 @@ export const EntryCard: React.FC<EntryCardProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
+      onClick={() => onOpenPopup(entry)}
     >
       <h3
-        className="text-lg font-bold mb-3"
+        className="text-lg font-bold mb-1 max-md:mb-1"
         style={{ color: dashboardTheme.colors.textPrimary }}
       >
         {entry.title}
       </h3>
 
-      <div className="flex items-center space-x-4 mb-4 text-sm">
+      <div className="flex items-center space-x-4 mb-2 max-md:mb-1 text-sm">
         <span
           className="font-medium"
           style={{ color: dashboardTheme.colors.textSecondary }}
@@ -54,9 +55,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({
             className="w-4 h-4"
             style={{ color: dashboardTheme.colors.textTertiary }}
           />
-          <span
-            style={{ color: dashboardTheme.colors.textTertiary }}
-          >
+          <span style={{ color: dashboardTheme.colors.textTertiary }}>
             {entry.city}
           </span>
         </div>
@@ -81,21 +80,14 @@ export const EntryCard: React.FC<EntryCardProps> = ({
 
       {plainTextContent.length > 200 && (
         <button
-          onClick={() => onToggleExpansion(entry.id)}
-          className="flex items-center space-x-1 text-sm font-medium"
+          onClick={() => onOpenPopup(entry)}
+          className="flex items-center space-x-1 cursor-pointer text-sm font-medium"
           style={{ color: dashboardTheme.colors.accent }}
         >
-          {isExpanded ? (
-            <>
-              <EyeOff className="w-4 h-4" />
-              <span>Show Less</span>
-            </>
-          ) : (
-            <>
-              <Eye className="w-4 h-4" />
-              <span>Read More</span>
-            </>
-          )}
+          <>
+            <Eye className="w-4 h-4" />
+            <span>Read More</span>
+          </>
         </button>
       )}
     </motion.div>

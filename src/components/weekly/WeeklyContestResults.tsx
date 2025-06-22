@@ -14,7 +14,6 @@ import { NoEntriesMessage } from "./result/NoEntriesMessage";
 export function getContestStats(
   entries: WeeklyContestEntry[]
 ): WeeklyContestStats {
-  const spotlightOrder = ["FIRST", "SECOND", "THIRD", "FOURTH", "FIFTH"];
 
   const winners = entries.filter((entry) => entry.is_winner);
 
@@ -40,6 +39,8 @@ const WeeklyContestResults = () => {
 
       try {
         const entries = await fetchWeeklyContestEntries();
+
+        console.log({entries})
 
         const stats = getContestStats(entries);
         setContestData(stats);
@@ -83,7 +84,7 @@ const WeeklyContestResults = () => {
       className="min-h-screen"
       style={{ backgroundColor: dashboardTheme.colors.primary }}
     >
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 max-md:px-5 py-8 max-md:py-6">
         <ContestHeader />
 
         {contestData.winners.length > 0 && (

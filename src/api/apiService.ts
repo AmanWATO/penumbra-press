@@ -30,10 +30,11 @@ export const fetchQuotes = async (): Promise<Quote[]> => {
   }
 };
 
-export const fetchWeeklyContestEntries = async (
-): Promise<WeeklyContestEntry[]> => {
+export const fetchWeeklyContestEntries = async (): Promise<
+  WeeklyContestEntry[]
+> => {
   try {
-    const endpoint =`${apiUrl}/weekly-contests`;
+    const endpoint = `${apiUrl}/weekly-contests`;
 
     const res = await fetch(endpoint, {
       method: "GET",
@@ -48,10 +49,7 @@ export const fetchWeeklyContestEntries = async (
       );
     }
 
-
     const data = await res.json();
-
-
 
     return (
       data?.data?.map((item: WeeklyContestEntry) => ({
@@ -64,7 +62,7 @@ export const fetchWeeklyContestEntries = async (
         genre: item.genre,
         content: item.content,
         judge_notes: item.judge_notes,
-        spotlight_ranks: item.spotlight_ranks,
+        spotlight_rank: item.spotlight_rank,
         is_winner: item.is_winner,
         created_at: item.created_at,
       })) || []
@@ -91,7 +89,7 @@ export const fetchWeeklyContestStats = async () => {
       winners: entries.filter((entry) => entry.is_winner),
       topFive: entries
         .filter(
-          (entry) => entry.spotlight_ranks && entry.spotlight_ranks!== "NONE"
+          (entry) => entry.spotlight_rank && entry.spotlight_rank !== "NONE"
         )
         .sort((a, b) => {
           // Fixed: Use uppercase keys to match the actual data
@@ -103,9 +101,9 @@ export const fetchWeeklyContestStats = async () => {
             FIFTH: 5,
           };
           const aRank =
-            rankOrder[a.spotlight_ranks as keyof typeof rankOrder] || 6;
+            rankOrder[a.spotlight_rank as keyof typeof rankOrder] || 6;
           const bRank =
-            rankOrder[b.spotlight_ranks as keyof typeof rankOrder] || 6;
+            rankOrder[b.spotlight_rank as keyof typeof rankOrder] || 6;
           return aRank - bRank;
         }),
       allEntries: entries,
