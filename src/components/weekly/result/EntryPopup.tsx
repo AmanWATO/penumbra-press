@@ -38,7 +38,7 @@ export const EntryPopup: React.FC<EntryPopupProps> = ({ entry, onClose }) => {
           {/* Header with Close Button */}
           <div className="flex justify-between items-start mb-1 max-md:mb-0">
             <h1
-              className="text-3xl max-md:text-2xl font-bold pr-4"
+              className="text-3xl max-md:text-xl font-bold pr-4"
               style={{ color: dashboardTheme.colors.textPrimary }}
             >
               {entry.title}
@@ -58,7 +58,7 @@ export const EntryPopup: React.FC<EntryPopupProps> = ({ entry, onClose }) => {
           {/* Author Name */}
           <div className="mb-4">
             <span
-              className="text-lg font-medium"
+              className="text-lg max-md:text-base font-medium"
               style={{ color: dashboardTheme.colors.textSecondary }}
             >
               by {entry.author_name}

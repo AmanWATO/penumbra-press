@@ -43,7 +43,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({
         {entry.title}
       </h3>
 
-      <div className="flex items-center space-x-4 mb-2 max-md:mb-1 text-sm">
+      <div className="flex items-center space-x-4 mb-2 max-md:mb-2 text-sm">
         <span
           className="font-medium"
           style={{ color: dashboardTheme.colors.textSecondary }}
