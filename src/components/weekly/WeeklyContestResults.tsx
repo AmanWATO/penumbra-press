@@ -1,3 +1,4 @@
+
 'use client'
 
 import React, { useState, useEffect } from "react";
@@ -8,9 +9,15 @@ import {
   MapPin,
   Eye,
   EyeOff,
+  Users,
+  PenTool,
+  Calendar,
+  Medal,
 } from "lucide-react";
 import { WeeklyContestStats } from "@/api/apiTypes";
 import { fetchWeeklyContestEntries } from "@/api/apiService";
+import { dashboardTheme } from "@/styles/theme";
+import { motion } from "framer-motion";
 
 const WeeklyContestResults = () => {
   const [contestData, setContestData] = useState<WeeklyContestStats>({
@@ -31,17 +38,14 @@ const WeeklyContestResults = () => {
       setError(null);
 
       try {
-        // Call the actual API function directly
         const entries = await fetchWeeklyContestEntries();
        
-        // Process the data locally
         const uniqueEmails = new Set(entries.map((entry) => entry.author_email));
-
         const uniqueAuthors = new Set(
           entries.map((entry) => entry.author_name.toLowerCase())
         );
 
-       const stats = {
+        const stats = {
           totalEntries: entries.length,
           uniqueEntries: uniqueEmails.size,
           uniqueAuthors: uniqueAuthors.size,
@@ -68,11 +72,7 @@ const WeeklyContestResults = () => {
             }),
           allEntries: entries,
         };
-        
 
-        console.log({stats})
-
-        
         setContestData(stats);
       } catch (err) {
         setError("Failed to load contest data");
@@ -101,75 +101,133 @@ const WeeklyContestResults = () => {
   };
 
   const getRankIcon = (rank: string) => {
+    const iconProps = { className: "w-5 h-5 sm:w-6 sm:h-6" };
     switch (rank) {
       case "FIRST":
-        return <Trophy className="w-5 h-5 text-yellow-500" />;
+        return <Trophy {...iconProps} style={{ color: "#FFD700" }} />;
       case "SECOND":
-        return <Award className="w-5 h-5 text-gray-400" />;
+        return <Medal {...iconProps} style={{ color: "#C0C0C0" }} />;
       case "THIRD":
-        return <Award className="w-5 h-5 text-amber-600" />;
+        return <Medal {...iconProps} style={{ color: "#CD7F32" }} />;
       case "FOURTH":
-        return <Star className="w-5 h-5 text-blue-500" />;
+        return <Star {...iconProps} style={{ color: dashboardTheme.colors.info }} />;
       case "FIFTH":
-        return <Star className="w-5 h-5 text-purple-500" />;
+        return <Star {...iconProps} style={{ color: dashboardTheme.colors.accent }} />;
       default:
         return null;
     }
   };
 
-  const getRankColor = (rank: string): string => {
+  const getRankStyle = (rank: string) => {
+    const baseStyle = {
+      borderRadius: dashboardTheme.radius.lg,
+      boxShadow: dashboardTheme.components.button.primary.shadow,
+    };
+
     switch (rank) {
       case "FIRST":
-        return "border-l-4 border-yellow-500 bg-gradient-to-r from-yellow-50 to-white";
+        return {
+          ...baseStyle,
+          background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
+          borderLeft: "4px solid #FFD700",
+        };
       case "SECOND":
-        return "border-l-4 border-gray-400 bg-gradient-to-r from-gray-50 to-white";
+        return {
+          ...baseStyle,
+          background: "linear-gradient(135deg, #C0C0C0 0%, #A8A8A8 100%)",
+          borderLeft: "4px solid #C0C0C0",
+        };
       case "THIRD":
-        return "border-l-4 border-amber-600 bg-gradient-to-r from-amber-50 to-white";
+        return {
+          ...baseStyle,
+          background: "linear-gradient(135deg, #CD7F32 0%, #B8860B 100%)",
+          borderLeft: "4px solid #CD7F32",
+        };
       case "FOURTH":
-        return "border-l-4 border-blue-500 bg-gradient-to-r from-blue-50 to-white";
+        return {
+          ...baseStyle,
+          background: `linear-gradient(135deg, ${dashboardTheme.colors.info} 0%, #87CEEB 100%)`,
+          borderLeft: `4px solid ${dashboardTheme.colors.info}`,
+        };
       case "FIFTH":
-        return "border-l-4 border-purple-500 bg-gradient-to-r from-purple-50 to-white";
+        return {
+          ...baseStyle,
+          background: `linear-gradient(135deg, ${dashboardTheme.colors.accent} 0%, ${dashboardTheme.colors.accentLight} 100%)`,
+          borderLeft: `4px solid ${dashboardTheme.colors.accent}`,
+        };
       default:
-        return "border border-gray-200 bg-white";
+        return {
+          ...baseStyle,
+          backgroundColor: dashboardTheme.colors.cardBg,
+          border: `1px solid ${dashboardTheme.colors.cardBorder}`,
+        };
     }
   };
 
   const getRankDisplayName = (rank: string): string => {
     switch (rank) {
-      case "FIRST":
-        return "1st";
-      case "SECOND":
-        return "2nd";
-      case "THIRD":
-        return "3rd";
-      case "FOURTH":
-        return "4th";
-      case "FIFTH":
-        return "5th";
-      default:
-        return rank;
+      case "FIRST": return "1st Place";
+      case "SECOND": return "2nd Place";
+      case "THIRD": return "3rd Place";
+      case "FOURTH": return "4th Place";
+      case "FIFTH": return "5th Place";
+      default: return rank;
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 text-lg">Loading contest results...</p>
-        </div>
+      <div 
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: dashboardTheme.colors.primary }}
+      >
+        <motion.div 
+          className="text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <div 
+            className="animate-spin rounded-full h-16 w-16 border-b-2 mx-auto mb-4"
+            style={{ borderColor: dashboardTheme.colors.accent }}
+          />
+          <p 
+            className="text-lg"
+            style={{ 
+              color: dashboardTheme.colors.textSecondary,
+              fontFamily: dashboardTheme.fonts.body 
+            }}
+          >
+            Loading contest results...
+          </p>
+        </motion.div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-red-600 text-xl mb-4">{error}</p>
+      <div 
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: dashboardTheme.colors.primary }}
+      >
+        <div className="text-center p-6">
+          <p 
+            className="text-xl mb-4"
+            style={{ 
+              color: dashboardTheme.colors.error,
+              fontFamily: dashboardTheme.fonts.heading 
+            }}
+          >
+            {error}
+          </p>
           <button
             onClick={() => window.location.reload()}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            className="px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105"
+            style={{
+              backgroundColor: dashboardTheme.colors.accent,
+              color: dashboardTheme.colors.activeText,
+              fontFamily: dashboardTheme.fonts.body,
+            }}
           >
             Try Again
           </button>
@@ -178,92 +236,219 @@ const WeeklyContestResults = () => {
     );
   }
 
-  // Separate winners from regular entries
   const winnerIds = new Set(contestData.topFive.map((entry) => entry.id));
   const regularEntries = contestData.allEntries.filter(
     (entry) => !winnerIds.has(entry.id)
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div 
+      className="min-h-screen"
+      style={{ backgroundColor: dashboardTheme.colors.primary }}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4"
+            style={{ 
+              color: dashboardTheme.colors.textPrimary,
+              fontFamily: dashboardTheme.fonts.heading 
+            }}
+          >
             Weekly Contest Results
           </h1>
-          <div className="flex items-center justify-center space-x-4">
-            <span className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold text-lg">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+            <span 
+              className="px-6 py-2 rounded-lg font-semibold text-lg"
+              style={{
+                backgroundColor: dashboardTheme.colors.accent,
+                color: dashboardTheme.colors.activeText,
+                fontFamily: dashboardTheme.fonts.body,
+              }}
+            >
               Week 1
             </span>
           </div>
-        </div>
+
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
+            {[
+              { icon: PenTool, label: "Total Entries", value: contestData.totalEntries },
+              { icon: Users, label: "Authors", value: contestData.uniqueAuthors },
+              { icon: Trophy, label: "Winners", value: contestData.topFive.length },
+            ].map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                className="p-4 rounded-lg text-center"
+                style={{
+                  backgroundColor: dashboardTheme.colors.cardBg,
+                  border: `1px solid ${dashboardTheme.colors.cardBorder}`,
+                  boxShadow: dashboardTheme.colors.cardShadow,
+                }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                <stat.icon 
+                  className="w-6 h-6 mx-auto mb-2"
+                  style={{ color: dashboardTheme.colors.accent }}
+                />
+                <div 
+                  className="text-2xl font-bold"
+                  style={{ 
+                    color: dashboardTheme.colors.textPrimary,
+                    fontFamily: dashboardTheme.fonts.heading 
+                  }}
+                >
+                  {stat.value}
+                </div>
+                <div 
+                  className="text-sm"
+                  style={{ 
+                    color: dashboardTheme.colors.textSecondary,
+                    fontFamily: dashboardTheme.fonts.body 
+                  }}
+                >
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
 
         {/* Winners Section */}
         {contestData.topFive.length > 0 && (
-          <div className="mb-16">
+          <motion.div 
+            className="mb-16"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                🏆 Winners
+              <h2 
+                className="text-2xl sm:text-3xl font-bold mb-2"
+                style={{ 
+                  color: dashboardTheme.colors.textPrimary,
+                  fontFamily: dashboardTheme.fonts.heading 
+                }}
+              >
+                🏆 Contest Winners
               </h2>
-              <p className="text-gray-600">
-                Congratulations to our top performers!
+              <p 
+                style={{ 
+                  color: dashboardTheme.colors.textSecondary,
+                  fontFamily: dashboardTheme.fonts.body 
+                }}
+              >
+                Congratulations to our outstanding performers!
               </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-              {contestData.topFive.map((entry) => {
+              {contestData.topFive.map((entry, index) => {
                 const isExpanded = expandedCards.has(entry.id);
                 const displayContent = isExpanded
                   ? entry.content
                   : truncateText(entry.content);
 
                 return (
-                  <div
+                  <motion.div
                     key={entry.id}
-                    className={`rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 ${getRankColor(
-                      entry.spotlight_rank || ""
-                    )}`}
+                    className="p-6 transition-all duration-300 hover:scale-105"
+                    style={getRankStyle(entry.spotlight_rank || "")}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-2">
                         {getRankIcon(entry.spotlight_rank || "")}
-                        <span className="font-bold text-lg text-gray-900">
-                          {getRankDisplayName(entry.spotlight_rank || "")}{" "}
-                          Place
+                        <span 
+                          className="font-bold text-lg"
+                          style={{ 
+                            color: dashboardTheme.colors.textPrimary,
+                            fontFamily: dashboardTheme.fonts.heading 
+                          }}
+                        >
+                          {getRankDisplayName(entry.spotlight_rank || "")}
                         </span>
                       </div>
                     </div>
 
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
+                    <h3 
+                      className="text-xl font-bold mb-3 leading-tight"
+                      style={{ 
+                        color: dashboardTheme.colors.textPrimary,
+                        fontFamily: dashboardTheme.fonts.heading 
+                      }}
+                    >
                       {entry.title}
                     </h3>
 
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mb-4 text-sm text-gray-600 space-y-1 sm:space-y-0">
-                      <span className="font-medium">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mb-4 text-sm space-y-1 sm:space-y-0">
+                      <span 
+                        className="font-medium"
+                        style={{ 
+                          color: dashboardTheme.colors.textSecondary,
+                          fontFamily: dashboardTheme.fonts.body 
+                        }}
+                      >
                         by {entry.author_name}
                       </span>
                       <div className="flex items-center space-x-1">
-                        <MapPin className="w-4 h-4" />
-                        <span>{entry.city}</span>
+                        <MapPin 
+                          className="w-4 h-4"
+                          style={{ color: dashboardTheme.colors.textTertiary }}
+                        />
+                        <span 
+                          style={{ 
+                            color: dashboardTheme.colors.textTertiary,
+                            fontFamily: dashboardTheme.fonts.body 
+                          }}
+                        >
+                          {entry.city}
+                        </span>
                       </div>
                     </div>
 
                     <div className="mb-4">
-                      <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                      <span 
+                        className="inline-block px-3 py-1 rounded-full text-sm font-medium"
+                        style={{
+                          backgroundColor: `${dashboardTheme.colors.accent}20`,
+                          color: dashboardTheme.colors.accent,
+                          fontFamily: dashboardTheme.fonts.body,
+                        }}
+                      >
                         {entry.genre}
                       </span>
                     </div>
 
                     <div className="mb-4">
-                      <p className="leading-relaxed whitespace-pre-wrap text-gray-700">
+                      <p 
+                        className="leading-relaxed whitespace-pre-wrap"
+                        style={{ 
+                          color: dashboardTheme.colors.textSecondary,
+                          fontFamily: dashboardTheme.fonts.body 
+                        }}
+                      >
                         {displayContent}
                       </p>
 
                       {entry.content && entry.content.length > 300 && (
                         <button
                           onClick={() => toggleCardExpansion(entry.id)}
-                          className="mt-3 flex items-center space-x-1 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+                          className="mt-3 flex items-center space-x-1 text-sm font-medium transition-colors"
+                          style={{ 
+                            color: dashboardTheme.colors.accent,
+                            fontFamily: dashboardTheme.fonts.body 
+                          }}
                         >
                           {isExpanded ? (
                             <>
@@ -281,70 +466,152 @@ const WeeklyContestResults = () => {
                     </div>
 
                     {entry.judge_notes && (
-                      <div className="border-t border-gray-200 pt-4">
-                        <h4 className="font-semibold text-blue-600 mb-2">Judge&apos;s Notes:</h4>
-                        <p className="text-sm text-gray-600 italic leading-relaxed">
+                      <div 
+                        className="border-t pt-4"
+                        style={{ borderColor: dashboardTheme.colors.border }}
+                      >
+                        <h4 
+                          className="font-semibold mb-2"
+                          style={{ 
+                            color: dashboardTheme.colors.accent,
+                            fontFamily: dashboardTheme.fonts.heading 
+                          }}
+                        >
+                          Judge&apos;s Notes:
+                        </h4>
+                        <p 
+                          className="text-sm italic leading-relaxed"
+                          style={{ 
+                            color: dashboardTheme.colors.textTertiary,
+                            fontFamily: dashboardTheme.fonts.body 
+                          }}
+                        >
                           &quot;{entry.judge_notes}&quot;
                         </p>
                       </div>
                     )}
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
-          </div>
+          </motion.div>
         )}
 
+        {/* All Entries Section */}
         {regularEntries.length > 0 && (
-          <div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              <h2 
+                className="text-2xl sm:text-3xl font-bold mb-2"
+                style={{ 
+                  color: dashboardTheme.colors.textPrimary,
+                  fontFamily: dashboardTheme.fonts.heading 
+                }}
+              >
                 All Entries
               </h2>
-              <p className="text-gray-600">Every story deserves to be read</p>
+              <p 
+                style={{ 
+                  color: dashboardTheme.colors.textSecondary,
+                  fontFamily: dashboardTheme.fonts.body 
+                }}
+              >
+                Every story deserves to be read
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {regularEntries.map((entry) => {
+              {regularEntries.map((entry, index) => {
                 const isExpanded = expandedCards.has(entry.id);
                 const displayContent = isExpanded
                   ? entry.content
                   : truncateText(entry.content);
 
                 return (
-                  <div
+                  <motion.div
                     key={entry.id}
-                    className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300"
+                    className="p-6 rounded-xl transition-all duration-300 hover:scale-105"
+                    style={{
+                      backgroundColor: dashboardTheme.colors.cardBg,
+                      border: `1px solid ${dashboardTheme.colors.cardBorder}`,
+                      boxShadow: dashboardTheme.colors.cardShadow,
+                    }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.05 }}
                   >
-                    <h3 className="text-lg font-bold text-gray-900 mb-3">
+                    <h3 
+                      className="text-lg font-bold mb-3"
+                      style={{ 
+                        color: dashboardTheme.colors.textPrimary,
+                        fontFamily: dashboardTheme.fonts.heading 
+                      }}
+                    >
                       {entry.title}
                     </h3>
 
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mb-4 text-sm text-gray-600 space-y-1 sm:space-y-0">
-                      <span className="font-medium">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mb-4 text-sm space-y-1 sm:space-y-0">
+                      <span 
+                        className="font-medium"
+                        style={{ 
+                          color: dashboardTheme.colors.textSecondary,
+                          fontFamily: dashboardTheme.fonts.body 
+                        }}
+                      >
                         by {entry.author_name}
                       </span>
                       <div className="flex items-center space-x-1">
-                        <MapPin className="w-4 h-4" />
-                        <span>{entry.city}</span>
+                        <MapPin 
+                          className="w-4 h-4"
+                          style={{ color: dashboardTheme.colors.textTertiary }}
+                        />
+                        <span 
+                          style={{ 
+                            color: dashboardTheme.colors.textTertiary,
+                            fontFamily: dashboardTheme.fonts.body 
+                          }}
+                        >
+                          {entry.city}
+                        </span>
                       </div>
                     </div>
 
                     <div className="mb-4">
-                      <span className="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
+                      <span 
+                        className="inline-block px-3 py-1 rounded-full text-sm font-medium"
+                        style={{
+                          backgroundColor: `${dashboardTheme.colors.textTertiary}20`,
+                          color: dashboardTheme.colors.textSecondary,
+                          fontFamily: dashboardTheme.fonts.body,
+                        }}
+                      >
                         {entry.genre}
                       </span>
                     </div>
 
                     <div className="mb-4">
-                      <p className="leading-relaxed whitespace-pre-wrap text-gray-700 text-sm">
+                      <p 
+                        className="leading-relaxed whitespace-pre-wrap text-sm"
+                        style={{ 
+                          color: dashboardTheme.colors.textSecondary,
+                          fontFamily: dashboardTheme.fonts.body 
+                        }}
+                      >
                         {displayContent}
                       </p>
 
                       {entry.content && entry.content.length > 300 && (
                         <button
                           onClick={() => toggleCardExpansion(entry.id)}
-                          className="mt-3 flex items-center space-x-1 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+                          className="mt-3 flex items-center space-x-1 text-sm font-medium transition-colors"
+                          style={{ 
+                            color: dashboardTheme.colors.accent,
+                            fontFamily: dashboardTheme.fonts.body 
+                          }}
                         >
                           {isExpanded ? (
                             <>
@@ -362,31 +629,64 @@ const WeeklyContestResults = () => {
                     </div>
 
                     {entry.judge_notes && (
-                      <div className="border-t border-gray-200 pt-4">
-                        <h4 className="font-semibold text-blue-600 mb-2">Judge&apos;s Notes:</h4>
-                        <p className="text-sm text-gray-600 italic leading-relaxed">
+                      <div 
+                        className="border-t pt-4"
+                        style={{ borderColor: dashboardTheme.colors.border }}
+                      >
+                        <h4 
+                          className="font-semibold mb-2"
+                          style={{ 
+                            color: dashboardTheme.colors.accent,
+                            fontFamily: dashboardTheme.fonts.heading 
+                          }}
+                        >
+                          Judge&apos;s Notes:
+                        </h4>
+                        <p 
+                          className="text-sm italic leading-relaxed"
+                          style={{ 
+                            color: dashboardTheme.colors.textTertiary,
+                            fontFamily: dashboardTheme.fonts.body 
+                          }}
+                        >
                           &quot;{entry.judge_notes}&quot;
                         </p>
                       </div>
                     )}
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* No entries message */}
         {contestData.allEntries.length === 0 && (
-          <div className="text-center py-16">
+          <motion.div 
+            className="text-center py-16"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
             <div className="text-6xl mb-4">📝</div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">
+            <h3 
+              className="text-2xl font-bold mb-2"
+              style={{ 
+                color: dashboardTheme.colors.textPrimary,
+                fontFamily: dashboardTheme.fonts.heading 
+              }}
+            >
               No Entries Yet
             </h3>
-            <p className="text-gray-600">
+            <p 
+              style={{ 
+                color: dashboardTheme.colors.textSecondary,
+                fontFamily: dashboardTheme.fonts.body 
+              }}
+            >
               No entries found for Week 1. Check back later!
             </p>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>
