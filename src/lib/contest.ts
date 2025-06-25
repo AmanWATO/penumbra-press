@@ -1,18 +1,18 @@
 export const keyDates = [
   {
     title: "Submission Portal Opens",
-    date: "1st July, 2025",
+    date: "11th July, 2025",
     description: "Begin submitting your entries through our online portal.",
   },
   {
     title: "Early Bird Deadline",
-    date: "15th July, 2025",
+    date: "25th July, 2025",
     description:
       "Last day to submit entries at the reduced rate of ₹99 per entry.",
   },
   {
     title: "Final Deadline",
-    date: "15th August, 2025",
+    date: "31st August, 2025",
     description:
       "Last day to submit entries at the standard rate of ₹149 per entry.",
   },
@@ -22,12 +22,12 @@ export const entryFees = [
   {
     title: "Early Bird Rate:",
     description: "₹99 per entry",
-    note: "(July 1st to July 15th)",
+    note: "(July 11th to July 25th)",
   },
   {
     title: "Standard Rate:",
     description: "₹149 per entry",
-    note: "(July 16th to August 15th)",
+    note: "(July 26th to August 31st)",
   },
   {
     title: "Multiple Entries Discount:",

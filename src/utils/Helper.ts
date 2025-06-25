@@ -2,7 +2,7 @@ import { weeklyThemes } from "@/lib/weeklyChallenge";
 
 export const getCurrentWeek = () => {
   const currentDate = new Date('2025-06-10'); 
-  return weeklyThemes["June 17-23, 2025"];
+  return weeklyThemes["June 24-30, 2025"];
 };
 
 
