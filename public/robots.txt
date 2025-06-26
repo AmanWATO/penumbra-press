@@ -1,9 +1,9 @@
-# *
+# Allow all bots full access
 User-agent: *
-Allow: /
+Disallow:
 
-# Host
-Host: http://localhost:3000
+# Host (Optional, not required by Google)
+Host: https://penumbrapenned.com
 
-# Sitemaps
-Sitemap: http://localhost:3000/sitemap.xml
+# Sitemap location (important for indexing)
+Sitemap: https://penumbrapenned.com/sitemap.xml
