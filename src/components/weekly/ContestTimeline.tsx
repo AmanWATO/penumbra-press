@@ -8,7 +8,7 @@ const ContestTimeline: React.FC = () => {
     {
       icon: BookOpen,
       title: "Weekly Challenges",
-      description: "June 10 - June 30, 2025",
+      description: "June 10 - July 7, 2025",
       delay: 0.1,
     },
     {
