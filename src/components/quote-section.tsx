@@ -57,7 +57,7 @@ export const QuoteSection = () => {
           transition={{ delay: 0.2, duration: 0.8 }}
         >
           <motion.p
-            className={`text-xl md:text-2xl italic mb-4 leading-relaxed ${theme.fonts.heading}`}
+            className={`text-xl md:text-2xl italic mb-4 leading-relaxed ${theme.fonts.math}`}
             style={{ color: quotesTheme.text }}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -75,7 +75,7 @@ export const QuoteSection = () => {
           ></motion.div>
 
           <motion.p
-            className={`text-sm md:text-base ${theme.fonts.body}`}
+            className={`text-sm md:text-base ${theme.fonts.serifAlt}`}
             style={{ color: quotesTheme.subtext }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

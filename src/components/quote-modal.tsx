@@ -152,7 +152,7 @@ const QuoteModal = ({ selectedQuote, onClose }: QuoteModalProps) => {
           >
             {/* Animated Close Button */}
             <motion.button
-              className="absolute top-4 right-4 w-10 h-10 flex cursor-pointer items-center justify-center rounded-full z-10"
+              className="absolute top-6 right-4 w-8 h-8 flex cursor-pointer items-center justify-center rounded-full z-10"
               variants={closeButtonVariants}
               initial="rest"
               whileHover="hover"
@@ -186,7 +186,10 @@ const QuoteModal = ({ selectedQuote, onClose }: QuoteModalProps) => {
               {/* Main quote text with typewriter effect */}
               <motion.div variants={textVariants} className="mt-6 mb-8">
                 <motion.p
-                  className="text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed text-gray-800"
+                  className={`text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed text-gray-800 `}
+                  style={{
+                    fontFamily: theme.fonts.math,
+                  }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{
@@ -215,7 +218,10 @@ const QuoteModal = ({ selectedQuote, onClose }: QuoteModalProps) => {
               {/* Genre and Explanation */}
               <motion.div variants={textVariants}>
                 <motion.h3
-                  className="text-lg mb-3 font-medium text-gray-800"
+                  className={`text-lg mb-3 font-medium text-gray-800 `}
+                  style={{
+                    fontFamily: theme.fonts.button,
+                  }}
                   whileHover={{
                     color: quotesTheme.accent,
                     x: 10,
@@ -226,7 +232,10 @@ const QuoteModal = ({ selectedQuote, onClose }: QuoteModalProps) => {
                 </motion.h3>
 
                 <motion.p
-                  className="text-base text-gray-600 leading-relaxed"
+                  className={`ext-base text-gray-600 leading-relaxed`}
+                  style={{
+                    fontFamily: theme.fonts.serifAlt,
+                  }}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{

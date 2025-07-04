@@ -28,9 +28,18 @@ export const colors = {
 };
 
 export const fonts = {
-  heading: "var(--font-playfair)",
-  body: "var(--font-space-grotesk)",
-  button: "var(--font-poppins)",
+  // 🌟 Primary Roles
+  heading: "var(--font-josefin-sans)",
+  body: "var(--font-open-sans)",
+  button: "var(--font-nunito-sans)",
+
+  // 🔧 Additional Font Utilities
+  serifAlt: "var(--font-noto-serif)",
+  playful: "var(--font-quicksand)",
+  dashboardHeading: "var(--font-ibm-plex-sans)",
+  dashboardBody: "var(--font-inter)",
+  dashboardAccent: "var(--font-space-grotesk)",
+  math: "var(--font-libertinus-math)",
 };
 
 export const dashboardTheme = {

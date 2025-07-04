@@ -280,7 +280,10 @@ function QuotesPage() {
           <div className="relative z-10 max-w-3xl mx-auto">
             <motion.h1
               className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight"
-              style={{ color: quotesTheme.text }}
+              style={{
+                color: quotesTheme.text,
+                fontFamily: theme.fonts.heading,
+              }}
               variants={headerVariants}
             >
               <motion.span
@@ -328,7 +331,10 @@ function QuotesPage() {
 
             <motion.p
               className="text-sm md:text-base lg:text-lg italic max-w-xl mx-auto"
-              style={{ color: quotesTheme.subtext }}
+              style={{
+                color: quotesTheme.subtext,
+                fontFamily: theme.fonts.body,
+              }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
@@ -384,7 +390,10 @@ function QuotesPage() {
                         <div>
                           <motion.div
                             className="mb-4 text-xs tracking-widest uppercase opacity-60"
-                            style={{ color: quotesTheme.quoteNumber }}
+                            style={{
+                              color: quotesTheme.quoteNumber,
+                              fontFamily: theme.fonts.button,
+                            }}
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 0.6, x: 0 }}
                             transition={{
@@ -397,7 +406,10 @@ function QuotesPage() {
 
                           <motion.p
                             className="text-lg md:text-xl lg:text-2xl italic leading-relaxed mb-4"
-                            style={{ color: quotesTheme.text }}
+                            style={{
+                              color: quotesTheme.text,
+                              fontFamily: theme.fonts.math,
+                            }}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{
@@ -441,7 +453,10 @@ function QuotesPage() {
 
                           <motion.p
                             className="text-sm italic"
-                            style={{ color: quotesTheme.explanation }}
+                            style={{
+                              color: quotesTheme.explanation,
+                              fontFamily: theme.fonts.serifAlt,
+                            }}
                             initial={{ opacity: 0, y: 5 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{
@@ -470,7 +485,11 @@ function QuotesPage() {
           <div className="max-w-7xl mx-auto flex flex-col items-center">
             <motion.p
               className="text-sm opacity-70 mb-2"
-              style={{ color: quotesTheme.subtext }}
+              style={{
+                color: quotesTheme.subtext,
+
+                fontFamily: theme.fonts.playful,
+              }}
               whileHover={{ opacity: 1, scale: 1.02 }}
               transition={{ duration: 0.2 }}
             >
@@ -483,6 +502,7 @@ function QuotesPage() {
               whileHover={{
                 scale: 1.05,
                 color: quotesTheme.accent,
+                fontFamily: theme.fonts.serifAlt,
               }}
               transition={{ duration: 0.2 }}
             >

@@ -2,8 +2,13 @@ import type { Metadata } from "next";
 import {
   IBM_Plex_Sans,
   Inter,
+  Josefin_Sans,
+  Noto_Serif,
+  Nunito_Sans,
+  Open_Sans,
   Playfair_Display,
   Poppins,
+  Quicksand,
   Space_Grotesk,
 } from "next/font/google";
 import "./globals.css";
@@ -43,6 +48,39 @@ const ibmPlexSans = IBM_Plex_Sans({
   display: "swap",
 });
 
+const josefinSans = Josefin_Sans({
+  variable: "--font-josefin-sans",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const nunitoSans = Nunito_Sans({
+  variable: "--font-nunito-sans",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+// Open Sans
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const notoSerif = Noto_Serif({
+  variable: "--font-noto-serif",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const quicksand = Quicksand({
+  variable: "--font-quicksand",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
 const GTM_ID = "GTM-K6S8HL33";
 
 export const metadata: Metadata = {
@@ -73,7 +111,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body
-        className={`${playfair.variable} ${spaceGrotesk.variable} ${poppins.variable} ${inter.variable} ${ibmPlexSans.variable} antialiased`}
+        className={`${playfair.variable} ${josefinSans.variable} ${openSans?.variable} ${nunitoSans.variable} ${notoSerif?.variable} ${quicksand?.variable} ${spaceGrotesk.variable} ${poppins.variable} ${inter.variable} ${ibmPlexSans.variable} antialiased`}
       >
         <noscript
           dangerouslySetInnerHTML={{
