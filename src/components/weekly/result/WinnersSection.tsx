@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { dashboardTheme } from "@/styles/theme";
+import { dashboardTheme, fonts } from "@/styles/theme";
 import { WeeklyContestEntry } from "@/api/apiTypes";
 import { useState, useEffect } from "react";
 import WinnerCard from "./WinnerCard";
@@ -163,8 +163,8 @@ export const WinnersSection: React.FC<WinnersSectionProps> = ({
           </motion.div>
 
           <motion.h2
-            className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 bg-clip-text text-transparent"
-            style={{ fontFamily: dashboardTheme.fonts.heading }}
+            className="text-3xl md:text-4xl font-bold mb-1 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 bg-clip-text text-transparent"
+            style={{ fontFamily: fonts.heading }}
             variants={cardVariants}
           >
             The Gilded Quill
@@ -172,7 +172,10 @@ export const WinnersSection: React.FC<WinnersSectionProps> = ({
 
           <motion.p
             className="text-base md:text-xl max-w-3xl mx-auto leading-relaxed"
-            style={{ color: dashboardTheme.colors.textSecondary }}
+            style={{
+              color: dashboardTheme.colors.textSecondary,
+              fontFamily: fonts.body,
+            }}
             variants={cardVariants}
           >
             Celebrating the extraordinary storytellers who captivated hearts and

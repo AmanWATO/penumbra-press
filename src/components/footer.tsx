@@ -101,12 +101,12 @@ export function Footer() {
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center space-x-3 mb-4">
+            <Link href="/" className="flex items-center mb-4">
               <Image
-                src="/penumbra_press_without_text.png"
+                src="/new-logo.png"
                 alt="Penumbra Penned"
-                width={32}
-                height={32}
+                width={48}
+                height={48}
                 className="rounded-md"
               />
               <span

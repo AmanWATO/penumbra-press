@@ -124,7 +124,7 @@ const CountdownTimer = ({ targetDate, onComplete }: CountdownProps) => {
             style={{
               backgroundColor: colors.nightBlue,
               color: colors.parchment,
-              fontFamily: fonts.heading,
+              fontFamily: fonts.button,
               boxShadow: `0 4px 6px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)`,
             }}
           >
@@ -132,7 +132,7 @@ const CountdownTimer = ({ targetDate, onComplete }: CountdownProps) => {
           </div>
           <span
             className="text-xs sm:text-sm mt-1 sm:mt-2 font-medium tracking-wide"
-            style={{ color: colors.lightSepia }}
+            style={{ color: colors.lightSepia, fontFamily: fonts.playful }}
           >
             DAYS
           </span>
@@ -147,7 +147,7 @@ const CountdownTimer = ({ targetDate, onComplete }: CountdownProps) => {
             style={{
               backgroundColor: colors.inkBrown,
               color: colors.parchment,
-              fontFamily: fonts.heading,
+              fontFamily: fonts.button,
               boxShadow: `0 4px 6px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)`,
             }}
           >
@@ -155,7 +155,7 @@ const CountdownTimer = ({ targetDate, onComplete }: CountdownProps) => {
           </div>
           <span
             className="text-xs sm:text-sm mt-1 sm:mt-2 font-medium tracking-wide"
-            style={{ color: colors.lightSepia }}
+            style={{ color: colors.lightSepia, fontFamily: fonts.playful }}
           >
             HOURS
           </span>
@@ -170,7 +170,7 @@ const CountdownTimer = ({ targetDate, onComplete }: CountdownProps) => {
             style={{
               backgroundColor: colors.deepSepia,
               color: colors.parchment,
-              fontFamily: fonts.heading,
+              fontFamily: fonts.button,
               boxShadow: `0 4px 6px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)`,
             }}
           >
@@ -178,7 +178,7 @@ const CountdownTimer = ({ targetDate, onComplete }: CountdownProps) => {
           </div>
           <span
             className="text-xs sm:text-sm mt-1 sm:mt-2 font-medium tracking-wide"
-            style={{ color: colors.lightSepia }}
+            style={{ color: colors.lightSepia, fontFamily: fonts.playful }}
           >
             MINUTES
           </span>
@@ -195,7 +195,7 @@ const CountdownTimer = ({ targetDate, onComplete }: CountdownProps) => {
             style={{
               backgroundColor: colors.darkSepia,
               color: colors.parchment,
-              fontFamily: fonts.heading,
+              fontFamily: fonts.button,
               boxShadow: `0 4px 6px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)`,
             }}
           >
@@ -203,7 +203,7 @@ const CountdownTimer = ({ targetDate, onComplete }: CountdownProps) => {
           </div>
           <span
             className="text-xs sm:text-sm mt-1 sm:mt-2 font-medium tracking-wide"
-            style={{ color: colors.lightSepia }}
+            style={{ color: colors.lightSepia, fontFamily: fonts.playful }}
           >
             SECONDS
           </span>

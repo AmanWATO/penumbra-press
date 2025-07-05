@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { dashboardTheme } from "@/styles/theme";
+import { dashboardTheme, fonts } from "@/styles/theme";
 
 export const ContestHeader: React.FC = () => {
   return (
@@ -11,7 +11,10 @@ export const ContestHeader: React.FC = () => {
     >
       <h1
         className="text-4xl max-md:text-2xl font-bold mb-4"
-        style={{ color: dashboardTheme.colors.textPrimary }}
+        style={{
+          color: dashboardTheme.colors.textPrimary,
+          fontFamily: fonts.heading,
+        }}
       >
         Weekly Contest Results
       </h1>
@@ -20,13 +23,17 @@ export const ContestHeader: React.FC = () => {
         style={{
           backgroundColor: dashboardTheme.colors.accent,
           color: dashboardTheme.colors.activeText,
+          fontFamily: fonts.serifAlt,
         }}
       >
         Week 1
       </span>
       <p
         className="mt-2 text-sm font-medium"
-        style={{ color: dashboardTheme.colors.textSecondary }}
+        style={{
+          color: dashboardTheme.colors.textSecondary,
+          fontFamily: fonts.playful,
+        }}
       >
         Jun 10 – Jun 16
       </p>

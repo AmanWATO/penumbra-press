@@ -334,7 +334,7 @@ function AuthorPage() {
                   whileHover="hover"
                   whileTap="tap"
                   onClick={() => setSelectedGenre(genre)}
-                  className={`px-5 max-sm:px-3 py-2.5 max-sm:py-2 rounded-lg transition-all cursor-pointer text-sm max-sm:text-xs font-medium ${
+                  className={`px-5 max-sm:px-3 py-2.5 max-sm:py-2 rounded-md transition-all cursor-pointer text-sm max-sm:text-xs font-medium ${
                     selectedGenre === genre
                       ? "text-white shadow-md"
                       : "hover:shadow-sm"
@@ -351,6 +351,7 @@ function AuthorPage() {
                         ? colors.inkBrown
                         : `${colors.mediumSepia}30`
                     }`,
+                    fontFamily: theme.fonts.playful,
                   }}
                 >
                   {genre}
@@ -413,6 +414,7 @@ function AuthorPage() {
                             style={{
                               textShadow:
                                 "0 2px 8px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.9)",
+                              fontFamily: theme.fonts.serifAlt,
                             }}
                           >
                             {book.title}
@@ -422,6 +424,7 @@ function AuthorPage() {
                               className="text-sm max-sm:text-xs text-white font-medium"
                               style={{
                                 textShadow: "0 1px 4px rgba(0,0,0,0.8)",
+                                fontFamily: theme.fonts.playful,
                               }}
                             >
                               {book.publicationYear}
@@ -434,6 +437,7 @@ function AuthorPage() {
                                 color: "white",
                                 textShadow: "0 1px 2px rgba(0,0,0,0.5)",
                                 border: "1px solid rgba(255,255,255,0.2)",
+                                fontFamily: theme.fonts.playful,
                               }}
                             >
                               {book.genre}
@@ -447,6 +451,9 @@ function AuthorPage() {
                           className="text-gray-600 mb-4 max-sm:mb-3 line-clamp-3 text-sm max-sm:text-xs leading-relaxed"
                           initial={{ opacity: 0.8 }}
                           whileHover={{ opacity: 1 }}
+                          style={{
+                            fontFamily: theme.fonts.math,
+                          }}
                         >
                           {book.description}
                         </motion.p>
@@ -472,7 +479,13 @@ function AuthorPage() {
                                     color="#FF9900"
                                     className="max-sm:w-3 max-sm:h-3"
                                   />
-                                  <span>Buy on Amazon</span>
+                                  <span
+                                    style={{
+                                      fontFamily: theme.fonts.button,
+                                    }}
+                                  >
+                                    Buy on Amazon
+                                  </span>
                                 </div>
                                 <IoIosArrowForward
                                   size={14}
@@ -499,7 +512,13 @@ function AuthorPage() {
                                     color="#F8D706"
                                     className="max-sm:w-3 max-sm:h-3"
                                   />
-                                  <span>Buy on Flipkart</span>
+                                  <span
+                                    style={{
+                                      fontFamily: theme.fonts.button,
+                                    }}
+                                  >
+                                    Buy on Flipkart
+                                  </span>
                                 </div>
                                 <IoIosArrowForward
                                   size={14}
@@ -534,7 +553,13 @@ function AuthorPage() {
                                 size={14}
                                 className="max-sm:w-3 max-sm:h-3"
                               />
-                              <span>Read More</span>
+                              <span
+                                style={{
+                                  fontFamily: theme.fonts.button,
+                                }}
+                              >
+                                Read More
+                              </span>
                             </div>
                             <IoIosArrowForward
                               size={14}

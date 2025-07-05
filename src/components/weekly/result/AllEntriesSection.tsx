@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { dashboardTheme } from "@/styles/theme";
+import { dashboardTheme, fonts } from "@/styles/theme";
 import { EntryCard } from "./EntryCard";
 import { EntryPopup } from "./EntryPopup";
 
@@ -30,17 +30,24 @@ export const AllEntriesSection: React.FC<AllEntriesSectionProps> = ({
         <div className="text-center mb-8 max-md:mb-4">
           <h2
             className="text-2xl max-md:text-xl font-bold mb-2"
-            style={{ color: dashboardTheme.colors.textPrimary }}
+            style={{
+              color: dashboardTheme.colors.textPrimary,
+              fontFamily: fonts.heading,
+            }}
           >
             All Entries
           </h2>
 
-            <p
-                className="text-sm md:text-base"
-                style={{ color: dashboardTheme.colors.textSecondary }}
-              >
-                Every voice inked, every soul shared — this is where stories find their first breath.
-              </p>
+          <p
+            className="text-sm md:text-base"
+            style={{
+              color: dashboardTheme.colors.textSecondary,
+              fontFamily: fonts.body,
+            }}
+          >
+            Every voice inked, every soul shared — this is where stories find
+            their first breath.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

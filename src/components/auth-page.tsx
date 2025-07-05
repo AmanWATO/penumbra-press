@@ -185,7 +185,7 @@ export default function AuthPage({ mode }: AuthFormProps) {
         className="absolute top-10 max-md:left-5 left-10 cursor-pointer"
       >
         <Image
-          src="/penumbra_press_without_text.png"
+          src="/penumbra_penned.png"
           alt="Penumbra Penned"
           width={60}
           height={60}

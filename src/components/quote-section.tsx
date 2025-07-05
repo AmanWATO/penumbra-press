@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import theme from "@/styles/theme";
+import theme, { fonts } from "@/styles/theme";
 import { Quote } from "@/api/apiTypes";
 import { fetchQuotes } from "@/api/apiService";
 import { motion } from "framer-motion";
@@ -41,8 +41,8 @@ export const QuoteSection = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <motion.h2
-          className={`text-2xl md:text-3xl mb-8 font-bold ${theme.fonts.heading}`}
-          style={{ color: quotesTheme.text }}
+          className={`text-2xl md:text-3xl mb-8 font-bold`}
+          style={{ color: quotesTheme.text, fontFamily: fonts.heading }}
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6 }}
@@ -57,8 +57,8 @@ export const QuoteSection = () => {
           transition={{ delay: 0.2, duration: 0.8 }}
         >
           <motion.p
-            className={`text-xl md:text-2xl italic mb-4 leading-relaxed ${theme.fonts.math}`}
-            style={{ color: quotesTheme.text }}
+            className={`text-xl md:text-2xl italic mb-4 leading-relaxed`}
+            style={{ color: quotesTheme.text, fontFamily: fonts.math }}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.7 }}
@@ -75,8 +75,8 @@ export const QuoteSection = () => {
           ></motion.div>
 
           <motion.p
-            className={`text-sm md:text-base ${theme.fonts.serifAlt}`}
-            style={{ color: quotesTheme.subtext }}
+            className={`text-sm md:text-base `}
+            style={{ color: quotesTheme.subtext, fontFamily: fonts.math }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.6 }}

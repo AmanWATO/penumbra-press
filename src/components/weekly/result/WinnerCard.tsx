@@ -10,7 +10,7 @@ import {
   Crown,
   Sparkles,
 } from "lucide-react";
-import { dashboardTheme } from "@/styles/theme";
+import { dashboardTheme, fonts } from "@/styles/theme";
 import { extractTextContent } from "@/utils/Helper";
 import { motion } from "framer-motion";
 
@@ -178,7 +178,7 @@ const WinnerCard: React.FC<WinnerCardProps> = ({
 
         <div className="absolute top-3 left-3 z-20">
           <motion.div
-            className="flex items-center gap-2 px-3 py-2 max-md:gap-1 rounded-full font-bold text-sm shadow-lg"
+            className="flex items-center gap-[6px] px-3 py-2 max-md:gap-1 rounded-md font-bold text-sm shadow-lg"
             style={{
               background: rankColors.bg,
               color: rankColors.text,
@@ -202,10 +202,14 @@ const WinnerCard: React.FC<WinnerCardProps> = ({
             }}
           >
             {getRankIcon(entry.spotlight_rank)}
-            <span className="font-bold max-md:text-xs">
+            <span
+              style={{
+                fontFamily: fonts.playful,
+              }}
+              className="font-bold max-md:text-xs"
+            >
               {getRankDisplayName(entry.spotlight_rank, index)}
             </span>
-            {isTopThree && <Sparkles className="w-3 h-3 max-md:hidden ml-1" />}
           </motion.div>
         </div>
 
@@ -218,6 +222,7 @@ const WinnerCard: React.FC<WinnerCardProps> = ({
                 backgroundColor: `${dashboardTheme.colors.parchment}ee`,
                 color: dashboardTheme.colors.textSecondary,
                 border: `1px solid ${dashboardTheme.colors.borderLight}`,
+                fontFamily: fonts.button,
               }}
               whileHover={{ scale: 1.05 }}
             >
@@ -236,7 +241,7 @@ const WinnerCard: React.FC<WinnerCardProps> = ({
               }`}
               style={{
                 color: dashboardTheme.colors.textPrimary,
-                fontFamily: dashboardTheme.fonts.heading,
+                fontFamily: fonts.dashboardHeading,
               }}
               whileHover={{ scale: 1.01 }}
             >
@@ -261,7 +266,10 @@ const WinnerCard: React.FC<WinnerCardProps> = ({
               </div>
               <span
                 className="font-medium text-sm truncate"
-                style={{ color: dashboardTheme.colors.textPrimary }}
+                style={{
+                  color: dashboardTheme.colors.textPrimary,
+                  fontFamily: fonts.serifAlt,
+                }}
               >
                 {entry.author_name}
               </span>
@@ -278,7 +286,10 @@ const WinnerCard: React.FC<WinnerCardProps> = ({
                 />
                 <span
                   className="text-xs"
-                  style={{ color: dashboardTheme.colors.textTertiary }}
+                  style={{
+                    color: dashboardTheme.colors.textTertiary,
+                    fontFamily: fonts.math,
+                  }}
                 >
                   {entry.city}
                 </span>
@@ -304,7 +315,8 @@ const WinnerCard: React.FC<WinnerCardProps> = ({
                 }`}
                 style={{
                   color: dashboardTheme.colors.textSecondary,
-                  fontFamily: dashboardTheme.fonts.body,
+                  fontFamily: fonts.math,
+
                   display: "-webkit-box",
                   WebkitBoxOrient: "vertical",
                   overflow: "hidden",
@@ -314,7 +326,7 @@ const WinnerCard: React.FC<WinnerCardProps> = ({
               </p>
 
               <motion.div
-                className="flex items-center gap-2 max-md:-mt-1 text-xs font-medium mt-3 md:opacity-0 group-hover:opacity-100 transition-all duration-300"
+                className="flex items-center gap-2 max-md:-mt-1 text-xs font-medium mt-3 group-hover:opacity-100 transition-all duration-300"
                 initial={{ y: 10 }}
                 whileHover={{ y: 0 }}
               >
@@ -322,7 +334,12 @@ const WinnerCard: React.FC<WinnerCardProps> = ({
                   className="w-3 h-3"
                   style={{ color: dashboardTheme.colors.accent }}
                 />
-                <span style={{ color: dashboardTheme.colors.accent }}>
+                <span
+                  style={{
+                    color: dashboardTheme.colors.accent,
+                    fontFamily: fonts.button,
+                  }}
+                >
                   Read Full Story
                 </span>
               </motion.div>
@@ -331,7 +348,7 @@ const WinnerCard: React.FC<WinnerCardProps> = ({
 
           {entry.judge_notes && (
             <motion.div
-              className="flex items-center gap-2 px-3 py-2 rounded-lg"
+              className="flex items-center gap-2 px-3 py-2 rounded-sm"
               style={{
                 backgroundColor: `${dashboardTheme.colors.warning}15`,
                 border: `1px solid ${dashboardTheme.colors.warning}30`,
@@ -352,7 +369,10 @@ const WinnerCard: React.FC<WinnerCardProps> = ({
               />
               <span
                 className="text-xs font-medium"
-                style={{ color: dashboardTheme.colors.warning }}
+                style={{
+                  color: dashboardTheme.colors.warning,
+                  fontFamily: fonts.playful,
+                }}
               >
                 Note Available
               </span>

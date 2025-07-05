@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { MapPin, Eye, EyeOff } from "lucide-react";
-import { dashboardTheme } from "@/styles/theme";
+import { dashboardTheme, fonts } from "@/styles/theme";
 import { extractTextContent } from "@/utils/Helper";
 import { truncateText } from "@/utils/cardUtils";
 
@@ -38,7 +38,10 @@ export const EntryCard: React.FC<EntryCardProps> = ({
     >
       <h3
         className="text-lg font-bold mb-1 max-md:mb-1"
-        style={{ color: dashboardTheme.colors.textPrimary }}
+        style={{
+          color: dashboardTheme.colors.textPrimary,
+          fontFamily: fonts.dashboardHeading,
+        }}
       >
         {entry.title}
       </h3>
@@ -46,7 +49,10 @@ export const EntryCard: React.FC<EntryCardProps> = ({
       <div className="flex items-center space-x-4 mb-2 max-md:mb-2 text-sm">
         <span
           className="font-medium"
-          style={{ color: dashboardTheme.colors.textSecondary }}
+          style={{
+            color: dashboardTheme.colors.textSecondary,
+            fontFamily: fonts.serifAlt,
+          }}
         >
           by {entry.author_name}
         </span>
@@ -55,7 +61,12 @@ export const EntryCard: React.FC<EntryCardProps> = ({
             className="w-4 h-4"
             style={{ color: dashboardTheme.colors.textTertiary }}
           />
-          <span style={{ color: dashboardTheme.colors.textTertiary }}>
+          <span
+            style={{
+              color: dashboardTheme.colors.textTertiary,
+              fontFamily: fonts.math,
+            }}
+          >
             {entry.city}
           </span>
         </div>
@@ -66,6 +77,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({
         style={{
           backgroundColor: `${dashboardTheme.colors.textTertiary}20`,
           color: dashboardTheme.colors.textSecondary,
+          fontFamily: fonts.button,
         }}
       >
         {entry.genre}
@@ -73,7 +85,10 @@ export const EntryCard: React.FC<EntryCardProps> = ({
 
       <p
         className="leading-relaxed text-sm mb-4"
-        style={{ color: dashboardTheme.colors.textSecondary }}
+        style={{
+          color: dashboardTheme.colors.textSecondary,
+          fontFamily: fonts.math,
+        }}
       >
         {displayContent}
       </p>
@@ -82,7 +97,10 @@ export const EntryCard: React.FC<EntryCardProps> = ({
         <button
           onClick={() => onOpenPopup(entry)}
           className="flex items-center space-x-1 cursor-pointer text-sm font-medium"
-          style={{ color: dashboardTheme.colors.accent }}
+          style={{
+            color: dashboardTheme.colors.accent,
+            fontFamily: fonts.button,
+          }}
         >
           <>
             <Eye className="w-4 h-4" />

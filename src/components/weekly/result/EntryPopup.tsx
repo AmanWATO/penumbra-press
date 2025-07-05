@@ -1,14 +1,13 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
-import { dashboardTheme } from "@/styles/theme";
+import { dashboardTheme, fonts } from "@/styles/theme";
 import { extractTextContent } from "@/utils/Helper";
 import { WeeklyContestEntry } from "@/api/apiTypes";
 
 interface EntryPopupProps {
   entry: WeeklyContestEntry;
   onClose: () => void;
-  
 }
 
 export const EntryPopup: React.FC<EntryPopupProps> = ({ entry, onClose }) => {
@@ -39,16 +38,19 @@ export const EntryPopup: React.FC<EntryPopupProps> = ({ entry, onClose }) => {
           <div className="flex justify-between items-start mb-1 max-md:mb-0">
             <h1
               className="text-3xl max-md:text-xl font-bold pr-4"
-              style={{ color: dashboardTheme.colors.textPrimary }}
+              style={{
+                color: dashboardTheme.colors.textPrimary,
+                fontFamily: fonts.serifAlt,
+              }}
             >
               {entry.title}
             </h1>
             <button
               onClick={onClose}
               className="p-2 rounded-full cursor-pointer hover:bg-opacity-20 transition-colors"
-              style={{ 
+              style={{
                 backgroundColor: `${dashboardTheme.colors.textTertiary}10`,
-                color: dashboardTheme.colors.textSecondary 
+                color: dashboardTheme.colors.textSecondary,
               }}
             >
               <X className="w-6 h-6" />
@@ -59,7 +61,10 @@ export const EntryPopup: React.FC<EntryPopupProps> = ({ entry, onClose }) => {
           <div className="mb-4">
             <span
               className="text-lg max-md:text-base font-medium"
-              style={{ color: dashboardTheme.colors.textSecondary }}
+              style={{
+                color: dashboardTheme.colors.textSecondary,
+                fontFamily: fonts.playful,
+              }}
             >
               by {entry.author_name}
             </span>
@@ -69,7 +74,10 @@ export const EntryPopup: React.FC<EntryPopupProps> = ({ entry, onClose }) => {
           <div className="mb-6">
             <div
               className="prose prose-lg max-w-none whitespace-pre-wrap"
-              style={{ color: dashboardTheme.colors.textSecondary }}
+              style={{
+                color: dashboardTheme.colors.textSecondary,
+                fontFamily: fonts.body,
+              }}
             >
               {plainTextContent}
             </div>
@@ -83,20 +91,26 @@ export const EntryPopup: React.FC<EntryPopupProps> = ({ entry, onClose }) => {
             >
               <h3
                 className="text-xl font-bold mb-2"
-                style={{ color: dashboardTheme.colors.textPrimary }}
+                style={{
+                  color: dashboardTheme.colors.textPrimary,
+                  fontFamily: fonts.playful,
+                }}
               >
                 Note:
               </h3>
               <div
                 className="p-4 max-md:p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: `${dashboardTheme.colors.accent}10`,
-                  border: `1px solid ${dashboardTheme.colors.accent}30`
+                  border: `1px solid ${dashboardTheme.colors.accent}30`,
                 }}
               >
                 <p
                   className="leading-relaxed max-md:leading-[140%] max-md:text-sm"
-                  style={{ color: dashboardTheme.colors.textSecondary }}
+                  style={{
+                    color: dashboardTheme.colors.textSecondary,
+                    fontFamily: fonts.body,
+                  }}
                 >
                   {entry.judge_notes}
                 </p>

@@ -1,24 +1,23 @@
-'use client'
-
+"use client";
 
 import React from "react";
 import { BookOpen, ArrowRight, Sparkles } from "lucide-react";
 import { BookProps, books } from "@/lib/utils";
-import { colors } from "@/styles/theme";
+import theme, { colors } from "@/styles/theme";
 import Image from "next/image";
 
 function BookCard({ book, index }: { book: BookProps; index: number }) {
   return (
     <div
-      className="rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 h-full group cursor-pointer transform hover:scale-105"
+      className="rounded-3xl overflow-hidden flex shadow-lg hover:shadow-2xl transition-all duration-500 h-full group cursor-pointer transform hover:scale-105 flex-col items-center justify-between"
       style={{
-        backgroundColor: colors.cream,
+        backgroundColor: colors.parchment,
         animation: `fadeInUp 0.6s ease-out ${index * 0.2}s both`,
       }}
     >
       <div className="p-6 pb-0">
         <div
-          className="rounded-2xl overflow-hidden aspect-[4/5] relative mb-6 group-hover:scale-105 transition-transform duration-500"
+          className="rounded-lg overflow-hidden aspect-[4/5] relative mb-6 group-hover:scale-105 transition-transform duration-500"
           style={{
             background: `linear-gradient(135deg, ${colors.softEggshell}, ${colors.parchment})`,
           }}
@@ -43,6 +42,7 @@ function BookCard({ book, index }: { book: BookProps; index: number }) {
           style={{
             color: colors.darkGray,
             animation: `fadeIn 0.8s ease-out ${0.3 + index * 0.1}s both`,
+            fontFamily: theme.fonts.serifAlt,
           }}
         >
           {book.title}
@@ -53,6 +53,7 @@ function BookCard({ book, index }: { book: BookProps; index: number }) {
           style={{
             color: colors.gray700,
             animation: `fadeIn 0.8s ease-out ${0.4 + index * 0.1}s both`,
+            fontFamily: theme.fonts.math,
           }}
         >
           {book.description.length > 150
@@ -61,12 +62,13 @@ function BookCard({ book, index }: { book: BookProps; index: number }) {
         </p>
       </div>
 
-      <div className="p-6 pt-0">
+      <div className="p-5 w-full pt-0">
         <button
-          className="w-full py-3 px-6 rounded-2xl font-semibold text-center flex items-center justify-center gap-2 transition-all duration-300 group/btn transform hover:scale-105 active:scale-95"
+          className="w-full py-3 px-5 rounded-md font-semibold text-center flex items-center justify-center gap-2 transition-all duration-300 group/btn transform hover:scale-105 active:scale-95"
           style={{
             background: `linear-gradient(135deg, ${colors.deepSepia}, ${colors.inkBrown})`,
             color: colors.cream,
+            fontFamily: theme.fonts.button,
           }}
           onMouseEnter={(e) => {
             (
@@ -115,6 +117,7 @@ function ComingSoonCard() {
           style={{
             color: colors.darkGray,
             animation: `fadeIn 0.8s ease-out 0.6s both`,
+            fontFamily: theme.fonts.dashboardHeading,
           }}
         >
           Coming Soon
@@ -125,6 +128,7 @@ function ComingSoonCard() {
           style={{
             color: colors.gray700,
             animation: `fadeIn 0.8s ease-out 0.7s both`,
+            fontFamily: theme.fonts.dashboardBody,
           }}
         >
           More stories await beyond the horizon. New literary journeys are being
@@ -146,7 +150,7 @@ function ComingSoonCard() {
 export default function BooksSection() {
   return (
     <section
-      className="py-20 min-h-screen relative overflow-hidden"
+      className="py-12  pb-16 min-h-screen relative overflow-hidden"
       id="books"
       style={{
         background: `radial-gradient(ellipse at center, ${colors.softBeige} 0%, ${colors.gray100} 25%, ${colors.parchment} 50%, ${colors.lightSepia} 75%, ${colors.mediumSepia} 100%)`,
@@ -178,7 +182,10 @@ export default function BooksSection() {
             <BookOpen className="w-5 h-5" style={{ color: colors.deepSepia }} />
             <span
               className="text-sm font-medium"
-              style={{ color: colors.deepSepia }}
+              style={{
+                color: colors.deepSepia,
+                fontFamily: theme.fonts.button,
+              }}
             >
               Literary Collection
             </span>
@@ -189,6 +196,7 @@ export default function BooksSection() {
             style={{
               color: colors.darkGray,
               animation: "fadeIn 0.8s ease-out 0.3s both",
+              fontFamily: theme.fonts.heading,
             }}
           >
             Latest Literary Journeys
@@ -199,6 +207,7 @@ export default function BooksSection() {
             style={{
               color: colors.gray700,
               animation: "fadeIn 0.8s ease-out 0.4s both",
+              fontFamily: theme.fonts.body,
             }}
           >
             Discover stories that touch the soul, crafted with passion and meant

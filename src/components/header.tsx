@@ -107,20 +107,20 @@ export function Header() {
         fontFamily: theme.fonts.body,
       }}
     >
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="container mx-auto px-4 py-4 pb-3 flex items-center justify-between">
         <div
           onClick={() => handleNavigation("/")}
-          className="flex items-center space-x-3 cursor-pointer"
+          className="flex items-center cursor-pointer"
         >
           <Image
-            src="/penumbra_press_without_text.png"
+            src="/new-logo.png"
             alt="Penumbra Penned"
-            width={40}
-            height={40}
-            className="rounded-md"
+            width={60}
+            height={60}
+            className="rounded-sm"
           />
           <span
-            className="text-xl font-semibold"
+            className="text-2xl font-bold"
             style={{
               fontFamily: theme.fonts.heading,
               color: theme.sections.headFoot.text,
