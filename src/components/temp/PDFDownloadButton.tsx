@@ -25,7 +25,7 @@ const PDFDownloadButton: React.FC<PDFDownloadButtonProps> = ({
 
   const fetchWeek1Entries = async (): Promise<WeeklyContestEntry[]> => {
     try {
-      const entriesRef = collection(db, "weekly-contests", "week-1", "entries");
+      const entriesRef = collection(db, "weekly-contests", "week-2", "entries");
       const querySnapshot = await getDocs(entriesRef);
 
       const entries: WeeklyContestEntry[] = [];
