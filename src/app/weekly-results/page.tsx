@@ -1,7 +1,13 @@
+import React, { Suspense } from "react";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 import { Metadata } from "next";
-import WeeklyContestResults from "@/components/weekly/WeeklyContestResults";
-import React from "react";
+
+// Dynamically import your component (CSR only)
+const WeeklyContestResults = dynamic(
+  () => import("@/components/weekly/WeeklyContestResults"),
+  { ssr: false }
+);
 
 export const metadata: Metadata = {
   title: "Weekly Writing Results | Penumbra Penned",
@@ -76,7 +82,9 @@ export default function WeeklyResultsPage() {
       </Head>
 
       <section>
-        <WeeklyContestResults />
+        <Suspense fallback={<p className="text-center mt-10 text-gray-500">Loading results... ✍️</p>}>
+          <WeeklyContestResults />
+        </Suspense>
       </section>
     </>
   );
