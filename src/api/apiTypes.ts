@@ -18,6 +18,7 @@ export interface WeeklyContestEntry {
   spotlight_rank: 'FIRST' | 'SECOND' | 'THIRD' | 'FOURTH' | 'FIFTH' | 'NONE' | null;
   is_winner: boolean;
   created_at?: string;
+  weekNumber?: 'FIRST' | 'SECOND' | 'THIRD'
 }
 
 export interface WeeklyContestStats {

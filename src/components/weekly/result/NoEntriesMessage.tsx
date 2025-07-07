@@ -17,7 +17,7 @@ export const NoEntriesMessage: React.FC = () => {
         No Entries Yet
       </h3>
       <p style={{ color: dashboardTheme.colors.textSecondary }}>
-        No entries found for Week 1. Check back later!
+        No entries found for this Week. Check back later!
       </p>
     </motion.div>
   );

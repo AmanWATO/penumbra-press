@@ -34,7 +34,7 @@ export const fetchWeeklyContestEntries = async (): Promise<
   WeeklyContestEntry[]
 > => {
   try {
-    const endpoint = `${apiUrl}/weekly-contests`;
+    const endpoint = `${apiUrl}/weekly-contests?populate=*&pagination[limit]=1000`
 
     const res = await fetch(endpoint, {
       method: "GET",
@@ -65,6 +65,7 @@ export const fetchWeeklyContestEntries = async (): Promise<
         spotlight_rank: item.spotlight_rank,
         is_winner: item.is_winner,
         created_at: item.created_at,
+        weekNumber: item.weekNumber
       })) || []
     );
   } catch (error) {

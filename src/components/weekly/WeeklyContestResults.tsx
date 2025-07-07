@@ -10,11 +10,11 @@ import { ContestHeader } from "./result/ContestHeader";
 import { WinnersSection } from "./result/WinnersSection";
 import { AllEntriesSection } from "./result/AllEntriesSection";
 import { NoEntriesMessage } from "./result/NoEntriesMessage";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export function getContestStats(
   entries: WeeklyContestEntry[]
 ): WeeklyContestStats {
-
   const winners = entries.filter((entry) => entry.is_winner);
 
   return {
@@ -24,6 +24,10 @@ export function getContestStats(
 }
 
 const WeeklyContestResults = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentWeek = parseInt(searchParams.get("week") || "1") as 1 | 2 | 3;
+
   const [contestData, setContestData] = useState<WeeklyContestStats>({
     winners: [],
     allEntries: [],
@@ -40,9 +44,18 @@ const WeeklyContestResults = () => {
       try {
         const entries = await fetchWeeklyContestEntries();
 
-        console.log({entries})
+        const weekMapping = {
+          1: "FIRST",
+          2: "SECOND",
+          3: "THIRD",
+        } as const;
 
-        const stats = getContestStats(entries);
+        const filteredEntries = entries.filter(
+          (entry) => entry.weekNumber === weekMapping[currentWeek]
+        );
+
+
+        const stats = getContestStats(filteredEntries);
         setContestData(stats);
       } catch (err) {
         setError("Failed to load contest data");
@@ -53,7 +66,17 @@ const WeeklyContestResults = () => {
     };
 
     loadContestData();
-  }, []);
+  }, [currentWeek]);
+
+  const handleWeekChange = (week: number) => {
+    const params = new URLSearchParams(searchParams);
+    if (week === 1) {
+      params.delete("week"); // Remove week param for default week 1
+    } else {
+      params.set("week", week.toString());
+    }
+    router.push(`?${params.toString()}`);
+  };
 
   const toggleCardExpansion = (id: number) => {
     const newExpanded = new Set(expandedCards);
@@ -85,7 +108,10 @@ const WeeklyContestResults = () => {
       style={{ backgroundColor: dashboardTheme.colors.primary }}
     >
       <div className="max-w-7xl mx-auto  py-8 max-md:py-6 md:pb-16 max-md:pb-10">
-        <ContestHeader />
+        <ContestHeader
+          currentWeek={currentWeek}
+          onWeekChange={handleWeekChange}
+        />
 
         {contestData.winners.length > 0 && (
           <WinnersSection

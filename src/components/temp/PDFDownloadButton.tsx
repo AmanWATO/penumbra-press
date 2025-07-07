@@ -25,7 +25,7 @@ const PDFDownloadButton: React.FC<PDFDownloadButtonProps> = ({
 
   const fetchWeek1Entries = async (): Promise<WeeklyContestEntry[]> => {
     try {
-      const entriesRef = collection(db, "weekly-contests", "week-2", "entries");
+      const entriesRef = collection(db, "weekly-contests", "week-3", "entries");
       const querySnapshot = await getDocs(entriesRef);
 
       const entries: WeeklyContestEntry[] = [];
@@ -46,7 +46,7 @@ const PDFDownloadButton: React.FC<PDFDownloadButtonProps> = ({
 
     doc.setFontSize(20);
     doc.setTextColor(40, 40, 40);
-    doc.text("Penumbra Penned - Week 1 Contest Entries", 20, 20);
+    doc.text("Penumbra Penned - Week 3 Contest Entries", 20, 20);
 
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
@@ -125,7 +125,7 @@ const PDFDownloadButton: React.FC<PDFDownloadButtonProps> = ({
 
       const pdf = generatePDF(entries);
       pdf.save(
-        `penumbra-penned-week1-entries-${
+        `penumbra-penned-week3-entries-${
           new Date().toISOString().split("T")[0]
         }.pdf`
       );
