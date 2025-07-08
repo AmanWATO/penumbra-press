@@ -14,7 +14,7 @@ const ContestTimeline: React.FC = () => {
     {
       icon: Trophy,
       title: "Main Contest",
-      description: "Starts July 11th, 2025",
+      description: "Starts July 14th, 2025",
       delay: 0.2,
     },
     {
