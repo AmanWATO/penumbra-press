@@ -107,7 +107,7 @@ export function Header() {
         fontFamily: theme.fonts.body,
       }}
     >
-      <div className="container mx-auto px-4 py-4 pb-3 flex items-center justify-between">
+      <div className="container mx-auto px-4 py-4 max-md:py-3 max-md:pb-2 pb-3 flex items-center justify-between">
         <div
           onClick={() => handleNavigation("/")}
           className="flex items-center cursor-pointer"
@@ -120,7 +120,7 @@ export function Header() {
             className="rounded-sm"
           />
           <span
-            className="text-2xl font-bold"
+            className="text-2xl max-md:text-xl font-bold"
             style={{
               fontFamily: theme.fonts.heading,
               color: theme.sections.headFoot.text,
@@ -143,19 +143,17 @@ export function Header() {
         </nav>
 
         {/* Mobile Menu Button */}
-        <Button
-          variant="ghost"
-          size="icon"
+        <div
           className="md:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           style={{ color: theme.sections.headFoot.text }}
         >
           {mobileMenuOpen ? (
-            <X className="h-6 w-6" />
+            <X  className="h-5 w-5" />
           ) : (
-            <Menu className="h-6 w-6" />
+            <Menu className="h-5 w-5" />
           )}
-        </Button>
+        </div>
       </div>
 
       {/* Mobile Navigation */}

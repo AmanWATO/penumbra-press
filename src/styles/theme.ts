@@ -25,6 +25,7 @@ export const colors = {
   unavailable: "#FF4C4C",
   gold: "#FFBE00",
   purple: "#4C3F91",
+  white:"#FFFFFF"
 };
 
 export const fonts = {

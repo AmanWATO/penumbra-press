@@ -53,14 +53,14 @@ function NewsletterSection() {
 
   return (
     <section
-      className="py-16"
+      className="py-16 max-md:py-12"
       style={{
         backgroundColor: theme.background.dark,
         color: theme.text.light,
         fontFamily: theme.fonts.body,
       }}
     >
-      <div className="container mx-auto px-4 text-center">
+      <div className="container mx-auto px-5 text-center">
         <motion.h2
           className="text-3xl font-bold mb-4"
           style={{ fontFamily: theme.fonts.heading }}
@@ -86,7 +86,7 @@ function NewsletterSection() {
 
         <motion.form
           onSubmit={handleSubmit}
-          className="flex flex-col sm:flex-row gap-4 items-center max-w-md mx-auto"
+          className="flex flex-col sm:flex-row gap-4 items-center max-md:w-full max-w-md mx-auto"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -94,7 +94,7 @@ function NewsletterSection() {
           <motion.input
             type="email"
             placeholder="Your email address"
-            className="px-4 py-2 rounded-md flex-grow"
+            className="px-4 py-2 rounded-md max-md:w-full flex-grow"
             style={{
               backgroundColor: theme.background.primary,
               color: theme.text.primary,
@@ -106,7 +106,11 @@ function NewsletterSection() {
             custom={0.4}
           />
 
-          <motion.div variants={fadeInUp} custom={0.6}>
+          <motion.div
+            className="max-md:self-end mt-2"
+            variants={fadeInUp}
+            custom={0.6}
+          >
             <Button
               type="submit"
               className="cursor-pointer"

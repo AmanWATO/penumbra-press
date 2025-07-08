@@ -13,7 +13,6 @@ export default function ModernBlogSection() {
   const [direction, setDirection] = useState(1);
 
   useEffect(() => {
-
     const interval = setInterval(() => {
       setActiveIndex((prev) => {
         const next = (prev + 1) % blogs.length;
@@ -95,7 +94,7 @@ export default function ModernBlogSection() {
 
   return (
     <section
-      className="py-16 md:py-20 relative overflow-hidden"
+      className="py-12 md:py-20 relative overflow-hidden"
       style={{
         background: `linear-gradient(135deg, ${colors.cream} 0%, ${colors.softEggshell} 50%, ${colors.parchment} 100%)`,
       }}
@@ -151,7 +150,7 @@ export default function ModernBlogSection() {
         />
       </div>
 
-      <div className="container  mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container  mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
         {/* Header with enhanced animation */}
         <motion.div
           className="text-center mb-12 md:mb-16"
@@ -218,7 +217,10 @@ export default function ModernBlogSection() {
                     boxShadow: `0 20px 60px ${colors.penumbraBlack}20, 0 8px 24px ${colors.gray600}15`,
                   }}
                   onClick={() =>
-                    window.open(`/insights/${blogs[activeIndex].slug}`, "_blank")
+                    window.open(
+                      `/insights/${blogs[activeIndex].slug}`,
+                      "_blank"
+                    )
                   }
                 >
                   {/* Image with parallax effect */}
@@ -372,55 +374,6 @@ export default function ModernBlogSection() {
                 </div>
               </motion.div>
             </AnimatePresence>
-          </div>
-
-          {/* Enhanced Navigation Indicators */}
-          <div className="flex justify-center items-center gap-2 sm:gap-3 mt-8 sm:mt-10">
-            {blogs.map((_, index) => (
-              <motion.button
-                key={index}
-                onClick={() => handleSlideChange(index)}
-                className="relative p-2 transition-all duration-300"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <motion.div
-                  variants={indicatorVariants}
-                  animate={index === activeIndex ? "active" : "inactive"}
-                  className="relative"
-                >
-                  <div
-                    className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-300 ${
-                      index === activeIndex ? "ring-2 ring-offset-2" : ""
-                    }`}
-                    style={{
-                      backgroundColor:
-                        index === activeIndex ? colors.gold : colors.gray400,
-                      boxShadow:
-                        index === activeIndex
-                          ? `0 0 0 3px ${colors.gold}30, 0 2px 8px ${colors.penumbraBlack}20`
-                          : `0 1px 3px ${colors.penumbraBlack}10`,
-                    }}
-                  />
-                  {/* Active indicator pulse */}
-                  {index === activeIndex && (
-                    <motion.div
-                      className="absolute inset-0 rounded-full"
-                      style={{ backgroundColor: colors.gold }}
-                      animate={{
-                        scale: [1, 1.8, 1],
-                        opacity: [0.5, 0, 0.5],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                  )}
-                </motion.div>
-              </motion.button>
-            ))}
           </div>
         </div>
 

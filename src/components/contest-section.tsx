@@ -9,7 +9,7 @@ export const ContestSection = () => {
   return (
     <section
       style={{ backgroundColor: colors.penumbraBlack, color: colors.gray100 }}
-      className="py-16 px-4 sm:px-6 lg:px-8"
+      className="py-16 px-5 max-md:py-12 sm:px-6 lg:px-8"
     >
       <div className="container mx-auto max-w-5xl text-center">
         {/* Title with Zoom-In */}

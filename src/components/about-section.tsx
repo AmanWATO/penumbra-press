@@ -19,7 +19,7 @@ function AboutSection() {
       style={{ backgroundColor: colors.gray100 }}
       id="about-author"
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-5">
         <div className="flex flex-col md:flex-row items-center gap-8">
           {/* Profile Image */}
           <motion.div
@@ -87,7 +87,7 @@ function AboutSection() {
                 }}
               >
                 <Link href="/about">
-                  <User className="h-4 w-4 mr-2" />
+                  <User className="h-4 w-4" />
                   Learn More About Me
                 </Link>
               </Button>

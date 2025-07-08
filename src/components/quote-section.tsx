@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import theme, { fonts } from "@/styles/theme";
+import theme, { colors, fonts } from "@/styles/theme";
 import { Quote } from "@/api/apiTypes";
 import { fetchQuotes } from "@/api/apiService";
 import { motion } from "framer-motion";
@@ -24,14 +24,13 @@ export const QuoteSection = () => {
     fetchQuoteData();
   }, []);
 
-  const quotesTheme = theme.sections.quotes;
 
   if (!quote) return null;
 
   return (
     <section
-      className="w-full py-16 px-4 md:px-8 lg:px-16"
-      style={{ backgroundColor: quotesTheme.background }}
+      className="w-full py-16 px-5 max-md:py-12 md:px-8 lg:px-16"
+      style={{ backgroundColor: colors.white }}
     >
       <motion.div
         className="max-w-4xl mx-auto text-center"
@@ -41,8 +40,8 @@ export const QuoteSection = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <motion.h2
-          className={`text-2xl md:text-3xl mb-8 font-bold`}
-          style={{ color: quotesTheme.text, fontFamily: fonts.heading }}
+          className={`text-2xl md:text-3xl mb-8 max-md:mb-5 font-bold`}
+          style={{ color: colors.nightBlue, fontFamily: fonts.heading }}
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6 }}
@@ -51,14 +50,17 @@ export const QuoteSection = () => {
         </motion.h2>
 
         <motion.div
-          className="bg-white/10 backdrop-blur-sm p-6 md:p-8 rounded-lg shadow-lg"
+          className=" backdrop-blur-sm p-4 md:p-8 rounded-lg shadow-lg"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.8 }}
+          style={{
+            backgroundColor: colors.darkGray,
+          }}
         >
           <motion.p
-            className={`text-xl md:text-2xl italic mb-4 leading-relaxed`}
-            style={{ color: quotesTheme.text, fontFamily: fonts.math }}
+            className={`text-xl md:text-2xl italic mb-4 max-md:mb-2 leading-relaxed`}
+            style={{ color: colors.gray100, fontFamily: fonts.math }}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.7 }}
@@ -67,7 +69,7 @@ export const QuoteSection = () => {
           </motion.p>
 
           <motion.div
-            className="h-px w-16 mx-auto my-6"
+            className="h-px w-16 mx-auto my-6 max-md:my-3"
             style={{ backgroundColor: theme.colors.lightSepia }}
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
@@ -76,7 +78,7 @@ export const QuoteSection = () => {
 
           <motion.p
             className={`text-sm md:text-base `}
-            style={{ color: quotesTheme.subtext, fontFamily: fonts.math }}
+            style={{ color: colors.gray200, fontFamily: fonts.math }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.6 }}

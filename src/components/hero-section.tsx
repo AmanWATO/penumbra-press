@@ -60,7 +60,7 @@ import { motion } from "framer-motion";
         />
       </motion.div>
 
-      <div className="container mx-auto px-4 z-20 text-center">
+      <div className="container mx-auto px-5   z-20 text-center">
         <motion.h1
           className="text-4xl md:text-5xl font-bold mb-4"
           custom={0}

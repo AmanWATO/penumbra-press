@@ -150,7 +150,7 @@ function ComingSoonCard() {
 export default function BooksSection() {
   return (
     <section
-      className="py-12  pb-16 min-h-screen relative overflow-hidden"
+      className="py-12 md:py-16 pb-16 min-h-screen relative overflow-hidden"
       id="books"
       style={{
         background: `radial-gradient(ellipse at center, ${colors.softBeige} 0%, ${colors.gray100} 25%, ${colors.parchment} 50%, ${colors.lightSepia} 75%, ${colors.mediumSepia} 100%)`,
@@ -166,10 +166,10 @@ export default function BooksSection() {
         style={{ backgroundColor: colors.purple }}
       />
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-6 max-md:px-5 relative z-10">
         {/* Header Section */}
         <div
-          className="text-center mb-16"
+          className="text-center mb-16 max-md:mb-10"
           style={{ animation: "fadeInUp 0.8s ease-out both" }}
         >
           <div
