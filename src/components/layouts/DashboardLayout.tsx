@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Sidebar from "@/components/dashboard/Sidebar";
 import useAuthState from "@/hooks/useAuthState";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PropsWithChildren } from "react";
 import { dashboardTheme } from "@/styles/theme";
 
@@ -13,50 +13,62 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
   const { user, loading } = useAuthState();
   const router = useRouter();
   const pathname = usePathname();
+  const [isMobile, setIsMobile] = useState(false);
 
+  // Check if we're on mobile
   useEffect(() => {
-    if (!loading && !user) {
-      router.replace("/login-to-penumbra");
-    }
-  }, [loading, user]);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
-  if (loading || !user) {
-    return (
-      <div
-        className="flex min-h-screen items-center justify-center"
-        style={{ backgroundColor: dashboardTheme.colors.primary }}
-      >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="flex flex-col items-center gap-4"
-        >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="w-8 h-8 rounded-full"
-            style={{
-              border: `2px solid ${dashboardTheme.colors.loading}`,
-              borderTopColor: dashboardTheme.colors.accent,
-            }}
-          />
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-sm"
-            style={{
-              color: dashboardTheme.colors.textSecondary,
-              fontFamily: dashboardTheme.fonts.body,
-            }}
-          >
-            Loading your dashboard...
-          </motion.p>
-        </motion.div>
-      </div>
-    );
-  }
+  // useEffect(() => {
+  //   if (!loading && !user) {
+  //     router.replace("/login-to-penumbra");
+  //   }
+  // }, [loading, user]);
+
+  // if (loading || !user) {
+  //   return (
+  //     <div
+  //       className="flex min-h-screen items-center justify-center"
+  //       style={{ backgroundColor: dashboardTheme.colors.primary }}
+  //     >
+  //       <motion.div
+  //         initial={{ opacity: 0, scale: 0.8 }}
+  //         animate={{ opacity: 1, scale: 1 }}
+  //         transition={{ duration: 0.5, ease: "easeOut" }}
+  //         className="flex flex-col items-center gap-4"
+  //       >
+  //         <motion.div
+  //           animate={{ rotate: 360 }}
+  //           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+  //           className="w-8 h-8 rounded-full"
+  //           style={{
+  //             border: `2px solid ${dashboardTheme.colors.loading}`,
+  //             borderTopColor: dashboardTheme.colors.accent,
+  //           }}
+  //         />
+  //         <motion.p
+  //           initial={{ opacity: 0, y: 10 }}
+  //           animate={{ opacity: 1, y: 0 }}
+  //           transition={{ delay: 0.2 }}
+  //           className="text-sm"
+  //           style={{
+  //             color: dashboardTheme.colors.textSecondary,
+  //             fontFamily: dashboardTheme.fonts.body,
+  //           }}
+  //         >
+  //           Loading your dashboard...
+  //         </motion.p>
+  //       </motion.div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <motion.div
@@ -87,7 +99,10 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
             }}
             className="relative z-10 min-h-screen"
             style={{
-              padding: dashboardTheme.spacing.xl,
+              padding: isMobile 
+                ? `${dashboardTheme.spacing.lg} ${dashboardTheme.spacing.md}` 
+                : dashboardTheme.spacing.xl,
+              paddingTop: isMobile ? '5rem' : dashboardTheme.spacing.xl, // Account for mobile menu button
               fontFamily: dashboardTheme.fonts.body,
               color: dashboardTheme.colors.textPrimary,
             }}
@@ -99,8 +114,12 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
                 delay: 0.1,
                 duration: parseFloat(dashboardTheme.animation.medium),
               }}
+              className="max-w-full"
             >
-              {children}
+              {/* Mobile-optimized content wrapper */}
+              <div className={`${isMobile ? 'space-y-4' : ''}`}>
+                {children}
+              </div>
             </motion.div>
           </motion.main>
         </AnimatePresence>

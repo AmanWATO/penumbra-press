@@ -189,7 +189,7 @@ export default function AuthPage({ mode }: AuthFormProps) {
     <div className="min-h-screen relative flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-zinc-900 to-stone-800">
       <div
         onClick={() => router.push("/")}
-        className="absolute top-10 max-md:left-5 left-10 cursor-pointer"
+        className="absolute top-10 max-md:left-5 left-10 max-md:hidden cursor-pointer"
       >
         <Image
           src="/penumbra_penned.png"
