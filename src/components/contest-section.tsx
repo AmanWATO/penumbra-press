@@ -98,7 +98,7 @@ export const ContestSection = () => {
               </p>
               <p style={{ color: colors.lightSepia,
                  fontFamily: fonts.button,
-               }}>July 14, 2025</p>
+               }}>July 21, 2025</p>
             </motion.div>
           </div>
         </motion.div>
