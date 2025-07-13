@@ -1,10 +1,10 @@
 import { Quote, WeeklyContestEntry } from "./apiTypes";
 
-const apiUrl = "https://cms-dev.penumbrapenned.com/api";
+const strapiUrl = "https://cms-dev.penumbrapenned.com/api";
 
 export const fetchQuotes = async (): Promise<Quote[]> => {
   try {
-    const res = await fetch(`${apiUrl}/quotes`, {
+    const res = await fetch(`${strapiUrl}/quotes`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export const fetchWeeklyContestEntries = async (): Promise<
   WeeklyContestEntry[]
 > => {
   try {
-    const endpoint = `${apiUrl}/weekly-contests?populate=*&pagination[limit]=1000`
+    const endpoint = `${strapiUrl}/weekly-contests?populate=*&pagination[limit]=1000`
 
     const res = await fetch(endpoint, {
       method: "GET",

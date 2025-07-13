@@ -64,13 +64,15 @@ interface ResetPasswordResponse {
 
 export const signUp = async (
   email: string,
-  password: string
+  password: string,
+  username:string
 ): Promise<UserCredentialResponse> => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
+      
     );
     return { user: userCredential.user, error: null };
   } catch (error: any) {

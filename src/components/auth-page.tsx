@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { signIn, signUp, resetPassword } from "@/lib/firebase";
 import useAuthState from "@/hooks/useAuthState";
 import { colors, fonts } from "@/styles/theme";
 import {
@@ -21,6 +20,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import CountdownTimer from "./countdown-timer";
+import { resetPassword, signIn, signUp } from "@/api/backendService";
 
 interface AuthFormProps {
   mode: "login" | "register" | "reset";
@@ -30,6 +30,7 @@ export default function AuthPage({ mode }: AuthFormProps) {
   const router = useRouter();
   const { user, loading: authLoading } = useAuthState();
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -141,7 +142,7 @@ export default function AuthPage({ mode }: AuthFormProps) {
           result = await signIn(email, password);
           break;
         case "register":
-          result = await signUp(email, password);
+          result = await signUp(email, password, username);
           break;
         case "reset":
           result = await resetPassword(email);
@@ -153,6 +154,12 @@ export default function AuthPage({ mode }: AuthFormProps) {
 
       if (result?.error) {
         throw new Error(result.error);
+      }
+
+      if (mode === "login" || mode === "register") {
+        setTimeout(() => {
+          window.location.href = "/penumbra-dashboard";
+        }, 100);
       }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "An error occurred");
@@ -194,11 +201,11 @@ export default function AuthPage({ mode }: AuthFormProps) {
       </div>
 
       {showAuthForm ? (
-        <div className="px-20 max-lg:px-10 max-md:px-5" >
+        <div className="px-20 max-lg:px-10 max-md:px-5">
           <CountdownTimer
-          targetDate="2025-07-14T00:00:00"
-          onComplete={handleTimerComplete}
-        />
+            targetDate="2025-07-15T00:00:00"
+            onComplete={handleTimerComplete}
+          />
         </div>
       ) : (
         <div className="w-full max-w-md">
@@ -281,6 +288,33 @@ export default function AuthPage({ mode }: AuthFormProps) {
                     />
                   </div>
 
+                  {mode === "register" && (
+                    <div className="grid gap-2">
+                      <Label
+                        htmlFor="username"
+                        style={{
+                          fontFamily: fonts.body,
+                          color: colors.inkBrown,
+                        }}
+                      >
+                        Username
+                      </Label>
+                      <Input
+                        id="username"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Choose a username"
+                        required
+                        style={{
+                          borderColor: colors.mediumSepia,
+                          color: colors.penumbraBlack,
+                        }}
+                        className="focus:ring-2 focus:ring-deepSepia focus:border-transparent"
+                      />
+                    </div>
+                  )}
+
                   {mode !== "reset" && (
                     <div className="grid gap-2">
                       <div className="flex items-center justify-between">
@@ -293,15 +327,15 @@ export default function AuthPage({ mode }: AuthFormProps) {
                         >
                           Password
                         </Label>
-                        {/* {mode === "login" && (
-                        <Link
-                          href="/reset-password"
-                          className="text-sm font-medium hover:underline"
-                          style={{ color: colors.deepSepia }}
-                        >
-                          Forgot password?
-                        </Link>
-                      )} */}
+                        {mode === "login" && (
+                          <Link
+                            href="/reset-password"
+                            className="text-sm font-medium hover:underline"
+                            style={{ color: colors.deepSepia }}
+                          >
+                            Forgot password?
+                          </Link>
+                        )}
                       </div>
                       <div className="relative">
                         <Input

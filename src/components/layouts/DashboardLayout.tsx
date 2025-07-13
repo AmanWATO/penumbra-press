@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
@@ -22,7 +22,7 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
 
   if (loading || !user) {
     return (
-      <div 
+      <div
         className="flex min-h-screen items-center justify-center"
         style={{ backgroundColor: dashboardTheme.colors.primary }}
       >
@@ -36,9 +36,9 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
             animate={{ rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
             className="w-8 h-8 rounded-full"
-            style={{ 
+            style={{
               border: `2px solid ${dashboardTheme.colors.loading}`,
-              borderTopColor: dashboardTheme.colors.accent 
+              borderTopColor: dashboardTheme.colors.accent,
             }}
           />
           <motion.p
@@ -46,9 +46,9 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="text-sm"
-            style={{ 
+            style={{
               color: dashboardTheme.colors.textSecondary,
-              fontFamily: dashboardTheme.fonts.body 
+              fontFamily: dashboardTheme.fonts.body,
             }}
           >
             Loading your dashboard...
@@ -59,7 +59,7 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
@@ -69,35 +69,35 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
       <Sidebar />
       <div className="flex-1 relative">
         {/* Subtle ambient background gradient */}
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none"
           style={{ background: dashboardTheme.colors.subtleGradient }}
         />
-        
+
         <AnimatePresence mode="wait">
           <motion.main
             key={pathname}
             initial={{ opacity: 0, x: 20, filter: "blur(4px)" }}
             animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
             exit={{ opacity: 0, x: -20, filter: "blur(4px)" }}
-            transition={{ 
-              duration: parseFloat(dashboardTheme.animation.slow), 
+            transition={{
+              duration: parseFloat(dashboardTheme.animation.slow),
               ease: dashboardTheme.animation.ease,
-              filter: { duration: parseFloat(dashboardTheme.animation.medium) }
+              filter: { duration: parseFloat(dashboardTheme.animation.medium) },
             }}
             className="relative z-10 min-h-screen"
-            style={{ 
+            style={{
               padding: dashboardTheme.spacing.xl,
               fontFamily: dashboardTheme.fonts.body,
-              color: dashboardTheme.colors.textPrimary
+              color: dashboardTheme.colors.textPrimary,
             }}
           >
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                delay: 0.1, 
-                duration: parseFloat(dashboardTheme.animation.medium) 
+              transition={{
+                delay: 0.1,
+                duration: parseFloat(dashboardTheme.animation.medium),
               }}
             >
               {children}
