@@ -72,6 +72,30 @@ export default function SubmissionFormPage() {
   };
 
   const isWordCountValid = wordCount >= 1500 && wordCount <= 5000;
+  const isFormValid = isWordCountValid && title && genre && !isSubmitting;
+
+  // Shared input styles
+  const inputStyles = {
+    backgroundColor: dashboardTheme.colors.cardBg,
+    borderColor: dashboardTheme.colors.border,
+    color: dashboardTheme.colors.textPrimary,
+    fontFamily: dashboardTheme.fonts.body,
+  };
+
+  const focusStyles = {
+    borderColor: dashboardTheme.colors.accent,
+    boxShadow: `0 0 0 3px ${dashboardTheme.colors.accent}20`,
+  };
+
+  const getTextareaStyles = () => ({
+    ...inputStyles,
+    borderColor: isWordCountValid
+      ? dashboardTheme.colors.success
+      : wordCount > 5000
+      ? dashboardTheme.colors.error
+      : dashboardTheme.colors.border,
+    lineHeight: "1.6",
+  });
 
   return (
     <DashboardLayout>
@@ -79,7 +103,7 @@ export default function SubmissionFormPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: dashboardTheme.animation.ease }}
-        className="p-8"
+        className="px-4 sm:px-6 lg:px-4"
       >
         {/* Back Button */}
         <motion.button
@@ -108,10 +132,10 @@ export default function SubmissionFormPage() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="mb-8"
+          className="mb-6 sm:mb-8"
         >
           <h1
-            className="text-3xl font-bold mb-2"
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2"
             style={{
               fontFamily: dashboardTheme.fonts.heading,
               color: dashboardTheme.colors.textPrimary,
@@ -120,6 +144,7 @@ export default function SubmissionFormPage() {
             Submit Your Entry
           </h1>
           <p
+            className="text-sm sm:text-base mb-3"
             style={{
               color: dashboardTheme.colors.textSecondary,
               fontFamily: dashboardTheme.fonts.body,
@@ -129,7 +154,7 @@ export default function SubmissionFormPage() {
           </p>
           {selectedPlan && (
             <div
-              className="inline-block mt-2 px-3 py-1 rounded-full text-sm"
+              className="inline-block px-3 py-1 rounded-full text-sm"
               style={{
                 backgroundColor: `${dashboardTheme.colors.accent}20`,
                 color: dashboardTheme.colors.accent,
@@ -149,12 +174,13 @@ export default function SubmissionFormPage() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
+          className="max-w-4xl mx-auto"
           style={{
             backgroundColor: dashboardTheme.colors.cardBg,
             border: `1px solid ${dashboardTheme.colors.cardBorder}`,
             borderRadius: dashboardTheme.radius.xl,
             boxShadow: dashboardTheme.colors.cardShadow,
-            padding: dashboardTheme.spacing.xl,
+            padding: `${dashboardTheme.spacing.lg} ${dashboardTheme.spacing.md}`,
           }}
         >
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -179,21 +205,13 @@ export default function SubmissionFormPage() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="w-full p-4 rounded-lg border transition-all duration-200 focus:outline-none"
-                style={{
-                  backgroundColor: dashboardTheme.colors.cardBg,
-                  borderColor: dashboardTheme.colors.border,
-                  color: dashboardTheme.colors.textPrimary,
-                  fontFamily: dashboardTheme.fonts.body,
-                }}
+                className="w-full p-3 sm:p-4 rounded-lg border transition-all duration-200 focus:outline-none"
+                style={inputStyles}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor =
-                    dashboardTheme.colors.accent;
-                  e.currentTarget.style.boxShadow = `0 0 0 3px ${dashboardTheme.colors.accent}20`;
+                  Object.assign(e.currentTarget.style, focusStyles);
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor =
-                    dashboardTheme.colors.border;
+                  e.currentTarget.style.borderColor = dashboardTheme.colors.border;
                   e.currentTarget.style.boxShadow = "none";
                 }}
               />
@@ -218,21 +236,13 @@ export default function SubmissionFormPage() {
                 value={genre}
                 onChange={(e) => setGenre(e.target.value)}
                 required
-                className="w-full p-4 rounded-lg border transition-all duration-200 focus:outline-none"
-                style={{
-                  backgroundColor: dashboardTheme.colors.cardBg,
-                  borderColor: dashboardTheme.colors.border,
-                  color: dashboardTheme.colors.textPrimary,
-                  fontFamily: dashboardTheme.fonts.body,
-                }}
+                className="w-full p-3 sm:p-4 rounded-lg border transition-all duration-200 focus:outline-none"
+                style={inputStyles}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor =
-                    dashboardTheme.colors.accent;
-                  e.currentTarget.style.boxShadow = `0 0 0 3px ${dashboardTheme.colors.accent}20`;
+                  Object.assign(e.currentTarget.style, focusStyles);
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor =
-                    dashboardTheme.colors.border;
+                  e.currentTarget.style.borderColor = dashboardTheme.colors.border;
                   e.currentTarget.style.boxShadow = "none";
                 }}
               >
@@ -277,22 +287,10 @@ export default function SubmissionFormPage() {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 required
-                className="w-full h-96 p-4 rounded-lg border transition-all duration-200 focus:outline-none resize-vertical"
-                style={{
-                  backgroundColor: dashboardTheme.colors.cardBg,
-                  borderColor: isWordCountValid
-                    ? dashboardTheme.colors.success
-                    : wordCount > 5000
-                    ? dashboardTheme.colors.error
-                    : dashboardTheme.colors.border,
-                  color: dashboardTheme.colors.textPrimary,
-                  fontFamily: dashboardTheme.fonts.body,
-                  lineHeight: "1.6",
-                }}
+                className="w-full h-64 sm:h-80 lg:h-96 p-3 sm:p-4 rounded-lg border transition-all duration-200 focus:outline-none resize-vertical"
+                style={getTextareaStyles()}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor =
-                    dashboardTheme.colors.accent;
-                  e.currentTarget.style.boxShadow = `0 0 0 3px ${dashboardTheme.colors.accent}20`;
+                  Object.assign(e.currentTarget.style, focusStyles);
                 }}
                 onBlur={(e) => {
                   e.currentTarget.style.borderColor = isWordCountValid
@@ -338,24 +336,19 @@ export default function SubmissionFormPage() {
             >
               <Button
                 type="submit"
-                disabled={!isWordCountValid || isSubmitting || !title || !genre}
-                className="w-full py-4 text-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2"
+                disabled={!isFormValid}
+                className="w-full py-4 sm:py-6 text-base sm:text-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2"
                 style={{
-                  backgroundColor:
-                    isWordCountValid && title && genre && !isSubmitting
-                      ? dashboardTheme.colors.accent
-                      : dashboardTheme.colors.textMuted,
-                  color:
-                    isWordCountValid && title && genre && !isSubmitting
-                      ? dashboardTheme.colors.activeText
-                      : dashboardTheme.colors.textTertiary,
+                  backgroundColor: isFormValid
+                    ? dashboardTheme.colors.accent
+                    : dashboardTheme.colors.textMuted,
+                  color: isFormValid
+                    ? dashboardTheme.colors.activeText
+                    : dashboardTheme.colors.textTertiary,
                   border: "none",
-                  borderRadius: dashboardTheme.radius.lg,
+                  borderRadius: dashboardTheme.radius.md,
                   fontFamily: dashboardTheme.fonts.body,
-                  cursor:
-                    isWordCountValid && title && genre && !isSubmitting
-                      ? "pointer"
-                      : "not-allowed",
+                  cursor: isFormValid ? "pointer" : "not-allowed",
                 }}
               >
                 {isSubmitting ? (

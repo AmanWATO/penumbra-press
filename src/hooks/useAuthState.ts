@@ -1,12 +1,8 @@
-import {
-  getCurrentUser,
-  getStoredToken,
-  getStoredUser,
-} from "@/api/backendService";
+import { getCurrentUser, getStoredToken } from "@/api/backendService";
 import { useState, useEffect } from "react";
 
 interface User {
-  id: string;
+  authorId: string; // Changed from id to authorId to match backend
   email: string;
   username: string;
 }
@@ -28,27 +24,13 @@ export default function useAuthState() {
           return;
         }
 
-        const storedUser = getStoredUser();
-        if (storedUser) {
-          setUser(storedUser);
-
-          // Verify token is still valid by fetching fresh user data
-          const { user: freshUser, error } = await getCurrentUser();
-          if (error) {
-            // Token is invalid, clear everything
-            setUser(null);
-          } else if (freshUser) {
-            // Update with fresh user data
-            setUser(freshUser);
-          }
-        } else {
-          // No stored user, try to fetch from API
-          const { user: apiUser, error } = await getCurrentUser();
-          if (error) {
-            setUser(null);
-          } else if (apiUser) {
-            setUser(apiUser);
-          }
+        // Always fetch fresh user data from API since we're not storing it
+        const { user: apiUser, error } = await getCurrentUser();
+        if (error) {
+          // Token is invalid, clear everything
+          setUser(null);
+        } else if (apiUser) {
+          setUser(apiUser);
         }
       } catch (error) {
         console.error("Auth state check failed:", error);
@@ -62,7 +44,7 @@ export default function useAuthState() {
 
     // Listen for storage changes (for multi-tab sync)
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "auth_token" || e.key === "user_data") {
+      if (e.key === "auth_token") {
         checkAuthState();
       }
     };

@@ -27,7 +27,6 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       sessionStorage.removeItem("auth_token");
-      sessionStorage.removeItem("user_data");
       window.location.href = "/login-to-penumbra";
     }
     return Promise.reject(error);
@@ -36,20 +35,11 @@ api.interceptors.response.use(
 
 interface AuthResponse {
   token: string;
-  user?: {
-    id: string;
-    email: string;
-    username: string;
-  };
-}
-
-interface ApiError {
-  message: string;
-  status?: number;
+  authorId: string; // Backend returns authorId, not user object
 }
 
 interface User {
-  id: string;
+  authorId: string; // Changed from id to authorId to match backend
   email: string;
   username: string;
 }
@@ -58,7 +48,7 @@ export const signUp = async (
   email: string,
   password: string,
   username: string
-): Promise<{ error?: string; token?: string; user?: User }> => {
+): Promise<{ error?: string; token?: string; authorId?: string }> => {
   try {
     const response = await api.post<AuthResponse>("register", {
       username,
@@ -66,14 +56,12 @@ export const signUp = async (
       password,
     });
 
-    const { token, user } = response.data;
+    const { token, authorId } = response.data;
 
     sessionStorage.setItem("auth_token", token);
-    if (user) {
-      sessionStorage.setItem("user_data", JSON.stringify(user));
-    }
+    // Only store token, not user data
 
-    return { token, user };
+    return { token, authorId };
   } catch (error: any) {
     const errorMessage =
       error.response?.data?.message || error.message || "Registration failed";
@@ -84,21 +72,19 @@ export const signUp = async (
 export const signIn = async (
   email: string,
   password: string
-): Promise<{ error?: string; token?: string; user?: User }> => {
+): Promise<{ error?: string; token?: string; authorId?: string }> => {
   try {
     const response = await api.post<AuthResponse>("login", {
       email,
       password,
     });
 
-    const { token, user } = response.data;
+    const { token, authorId } = response.data;
 
     sessionStorage.setItem("auth_token", token);
-    if (user) {
-      sessionStorage.setItem("user_data", JSON.stringify(user));
-    }
+    // Only store token, not user data
 
-    return { token, user };
+    return { token, authorId };
   } catch (error: any) {
     const errorMessage =
       error.response?.data?.message || error.message || "Login failed";
@@ -114,8 +100,6 @@ export const getCurrentUser = async (): Promise<{
     const response = await api.get<User>("user");
     const user = response.data;
 
-    sessionStorage.setItem("user_data", JSON.stringify(user));
-
     return { user };
   } catch (error: any) {
     const errorMessage =
@@ -128,7 +112,6 @@ export const getCurrentUser = async (): Promise<{
 
 export const signOut = (): void => {
   sessionStorage.removeItem("auth_token");
-  sessionStorage.removeItem("user_data");
   window.location.href = "/login-to-penumbra";
 };
 
@@ -146,11 +129,6 @@ export const resetPassword = async (
 
 export const getStoredToken = (): string | null => {
   return sessionStorage.getItem("auth_token");
-};
-
-export const getStoredUser = (): User | null => {
-  const userData = sessionStorage.getItem("user_data");
-  return userData ? JSON.parse(userData) : null;
 };
 
 export const isAuthenticated = (): boolean => {

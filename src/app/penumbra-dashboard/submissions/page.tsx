@@ -17,17 +17,17 @@ export default function SubmissionsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: dashboardTheme.animation.ease }}
-        className="p-8"
+        className="px-4 sm:px-6 lg:px-8 py-6 max-md:py-5"
       >
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.5 }}
-          className="mb-8"
+          className="mb-8 text-center sm:text-left"
         >
           <h1
-            className="text-3xl font-bold mb-2"
+            className="text-2xl sm:text-3xl font-bold mb-2"
             style={{
               fontFamily: dashboardTheme.fonts.heading,
               color: dashboardTheme.colors.textPrimary,
@@ -36,6 +36,7 @@ export default function SubmissionsPage() {
             Your Submissions
           </h1>
           <p
+            className="text-base sm:text-lg"
             style={{
               color: dashboardTheme.colors.textSecondary,
               fontFamily: dashboardTheme.fonts.body,
@@ -50,9 +51,8 @@ export default function SubmissionsPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="relative overflow-hidden text-center"
+            className="relative overflow-hidden text-center px-5 py-5 sm:px-6 lg:px-8 sm:py-6 lg:py-8"
             style={{
-              padding: `${dashboardTheme.spacing.xxl} ${dashboardTheme.spacing.xl}`,
               backgroundColor: dashboardTheme.colors.cardBg,
               border: `1px solid ${dashboardTheme.colors.cardBorder}`,
               borderRadius: dashboardTheme.radius.xl,
@@ -68,7 +68,7 @@ export default function SubmissionsPage() {
               }}
             />
 
-            {/* Floating icons */}
+            {/* Floating icon */}
             <motion.div
               animate={{
                 rotate: [0, 10, -10, 0],
@@ -79,39 +79,43 @@ export default function SubmissionsPage() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="absolute top-6 right-6 opacity-20"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 opacity-20"
             >
               <FileText
-                size={32}
+                size={28}
+                className="sm:size-8"
                 style={{ color: dashboardTheme.colors.accent }}
               />
             </motion.div>
 
             <div className="relative z-10">
+              {/* Center icon */}
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
-                className="mb-6"
+                className="mb-4 sm:mb-6"
               >
                 <div
-                  className="w-20 h-20 mx-auto rounded-full flex items-center justify-center"
+                  className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full flex items-center justify-center"
                   style={{
                     background: `linear-gradient(135deg, ${dashboardTheme.colors.accent}20 0%, ${dashboardTheme.colors.accentLight}20 100%)`,
                   }}
                 >
                   <FileText
-                    size={40}
+                    size={32}
+                    className="sm:size-10"
                     style={{ color: dashboardTheme.colors.accent }}
                   />
                 </div>
               </motion.div>
 
+              {/* Text */}
               <motion.h2
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.4 }}
-                className="text-2xl font-semibold mb-4"
+                className="text-xl sm:text-2xl font-semibold mb-4"
                 style={{
                   fontFamily: dashboardTheme.fonts.heading,
                   color: dashboardTheme.colors.textPrimary,
@@ -124,7 +128,7 @@ export default function SubmissionsPage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.4 }}
-                className="text-lg mb-8"
+                className="text-base sm:text-lg mb-8 px-4 sm:px-8"
                 style={{
                   color: dashboardTheme.colors.textSecondary,
                   fontFamily: dashboardTheme.fonts.body,
@@ -143,12 +147,12 @@ export default function SubmissionsPage() {
                 whileTap={{ scale: 0.98 }}
               >
                 <Button
-                  className="relative overflow-hidden px-8 py-4 text-lg font-semibold transition-all duration-300"
+                  className="relative overflow-hidden px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300"
                   style={{
                     backgroundColor: dashboardTheme.colors.accent,
                     color: dashboardTheme.colors.activeText,
                     border: "none",
-                    borderRadius: dashboardTheme.radius.lg,
+                    borderRadius: dashboardTheme.radius.md,
                     fontFamily: dashboardTheme.fonts.body,
                     boxShadow: dashboardTheme.components.button.primary.shadow,
                   }}
@@ -170,7 +174,7 @@ export default function SubmissionsPage() {
                     router.push("/penumbra-dashboard/submissions/guidelines")
                   }
                 >
-                  <span className="relative z-10 flex items-center gap-2">
+                  <span className="relative z-10 flex items-center justify-center gap-2">
                     <Plus size={20} />
                     Add Your Submission
                   </span>
