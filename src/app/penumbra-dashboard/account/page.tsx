@@ -3,9 +3,55 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import { motion } from "framer-motion";
 import { dashboardTheme } from "@/styles/theme";
-import { User, Mail, Calendar, Settings } from "lucide-react";
+import { User, Mail, Calendar, Settings, Loader } from "lucide-react";
+import useAuthState from "@/hooks/useAuthState";
 
 export default function AccountPage() {
+  const { user, loading } = useAuthState();
+
+  const formatMemberSince = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+    });
+  };
+
+  if (!user) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <User
+              size={48}
+              style={{
+                color: dashboardTheme.colors.textSecondary,
+                margin: "0 auto 16px",
+              }}
+            />
+            <h2
+              className="text-lg font-semibold mb-2"
+              style={{
+                fontFamily: dashboardTheme.fonts.heading,
+                color: dashboardTheme.colors.textPrimary,
+              }}
+            >
+              Account Not Found
+            </h2>
+            <p
+              style={{
+                color: dashboardTheme.colors.textSecondary,
+                fontFamily: dashboardTheme.fonts.body,
+              }}
+            >
+              Unable to load account information. Please try logging in again.
+            </p>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   return (
     <DashboardLayout>
       <div className="grid grid-cols-1 gap-6 max-md:gap-4 px-4 sm:px-6 lg:px-8">
@@ -88,7 +134,7 @@ export default function AccountPage() {
                       fontFamily: dashboardTheme.fonts.body,
                     }}
                   >
-                    Writer
+                    {user.username}
                   </p>
                   <p
                     className="text-sm"
@@ -123,7 +169,7 @@ export default function AccountPage() {
                       fontFamily: dashboardTheme.fonts.body,
                     }}
                   >
-                    writer@example.com
+                    {user.email}
                   </p>
                   <p
                     className="text-sm"
@@ -158,7 +204,9 @@ export default function AccountPage() {
                       fontFamily: dashboardTheme.fonts.body,
                     }}
                   >
-                    December 2024
+                    {user.createdAt
+                      ? formatMemberSince(user.createdAt)
+                      : "Unknown"}
                   </p>
                   <p
                     className="text-sm"

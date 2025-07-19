@@ -14,67 +14,78 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
   const router = useRouter();
   const pathname = usePathname();
   const [isMobile, setIsMobile] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   // Check if we're on mobile
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // useEffect(() => {
-  //   if (!loading && !user) {
-  //     router.replace("/login-to-penumbra");
-  //   }
-  // }, [loading, user]);
+  // Handle initial load
+  useEffect(() => {
+    if (!loading) {
+      // Wait a bit to ensure auth state is settled
+      const timer = setTimeout(() => {
+        setIsInitialLoad(false);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
 
-  // if (loading || !user) {
-  //   return (
-  //     <div
-  //       className="flex min-h-screen items-center justify-center"
-  //       style={{ backgroundColor: dashboardTheme.colors.primary }}
-  //     >
-  //       <motion.div
-  //         initial={{ opacity: 0, scale: 0.8 }}
-  //         animate={{ opacity: 1, scale: 1 }}
-  //         transition={{ duration: 0.5, ease: "easeOut" }}
-  //         className="flex flex-col items-center gap-4"
-  //       >
-  //         <motion.div
-  //           animate={{ rotate: 360 }}
-  //           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-  //           className="w-8 h-8 rounded-full"
-  //           style={{
-  //             border: `2px solid ${dashboardTheme.colors.loading}`,
-  //             borderTopColor: dashboardTheme.colors.accent,
-  //           }}
-  //         />
-  //         <motion.p
-  //           initial={{ opacity: 0, y: 10 }}
-  //           animate={{ opacity: 1, y: 0 }}
-  //           transition={{ delay: 0.2 }}
-  //           className="text-sm"
-  //           style={{
-  //             color: dashboardTheme.colors.textSecondary,
-  //             fontFamily: dashboardTheme.fonts.body,
-  //           }}
-  //         >
-  //           Loading your dashboard...
-  //         </motion.p>
-  //       </motion.div>
-  //     </div>
-  //   );
-  // }
+  // Uncomment these if you want to enforce authentication
+  useEffect(() => {
+    if (!loading && !user && !isInitialLoad) {
+      router.replace("/login-to-penumbra");
+    }
+  }, [loading, user, isInitialLoad]);
+
+  // Only show loading screen on initial load, not on navigation
+  if (isInitialLoad && loading) {
+    return (
+      <div
+        className="flex min-h-screen items-center justify-center"
+        style={{ backgroundColor: dashboardTheme.colors.primary }}
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex flex-col items-center gap-4"
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="w-8 h-8 rounded-full"
+            style={{
+              border: `2px solid ${dashboardTheme.colors.loading}`,
+              borderTopColor: dashboardTheme.colors.accent,
+            }}
+          />
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-sm"
+            style={{
+              color: dashboardTheme.colors.textSecondary,
+              fontFamily: dashboardTheme.fonts.body,
+            }}
+          >
+            Loading your dashboard...
+          </motion.p>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
+    <div
       className="flex min-h-screen overflow-hidden"
       style={{ backgroundColor: dashboardTheme.colors.primary }}
     >
@@ -86,44 +97,54 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
           style={{ background: dashboardTheme.colors.subtleGradient }}
         />
 
-        <AnimatePresence mode="wait">
-          <motion.main
-            key={pathname}
-            initial={{ opacity: 0, x: 20, filter: "blur(4px)" }}
-            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, x: -20, filter: "blur(4px)" }}
-            transition={{
-              duration: parseFloat(dashboardTheme.animation.slow),
-              ease: dashboardTheme.animation.ease,
-              filter: { duration: parseFloat(dashboardTheme.animation.medium) },
-            }}
-            className="relative z-10 min-h-screen"
+        {/* Show a subtle loading indicator for subsequent auth checks */}
+        {loading && !isInitialLoad && (
+          <div
+            className="absolute top-4 right-4 z-50 px-3 py-2 rounded-lg flex items-center gap-2"
             style={{
-              padding: isMobile 
-                ? `${dashboardTheme.spacing.lg} ${dashboardTheme.spacing.md}` 
-                : dashboardTheme.spacing.xl,
-              paddingTop: isMobile ? '5rem' : dashboardTheme.spacing.xl, // Account for mobile menu button
-              fontFamily: dashboardTheme.fonts.body,
-              color: dashboardTheme.colors.textPrimary,
+              background: dashboardTheme.colors.cardBg,
+              border: `1px solid ${dashboardTheme.colors.cardBorder}`,
+              boxShadow: dashboardTheme.colors.cardShadow,
             }}
           >
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: 0.1,
-                duration: parseFloat(dashboardTheme.animation.medium),
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              className="w-4 h-4 rounded-full"
+              style={{
+                border: `2px solid ${dashboardTheme.colors.loading}`,
+                borderTopColor: dashboardTheme.colors.accent,
               }}
-              className="max-w-full"
+            />
+            <span
+              className="text-xs"
+              style={{
+                color: dashboardTheme.colors.textSecondary,
+                fontFamily: dashboardTheme.fonts.body,
+              }}
             >
-              {/* Mobile-optimized content wrapper */}
-              <div className={`${isMobile ? 'space-y-4' : ''}`}>
-                {children}
-              </div>
-            </motion.div>
-          </motion.main>
-        </AnimatePresence>
+              Checking...
+            </span>
+          </div>
+        )}
+
+        {/* Main content */}
+        <main
+          className="relative z-10 min-h-screen"
+          style={{
+            padding: isMobile
+              ? `${dashboardTheme.spacing.lg} ${dashboardTheme.spacing.md}`
+              : dashboardTheme.spacing.xl,
+            paddingTop: isMobile ? "4rem" : dashboardTheme.spacing.xl,
+            fontFamily: dashboardTheme.fonts.body,
+            color: dashboardTheme.colors.textPrimary,
+          }}
+        >
+          <div className="max-w-full">
+            <div className={`${isMobile ? "space-y-4" : ""}`}>{children}</div>
+          </div>
+        </main>
       </div>
-    </motion.div>
+    </div>
   );
 }

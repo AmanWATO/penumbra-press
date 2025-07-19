@@ -9,7 +9,7 @@ import { Plus, FileText } from "lucide-react";
 
 export default function SubmissionsPage() {
   const router = useRouter();
-  const hasSubmissions = false; // This would come from your state/API
+  const hasSubmissions = false;
 
   return (
     <DashboardLayout>
@@ -17,7 +17,7 @@ export default function SubmissionsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: dashboardTheme.animation.ease }}
-        className="px-4 sm:px-6 lg:px-8 py-6 max-md:py-5"
+        className="px-4 sm:px-6 lg:px-8 max-md:py-4"
       >
         {/* Header */}
         <motion.div
