@@ -42,6 +42,7 @@ interface User {
   authorId: string; // Changed from id to authorId to match backend
   email: string;
   username: string;
+  createdAt: string;
 }
 
 export const signUp = async (
