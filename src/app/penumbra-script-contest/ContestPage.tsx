@@ -326,7 +326,7 @@ function ContestPage() {
                     backgroundColor: colors.cream,
                     color: colors.inkBrown,
                   }}
-                  className="px-4 md:px-6 py-2 md:py-3 text-sm md:text-base rounded-md cursor-not-allowed shadow-lg transition-all duration-300"
+                  className="px-4 md:px-6 py-2 md:py-3 text-sm md:text-base rounded-md cursor-pointer shadow-lg transition-all duration-300"
                 >
                   Submissions Open July 21st
                 </motion.button>
