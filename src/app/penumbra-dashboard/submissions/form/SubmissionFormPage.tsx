@@ -96,7 +96,7 @@ export default function SubmissionForm() {
       } else if (result.submission) {
         setSubmitSuccess(true);
         setTimeout(() => {
-          router.push("/penumbra-dashboard");
+          router.push("/penumbra-dashboard/submissions/appreciation");
         }, 2000);
       }
     } catch (error) {
