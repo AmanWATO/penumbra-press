@@ -2,41 +2,77 @@
 
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import { Button } from "@/components/ui/button";
+
+// Extend Window type to include Cashfree
+declare global {
+  interface Window {
+    Cashfree?: any;
+  }
+}
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { dashboardTheme } from "@/styles/theme";
 import { ArrowLeft } from "lucide-react";
-import { useState } from "react";
-
-const pricingPlans = [
-  {
-    id: "early-bird",
-    title: "Early Bird",
-    price: "₹99",
-    description: "Perfect for getting started with early submission benefits",
-  },
-  {
-    id: "standard",
-    title: "Standard",
-    price: "₹149",
-    description: "Most popular choice with enhanced features",
-  },
-  {
-    id: "penumbra-prism",
-    title: "Penumbra Prism",
-    price: "₹349",
-    description: "Premium experience with exclusive benefits",
-  },
-];
+import { useEffect, useState } from "react";
+import { pricingPlans } from "@/lib/dashboardData";
+import useAuthState from "@/hooks/useAuthState";
+import api from "@/api/backendService";
 
 export default function PricingPage() {
   const router = useRouter();
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [processing, setProcessing] = useState<string | null>(null);
+  const [sdkLoaded, setSdkLoaded] = useState(false);
 
-  const handleSelectPlan = (planId: string) => {
-    setSelectedPlan(planId);
-    // Navigate to form with selected plan
-    router.push(`/penumbra-dashboard/submissions/form?plan=${planId}`);
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
+    script.async = true;
+    script.onload = () => setSdkLoaded(true);
+    document.body.appendChild(script);
+  }, []);
+
+  const handleSelectPlan = async (planId: string) => {
+    if (!sdkLoaded) {
+      return alert("Loading payment SDK — hang tight!");
+    }
+    setProcessing(planId);
+
+    try {
+      const { data: init } = await api.post("purchase/initiate", {
+        plan: planId.toUpperCase(),
+      });
+
+      const { orderId, orderToken } = init;
+      if (!orderId || !orderToken)
+        throw new Error("Missing orderId or orderToken");
+
+      const cashfree = window.Cashfree({
+        mode: process.env.NEXT_PUBLIC_CASHFREE_ENV,
+      });
+
+      cashfree.checkout({
+        paymentSessionId: orderToken,
+        redirectTarget: "_self", // important for in-page modal
+        returnUrl: `${window.location.origin}/penumbra-dashboard/confirm?plan=${planId}&orderId=${orderId}`,
+        onSuccess: () => {
+          console.log("Payment successful — will confirm after modal closes.");
+        },
+
+        onFailure: (data: any) => {
+          console.warn("Payment failed", data);
+          alert("Payment failed. Please try again.");
+        },
+
+        onClose: async () => {
+          console.log("Modal closed by user — confirming purchase.");
+        },
+      });
+    } catch (e: any) {
+      console.error("Payment flow error:", e);
+      alert(e.message || "Payment failed, please try again.");
+    } finally {
+      setProcessing(null);
+    }
   };
 
   return (
@@ -117,7 +153,7 @@ export default function PricingPage() {
                   padding: dashboardTheme.spacing.lg,
                 }}
               >
-                <div className="relative z-10">
+                <div className="relative z-10 flex flex-col justify-between align-center h-full">
                   {/* Plan Header */}
                   <div className="text-center mb-6">
                     <h3
@@ -155,7 +191,7 @@ export default function PricingPage() {
                     whileTap={{ scale: 0.98 }}
                   >
                     <Button
-                      onClick={() => handleSelectPlan(plan.id)}
+                      onClick={() => handleSelectPlan(plan.value)}
                       className="w-full py-3 font-semibold transition-all duration-300"
                       style={{
                         backgroundColor: "transparent",

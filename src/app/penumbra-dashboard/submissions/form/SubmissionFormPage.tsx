@@ -5,14 +5,22 @@ import { Button } from "@/components/ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { dashboardTheme } from "@/styles/theme";
-import { ArrowLeft, Upload, AlertCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  Upload,
+  AlertCircle,
+  CheckCircle,
+  ChevronDown,
+} from "lucide-react";
 import { useState, useEffect } from "react";
+import useAuthState from "@/hooks/useAuthState";
+import { createSubmission } from "@/api/backendService";
+import * as Select from "@radix-ui/react-select";
 
 interface SubmissionData {
   title: string;
   content: string;
   genre: string;
-  plan: string;
 }
 
 const genres = [
@@ -29,11 +37,24 @@ export default function SubmissionForm() {
   const searchParams = useSearchParams();
   const selectedPlan = searchParams.get("plan") || "";
 
+  const { user } = useAuthState();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [genre, setGenre] = useState("");
   const [wordCount, setWordCount] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  useEffect(() => {
+    if (
+      user &&
+      (typeof user.writingSlots !== "number" || user.writingSlots < 1)
+    ) {
+      router.push("/penumbra-dashboard");
+    }
+  }, [user, router]);
 
   useEffect(() => {
     const words = content
@@ -47,32 +68,48 @@ export default function SubmissionForm() {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
+    setSubmitError(null);
 
     if (wordCount < 1500 || wordCount > 5000) {
-      alert("Word count must be between 1,500 and 5,000 words.");
+      setSubmitError("Word count must be between 1,500 and 5,000 words.");
+      return;
+    }
+
+    if (!title.trim() || !content.trim() || !genre) {
+      setSubmitError("Please fill in all required fields.");
       return;
     }
 
     setIsSubmitting(true);
 
     const submissionData: SubmissionData = {
-      title,
-      content,
+      title: title.trim(),
+      content: content.trim(),
       genre,
-      plan: selectedPlan,
     };
 
-    console.log(submissionData);
+    try {
+      const result = await createSubmission(submissionData);
 
-    // Simulate submission delay
-    setTimeout(() => {
+      if (result.error) {
+        setSubmitError(result.error);
+      } else if (result.submission) {
+        setSubmitSuccess(true);
+        setTimeout(() => {
+          router.push("/penumbra-dashboard");
+        }, 2000);
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      setSubmitError("An unexpected error occurred. Please try again.");
+    } finally {
       setIsSubmitting(false);
-      router.push("/penumbra-dashboard/submissions/success");
-    }, 2000);
+    }
   };
 
   const isWordCountValid = wordCount >= 1500 && wordCount <= 5000;
-  const isFormValid = isWordCountValid && title && genre && !isSubmitting;
+  const isFormValid =
+    isWordCountValid && title.trim() && genre && !isSubmitting;
 
   // Shared input styles
   const inputStyles = {
@@ -97,6 +134,52 @@ export default function SubmissionForm() {
     lineHeight: "1.6",
   });
 
+  if (submitSuccess) {
+    return (
+      <DashboardLayout>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex items-center justify-center min-h-[400px]"
+        >
+          <div className="text-center">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring" }}
+              className="mb-4"
+            >
+              <CheckCircle
+                size={64}
+                style={{
+                  color: dashboardTheme.colors.success,
+                  margin: "0 auto",
+                }}
+              />
+            </motion.div>
+            <h2
+              className="text-2xl font-bold mb-2"
+              style={{
+                color: dashboardTheme.colors.textPrimary,
+                fontFamily: dashboardTheme.fonts.heading,
+              }}
+            >
+              Submission Successful!
+            </h2>
+            <p
+              style={{
+                color: dashboardTheme.colors.textSecondary,
+                fontFamily: dashboardTheme.fonts.body,
+              }}
+            >
+              Your submission has been received and is being processed.
+            </p>
+          </div>
+        </motion.div>
+      </DashboardLayout>
+    );
+  }
+
   return (
     <DashboardLayout>
       <motion.div
@@ -105,28 +188,6 @@ export default function SubmissionForm() {
         transition={{ duration: 0.6, ease: dashboardTheme.animation.ease }}
         className="px-4 sm:px-6 lg:px-4"
       >
-        {/* Back Button */}
-        <motion.button
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1, duration: 0.4 }}
-          onClick={() => router.back()}
-          className="flex items-center gap-2 mb-6 text-sm transition-colors duration-200"
-          style={{
-            color: dashboardTheme.colors.textSecondary,
-            fontFamily: dashboardTheme.fonts.body,
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = dashboardTheme.colors.accent;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = dashboardTheme.colors.textSecondary;
-          }}
-        >
-          <ArrowLeft size={16} />
-          Back to Pricing
-        </motion.button>
-
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -168,6 +229,23 @@ export default function SubmissionForm() {
             </div>
           )}
         </motion.div>
+
+        {/* Error Message */}
+        {submitError && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 p-4 rounded-lg border flex items-center gap-2"
+            style={{
+              backgroundColor: `${dashboardTheme.colors.error}10`,
+              borderColor: dashboardTheme.colors.error,
+              color: dashboardTheme.colors.error,
+            }}
+          >
+            <AlertCircle size={20} />
+            <span>{submitError}</span>
+          </motion.div>
+        )}
 
         {/* Form */}
         <motion.div
@@ -211,13 +289,14 @@ export default function SubmissionForm() {
                   Object.assign(e.currentTarget.style, focusStyles);
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = dashboardTheme.colors.border;
+                  e.currentTarget.style.borderColor =
+                    dashboardTheme.colors.border;
                   e.currentTarget.style.boxShadow = "none";
                 }}
               />
             </motion.div>
 
-            {/* Genre Field */}
+            {/* Genre Field with Radix UI Select */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -232,27 +311,57 @@ export default function SubmissionForm() {
               >
                 Genre *
               </label>
-              <select
-                value={genre}
-                onChange={(e) => setGenre(e.target.value)}
-                required
-                className="w-full p-3 sm:p-4 rounded-lg border transition-all duration-200 focus:outline-none"
-                style={inputStyles}
-                onFocus={(e) => {
-                  Object.assign(e.currentTarget.style, focusStyles);
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = dashboardTheme.colors.border;
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-              >
-                <option value="">Select a genre...</option>
-                {genres.map((g) => (
-                  <option key={g} value={g}>
-                    {g}
-                  </option>
-                ))}
-              </select>
+              <Select.Root value={genre} onValueChange={setGenre}>
+                <Select.Trigger
+                  className="w-full p-3 sm:p-4 rounded-lg border transition-all duration-200 focus:outline-none flex items-center justify-between"
+                  style={{
+                    ...inputStyles,
+                    cursor: "pointer",
+                  }}
+                >
+                  <Select.Value placeholder="Select a genre..." />
+                  <Select.Icon>
+                    <ChevronDown
+                      size={20}
+                      style={{ color: dashboardTheme.colors.textSecondary }}
+                    />
+                  </Select.Icon>
+                </Select.Trigger>
+
+                <Select.Portal>
+                  <Select.Content
+                    className="overflow-hidden rounded-md shadow-lg z-50"
+                    style={{
+                      backgroundColor: dashboardTheme.colors.cardBg,
+                      border: `1px solid ${dashboardTheme.colors.border}`,
+                      boxShadow: dashboardTheme.colors.cardShadow,
+                    }}
+                  >
+                    <Select.Viewport className="p-1">
+                      {genres.map((g) => (
+                        <Select.Item
+                          key={g}
+                          value={g}
+                          className="relative flex items-center px-3 py-2 rounded cursor-pointer select-none outline-none transition-colors duration-150"
+                          style={{
+                            color: dashboardTheme.colors.textPrimary,
+                            fontFamily: dashboardTheme.fonts.body,
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = `${dashboardTheme.colors.accent}20`;
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor =
+                              "transparent";
+                          }}
+                        >
+                          <Select.ItemText>{g}</Select.ItemText>
+                        </Select.Item>
+                      ))}
+                    </Select.Viewport>
+                  </Select.Content>
+                </Select.Portal>
+              </Select.Root>
             </motion.div>
 
             {/* Content Field */}

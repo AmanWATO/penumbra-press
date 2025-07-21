@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://api.penumbrapenned.com/penumbra/";
+const API_BASE_URL = "https://api.penumbrapenned.com/";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -39,22 +39,58 @@ interface AuthResponse {
 }
 
 interface User {
-  authorId: string; // Changed from id to authorId to match backend
+  authorId: string;
   email: string;
   username: string;
   createdAt: string;
+  phone: string;
+  writingSlots: number;
+  Purchase: {
+    plan: "STANDARD" | "EARLY_BIRD" | "PENUMBRA_PRISM";
+  }[];
+}
+
+interface Submission {
+  id: number;
+  title: string;
+  content: string;
+  genre: string;
+  plan: string;
+  createdAt: string;
+  updatedAt: string;
+  userId: number;
+}
+
+interface CreateSubmissionDto {
+  title: string;
+  content: string;
+  genre: string;
+}
+
+interface UpdateSubmissionDto {
+  title?: string;
+  content?: string;
+  genre?: string;
+}
+
+interface SubmissionResponse {
+  submissions: Submission[];
+  plan: "STANDARD" | "EARLY_BIRD" | "PENUMBRA_PRISM" | null;
+  writingSlots: number;
 }
 
 export const signUp = async (
   email: string,
   password: string,
-  username: string
+  username: string,
+  phone: string
 ): Promise<{ error?: string; token?: string; authorId?: string }> => {
   try {
-    const response = await api.post<AuthResponse>("register", {
+    const response = await api.post<AuthResponse>("penumbra/register", {
       username,
       email,
       password,
+      phone,
     });
 
     const { token, authorId } = response.data;
@@ -75,7 +111,7 @@ export const signIn = async (
   password: string
 ): Promise<{ error?: string; token?: string; authorId?: string }> => {
   try {
-    const response = await api.post<AuthResponse>("login", {
+    const response = await api.post<AuthResponse>("penumbra/login", {
       email,
       password,
     });
@@ -98,8 +134,10 @@ export const getCurrentUser = async (): Promise<{
   user?: User;
 }> => {
   try {
-    const response = await api.get<User>("user");
+    const response = await api.get<User>("penumbra/user");
     const user = response.data;
+
+    console.log({ user });
 
     return { user };
   } catch (error: any) {
@@ -134,6 +172,56 @@ export const getStoredToken = (): string | null => {
 
 export const isAuthenticated = (): boolean => {
   return !!getStoredToken();
+};
+
+export const createSubmission = async (
+  submissionData: CreateSubmissionDto
+): Promise<{ error?: string; submission?: Submission }> => {
+  try {
+    const response = await api.post<Submission>("submissions", submissionData);
+    return { submission: response.data };
+  } catch (error: any) {
+    const errorMessage =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to create submission";
+    return { error: errorMessage };
+  }
+};
+
+export const updateSubmission = async (
+  id: number,
+  updateData: UpdateSubmissionDto
+): Promise<{ error?: string; submission?: Submission }> => {
+  try {
+    const response = await api.patch<Submission>(
+      `submissions/${id}`,
+      updateData
+    );
+    return { submission: response.data };
+  } catch (error: any) {
+    const errorMessage =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to update submission";
+    return { error: errorMessage };
+  }
+};
+
+export const getSubmissions = async (): Promise<{
+  error?: string;
+  data?: SubmissionResponse;
+}> => {
+  try {
+    const response = await api.get<SubmissionResponse>("submissions");
+    return { data: response.data };
+  } catch (error: any) {
+    const errorMessage =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to fetch submissions";
+    return { error: errorMessage };
+  }
 };
 
 export default api;

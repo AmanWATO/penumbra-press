@@ -5,7 +5,12 @@ interface User {
   authorId: string; // Changed from id to authorId to match backend
   email: string;
   username: string;
-  createdAt:string
+  createdAt: string;
+  phone: string;
+  writingSlots: number;
+  Purchase: {
+    plan: "STANDARD" | "EARLY_BIRD" | "PENUMBRA_PRISM";
+  }[];
 }
 
 export default function useAuthState() {

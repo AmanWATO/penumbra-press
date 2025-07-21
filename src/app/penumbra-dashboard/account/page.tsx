@@ -3,11 +3,22 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import { motion } from "framer-motion";
 import { dashboardTheme } from "@/styles/theme";
-import { User, Mail, Calendar, Settings, Loader } from "lucide-react";
+import {
+  User,
+  Mail,
+  Calendar,
+  Settings,
+  Loader,
+  CreditCard,
+  PenTool,
+  ArrowRight,
+} from "lucide-react";
 import useAuthState from "@/hooks/useAuthState";
+import { useRouter } from "next/navigation";
 
 export default function AccountPage() {
   const { user, loading } = useAuthState();
+  const router = useRouter();
 
   const formatMemberSince = (dateString: string) => {
     const date = new Date(dateString);
@@ -16,6 +27,37 @@ export default function AccountPage() {
       month: "long",
     });
   };
+
+  const getPlanDisplayName = (plan: string) => {
+    switch (plan) {
+      case "EARLY_BIRD":
+        return "Early Bird";
+      case "PENUMBRA_PRISM":
+        return "Penumbra Prism";
+      case "STANDARD":
+        return "Standard";
+      default:
+        return plan;
+    }
+  };
+
+  const handleCTAClick = () => {
+    router.push("/penumbra-dashboard/submissions/guidelines");
+  };
+
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Loader
+            size={48}
+            className="animate-spin"
+            style={{ color: dashboardTheme.colors.accent }}
+          />
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   if (!user) {
     return (
@@ -54,13 +96,13 @@ export default function AccountPage() {
 
   return (
     <DashboardLayout>
-      <div className="grid grid-cols-1 gap-6 max-md:gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-md:gap-4 px-4 sm:px-6 lg:px-8 w-full">
         {/* Left: Account Info */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: dashboardTheme.animation.ease }}
-          className="order-1"
+          className="lg:col-span-2"
         >
           {/* Header */}
           <motion.div
@@ -93,13 +135,12 @@ export default function AccountPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="p-6 max-md:p-5 max-md:pb-7"
+            className="p-6 max-md:p-5 mb-6"
             style={{
               backgroundColor: dashboardTheme.colors.cardBg,
               border: `1px solid ${dashboardTheme.colors.cardBorder}`,
               borderRadius: dashboardTheme.radius.lg,
               boxShadow: dashboardTheme.colors.cardShadow,
-              marginBottom: dashboardTheme.spacing.xl,
             }}
           >
             <h2
@@ -219,50 +260,80 @@ export default function AccountPage() {
                   </p>
                 </div>
               </div>
+
+              {/* Writing Slots */}
+              <div className="flex items-center gap-4">
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center"
+                  style={{
+                    backgroundColor: `${dashboardTheme.colors.accent}20`,
+                  }}
+                >
+                  <PenTool
+                    size={20}
+                    style={{ color: dashboardTheme.colors.accent }}
+                  />
+                </div>
+                <div>
+                  <p
+                    className="font-semibold"
+                    style={{
+                      color: dashboardTheme.colors.textPrimary,
+                      fontFamily: dashboardTheme.fonts.body,
+                    }}
+                  >
+                    {user.writingSlots === 0 ? "Zero" : user.writingSlots}
+                  </p>
+                  <p
+                    className="text-sm"
+                    style={{
+                      color: dashboardTheme.colors.textSecondary,
+                      fontFamily: dashboardTheme.fonts.body,
+                    }}
+                  >
+                    Writing Slots Available
+                  </p>
+                </div>
+              </div>
+
+              {/* Purchase Plan */}
+              <div className="flex items-center gap-4">
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center"
+                  style={{
+                    backgroundColor: `${dashboardTheme.colors.accent}20`,
+                  }}
+                >
+                  <CreditCard
+                    size={20}
+                    style={{ color: dashboardTheme.colors.accent }}
+                  />
+                </div>
+                <div>
+                  <p
+                    className="font-semibold"
+                    style={{
+                      color: dashboardTheme.colors.textPrimary,
+                      fontFamily: dashboardTheme.fonts.body,
+                    }}
+                  >
+                    {user.Purchase && user.Purchase.length > 0
+                      ? getPlanDisplayName(user.Purchase[0].plan)
+                      : "No Active Plan"}
+                  </p>
+                  <p
+                    className="text-sm"
+                    style={{
+                      color: dashboardTheme.colors.textSecondary,
+                      fontFamily: dashboardTheme.fonts.body,
+                    }}
+                  >
+                    Subscription Plan
+                  </p>
+                </div>
+              </div>
             </div>
           </motion.div>
-        </motion.div>
-
-        {/* Right: Coming Soon */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          className="order-2 w-full sm:max-w-sm"
-        >
-          <div
-            className="rounded-lg border shadow p-6 max-md:p-4 text-center"
-            style={{
-              backgroundColor: dashboardTheme.colors.cardBg,
-              border: `1px solid ${dashboardTheme.colors.cardBorder}`,
-              boxShadow: dashboardTheme.colors.cardShadow,
-            }}
-          >
-            <Settings
-              size={48}
-              style={{
-                color: dashboardTheme.colors.accent,
-                margin: "0 auto 16px",
-              }}
-            />
-            <h3
-              className="text-lg font-semibold mb-2"
-              style={{
-                fontFamily: dashboardTheme.fonts.heading,
-                color: dashboardTheme.colors.textPrimary,
-              }}
-            >
-              More Settings Coming Soon
-            </h3>
-            <p
-              style={{
-                color: dashboardTheme.colors.textSecondary,
-                fontFamily: dashboardTheme.fonts.body,
-              }}
-            >
-              Additional account management features will be available soon.
-            </p>
-          </div>
         </motion.div>
       </div>
     </DashboardLayout>

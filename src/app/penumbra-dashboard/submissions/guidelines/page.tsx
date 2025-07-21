@@ -56,7 +56,7 @@ export default function GuidelinesPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="mb-8"
+            className="mb-5"
           >
             <h1
               className="text-3xl font-bold mb-2 max-md:mb-1"
@@ -88,7 +88,7 @@ export default function GuidelinesPage() {
               borderRadius: dashboardTheme.radius.xl,
               boxShadow: dashboardTheme.colors.cardShadow,
             }}
-            className="px-4 py-4 sm:py-6 sm:px-6 lg:py-8 lg:px-8"
+            className="px-4 py-4 sm:py-6 sm:px-6"
           >
             <motion.h2
               className="text-xl font-semibold mb-6 max-md:mb-4"
@@ -144,10 +144,10 @@ export default function GuidelinesPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.5 }}
-          className="order-2 w-full sm:max-w-sm"
+          className="order-2 w-full"
         >
           <div
-            className="rounded-lg border shadow p-6 max-md:p-4 max-md:pb-6"
+            className="rounded-lg border shadow p-5 max-md:p-4 max-md:pb-6"
             style={{
               backgroundColor: dashboardTheme.colors.cardBg,
               border: `1px solid ${dashboardTheme.colors.cardBorder}`,
@@ -156,7 +156,7 @@ export default function GuidelinesPage() {
           >
             {/* Agreement Checkbox */}
             <div
-              className="flex items-center gap-4 max-md:gap-3 max-md:mb-5 mb-6 cursor-pointer"
+              className="flex items-center gap-3 max-md:mb-5 mb-6 cursor-pointer"
               onClick={() => setAgreed(!agreed)}
             >
               <div
@@ -205,7 +205,7 @@ export default function GuidelinesPage() {
               <Button
                 onClick={handleAgree}
                 disabled={!agreed}
-                className="w-full sm:w-auto px-6 py-3 text-base sm:text-lg font-semibold transition-all duration-300"
+                className="w-full sm:w-auto px-5 py-3 text-base font-semibold transition-all duration-300"
                 style={{
                   backgroundColor: agreed
                     ? dashboardTheme.colors.accent

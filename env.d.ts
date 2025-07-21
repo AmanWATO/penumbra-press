@@ -10,8 +10,11 @@ declare namespace NodeJS {
     NEXT_PUBLIC_FIREBASE_APP_ID: string;
     NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: string;
     NEXT_RESEND_API_KEY: string;
-    NEXT_WEB_URL:string;
-    NEXT_API_STRAPI_URL:string;
-    NEXT_STRAPI_API_TOKEN:string
+    NEXT_WEB_URL: string;
+    NEXT_API_STRAPI_URL: string;
+    NEXT_STRAPI_API_TOKEN: string;
+    NEXT_PUBLIC_CASHFREE_APP_ID: string;
+    NEXT_PUBLIC_CASHFREE_SECRET_KEY: string;
+    NEXT_PUBLIC_CASHFREE_ENV: string;
   }
 }

@@ -23,13 +23,32 @@ export const penumbraRule = [
     value: "Submissions must be written in English.",
   },
   {
-    label: "Formatting:",
-    value:
-      "Use standard manuscript format: 12-point Times New Roman font, double-spaced, 1-inch margins.",
-  },
-  {
     label: "Rights:",
     value:
       "By submitting, you grant Penumbra Penned first publication rights and the right to publish your work in our anthology if selected.",
+  },
+];
+
+export const pricingPlans = [
+  {
+    id: "early-bird",
+    title: "Early Bird",
+    price: "₹99",
+    description: "Perfect for getting started with early submission benefits",
+    value: "EARLY_BIRD",
+  },
+  {
+    id: "standard",
+    title: "Standard",
+    price: "₹149",
+    description: "Most popular choice with enhanced features",
+    value: "STANDARD",
+  },
+  {
+    id: "penumbra-prism",
+    title: "Penumbra Prism",
+    price: "₹349",
+    description: "Premium experience with exclusive benefits",
+    value: "PENUMBRA_PRISM",
   },
 ];

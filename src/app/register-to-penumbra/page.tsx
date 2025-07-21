@@ -27,6 +27,7 @@ export default function RegisterPage() {
   const { user, loading: authLoading } = useAuthState();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -52,6 +53,13 @@ export default function RegisterPage() {
     }
   }, [user, authLoading, router]);
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Only allow numbers and limit to 10 digits
+    const numericValue = value.replace(/\D/g, "").slice(0, 10);
+    setPhone(numericValue);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
@@ -62,7 +70,14 @@ export default function RegisterPage() {
         throw new Error("Passwords do not match");
       }
 
-      const result = await signUp(email, password, username);
+      if (phone.length !== 10) {
+        throw new Error("Phone number must be 10 digits");
+      }
+
+      // Add +91 prefix to phone number
+      const phoneWithPrefix = `+91${phone}`;
+
+      const result = await signUp(email, password, username, phoneWithPrefix);
 
       if (result?.error) {
         throw new Error(result.error);
@@ -118,7 +133,7 @@ export default function RegisterPage() {
           />
         </div>
       ) : (
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-2xl">
           <div className="text-center mb-8">
             <h1
               style={{ fontFamily: fonts.heading, color: colors.parchment }}
@@ -161,143 +176,193 @@ export default function RegisterPage() {
                     color: colors.unavailable,
                   }}
                 >
-                  <AlertDescription>{error}</AlertDescription>
+                  <AlertDescription className="capitalize">
+                    {error}
+                  </AlertDescription>
                 </Alert>
               )}
 
               <form onSubmit={handleSubmit}>
                 <div className="grid gap-4">
-                  <div className="grid gap-2">
-                    <Label
-                      htmlFor="email"
-                      style={{ fontFamily: fonts.body, color: colors.inkBrown }}
-                    >
-                      Email Address
-                    </Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="your.email@example.com"
-                      required
-                      style={{
-                        borderColor: colors.mediumSepia,
-                        color: colors.penumbraBlack,
-                      }}
-                      className="focus:ring-2 focus:ring-deepSepia focus:border-transparent"
-                    />
-                  </div>
-
-                  <div className="grid gap-2">
-                    <Label
-                      htmlFor="username"
-                      style={{
-                        fontFamily: fonts.body,
-                        color: colors.inkBrown,
-                      }}
-                    >
-                      Username
-                    </Label>
-                    <Input
-                      id="username"
-                      type="text"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      placeholder="Choose a username"
-                      required
-                      style={{
-                        borderColor: colors.mediumSepia,
-                        color: colors.penumbraBlack,
-                      }}
-                      className="focus:ring-2 focus:ring-deepSepia focus:border-transparent"
-                    />
-                  </div>
-
-                  <div className="grid gap-2">
-                    <Label
-                      htmlFor="password"
-                      style={{
-                        fontFamily: fonts.body,
-                        color: colors.inkBrown,
-                      }}
-                    >
-                      Password
-                    </Label>
-                    <div className="relative">
+                  {/* 2x2 Grid for desktop, column for mobile */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Email Field */}
+                    <div className="grid gap-2">
+                      <Label
+                        htmlFor="email"
+                        style={{ fontFamily: fonts.body, color: colors.inkBrown }}
+                      >
+                        Email Address
+                      </Label>
                       <Input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="your.email@example.com"
                         required
                         style={{
                           borderColor: colors.mediumSepia,
                           color: colors.penumbraBlack,
                         }}
-                        className="pr-10 focus:ring-2 focus:ring-deepSepia focus:border-transparent"
+                        className="focus:ring-1 focus:ring-black focus:border-transparent"
                       />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                        aria-label={
-                          showPassword ? "Hide password" : "Show password"
-                        }
-                      >
-                        {showPassword ? (
-                          <EyeOff size={20} className="text-gray-500" />
-                        ) : (
-                          <Eye size={20} className="text-gray-500" />
-                        )}
-                      </button>
                     </div>
-                  </div>
 
-                  <div className="grid gap-2">
-                    <Label
-                      htmlFor="confirmPassword"
-                      style={{
-                        fontFamily: fonts.body,
-                        color: colors.inkBrown,
-                      }}
-                    >
-                      Confirm Password
-                    </Label>
-                    <div className="relative">
+                    {/* Username Field */}
+                    <div className="grid gap-2">
+                      <Label
+                        htmlFor="username"
+                        style={{
+                          fontFamily: fonts.body,
+                          color: colors.inkBrown,
+                        }}
+                      >
+                        Username
+                      </Label>
                       <Input
-                        id="confirmPassword"
-                        type={showConfirmPassword ? "text" : "password"}
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="••••••••"
+                        id="username"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Choose a username"
                         required
                         style={{
                           borderColor: colors.mediumSepia,
                           color: colors.penumbraBlack,
                         }}
-                        className="pr-10 focus:ring-2 focus:ring-deepSepia focus:border-transparent"
+                        className="focus:ring-2 focus:ring-deepSepia focus:border-transparent"
                       />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setShowConfirmPassword(!showConfirmPassword)
-                        }
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                        aria-label={
-                          showConfirmPassword
-                            ? "Hide confirm password"
-                            : "Show confirm password"
-                        }
-                      >
-                        {showConfirmPassword ? (
-                          <EyeOff size={20} className="text-gray-500" />
-                        ) : (
-                          <Eye size={20} className="text-gray-500" />
-                        )}
-                      </button>
                     </div>
+
+                    {/* Password Field */}
+                    <div className="grid gap-2">
+                      <Label
+                        htmlFor="password"
+                        style={{
+                          fontFamily: fonts.body,
+                          color: colors.inkBrown,
+                        }}
+                      >
+                        Password
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          id="password"
+                          type={showPassword ? "text" : "password"}
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          placeholder="••••••••"
+                          required
+                          style={{
+                            borderColor: colors.mediumSepia,
+                            color: colors.penumbraBlack,
+                          }}
+                          className="pr-10 focus:ring-2 focus:ring-deepSepia focus:border-transparent"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                          aria-label={
+                            showPassword ? "Hide password" : "Show password"
+                          }
+                        >
+                          {showPassword ? (
+                            <EyeOff size={20} className="text-gray-500" />
+                          ) : (
+                            <Eye size={20} className="text-gray-500" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Confirm Password Field */}
+                    <div className="grid gap-2">
+                      <Label
+                        htmlFor="confirmPassword"
+                        style={{
+                          fontFamily: fonts.body,
+                          color: colors.inkBrown,
+                        }}
+                      >
+                        Confirm Password
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          id="confirmPassword"
+                          type={showConfirmPassword ? "text" : "password"}
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          placeholder="••••••••"
+                          required
+                          style={{
+                            borderColor: colors.mediumSepia,
+                            color: colors.penumbraBlack,
+                          }}
+                          className="pr-10 focus:ring-2 focus:ring-deepSepia focus:border-transparent"
+                        />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setShowConfirmPassword(!showConfirmPassword)
+                          }
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                          aria-label={
+                            showConfirmPassword
+                              ? "Hide confirm password"
+                              : "Show confirm password"
+                          }
+                        >
+                          {showConfirmPassword ? (
+                            <EyeOff size={20} className="text-gray-500" />
+                          ) : (
+                            <Eye size={20} className="text-gray-500" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Phone Number Field - Full width at bottom */}
+                  <div className="grid gap-2">
+                    <Label
+                      htmlFor="phone"
+                      style={{
+                        fontFamily: fonts.body,
+                        color: colors.inkBrown,
+                      }}
+                    >
+                      Phone Number
+                    </Label>
+                    <div className="relative">
+                      <div
+                        className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                        style={{ color: colors.mediumSepia }}
+                      >
+                        <span className="text-sm font-medium">+91</span>
+                      </div>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        value={phone}
+                        onChange={handlePhoneChange}
+                        placeholder="9876543210"
+                        required
+                        maxLength={10}
+                        style={{
+                          borderColor: colors.mediumSepia,
+                          color: colors.penumbraBlack,
+                          paddingLeft: "3rem",
+                        }}
+                        className="focus:ring-2 focus:ring-deepSepia focus:border-transparent"
+                      />
+                    </div>
+                    {phone && phone.length < 10 && (
+                      <p className="text-xs text-red-600 mt-1">
+                        Phone number must be 10 digits
+                      </p>
+                    )}
                   </div>
 
                   <Button
