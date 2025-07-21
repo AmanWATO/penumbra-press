@@ -19,63 +19,55 @@ import { GlobalFooter } from "@/components/global-footer";
 import Script from "next/script";
 
 const GTM_ID = "GTM-K6S8HL33";
+const GOOGLE_ADS_ID = "AW-17374704842";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
 });
-
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
-
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
-
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
 });
-
 const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-ibm-plex-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
 });
-
 const josefinSans = Josefin_Sans({
   variable: "--font-josefin-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
-
 const nunitoSans = Nunito_Sans({
   variable: "--font-nunito-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
-
 const openSans = Open_Sans({
   variable: "--font-open-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
 });
-
 const notoSerif = Noto_Serif({
   variable: "--font-noto-serif",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
 });
-
 const quicksand = Quicksand({
   variable: "--font-quicksand",
   subsets: ["latin"],
@@ -93,14 +85,10 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
     apple: "/apple-touch-icon.png",
-    other: [
-      {
-        rel: "manifest",
-        url: "/site.webmanifest",
-      },
-    ],
+    other: [{ rel: "manifest", url: "/site.webmanifest" }],
   },
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -158,6 +146,7 @@ export default function RootLayout({
           })}
         </script>
 
+        {/* Google Tag Manager */}
         <Script id="google-tag-manager" strategy="afterInteractive">
           {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -167,15 +156,45 @@ export default function RootLayout({
             })(window,document,'script','dataLayer','${GTM_ID}');
           `}
         </Script>
+
+        {/* Google Ads Global Site Tag */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script
+          id="google-ads-global-site-tag"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GOOGLE_ADS_ID}');
+            `,
+          }}
+        />
       </head>
 
       <body
-        className={`${playfair.variable} ${josefinSans.variable} ${openSans?.variable} ${nunitoSans.variable} ${notoSerif?.variable} ${quicksand?.variable} ${spaceGrotesk.variable} ${poppins.variable} ${inter.variable} ${ibmPlexSans.variable} antialiased`}
+        className={`
+          ${playfair.variable}
+          ${josefinSans.variable}
+          ${openSans?.variable}
+          ${nunitoSans.variable}
+          ${notoSerif?.variable}
+          ${quicksand.variable}
+          ${spaceGrotesk.variable}
+          ${poppins.variable}
+          ${inter.variable}
+          ${ibmPlexSans.variable}
+          antialiased
+        `}
       >
         <noscript
           dangerouslySetInnerHTML={{
             __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}"
-            height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
+              height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
           }}
         />
 
