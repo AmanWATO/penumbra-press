@@ -41,6 +41,12 @@ export default function AccountPage() {
     }
   };
 
+  // Get active (successful) purchase
+  const getActivePurchase = () => {
+    if (!user?.Purchase || user.Purchase.length === 0) return null;
+    return user.Purchase.find(purchase => purchase.status === "SUCCESS");
+  };
+
   const handleCTAClick = () => {
     router.push("/penumbra-dashboard/submissions/guidelines");
   };
@@ -93,6 +99,8 @@ export default function AccountPage() {
       </DashboardLayout>
     );
   }
+
+  const activePurchase = getActivePurchase();
 
   return (
     <DashboardLayout>
@@ -296,7 +304,7 @@ export default function AccountPage() {
                 </div>
               </div>
 
-              {/* Purchase Plan */}
+              {/* Purchase Plan - Only show if status is SUCCESS */}
               <div className="flex items-center gap-4">
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -317,8 +325,8 @@ export default function AccountPage() {
                       fontFamily: dashboardTheme.fonts.body,
                     }}
                   >
-                    {user.Purchase && user.Purchase.length > 0
-                      ? getPlanDisplayName(user.Purchase[0].plan)
+                    {activePurchase
+                      ? getPlanDisplayName(activePurchase.plan)
                       : "No Active Plan"}
                   </p>
                   <p
