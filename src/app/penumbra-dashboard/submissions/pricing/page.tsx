@@ -52,7 +52,8 @@ export default function PricingPage() {
 
       cashfree.checkout({
         paymentSessionId: orderToken,
-        redirectTarget: "_self", // important for in-page modal
+        redirectTarget: "_self",
+
         onSuccess: () => {
           console.log("Payment successful — will confirm after modal closes.");
           window.location.href = `/penumbra-dashboard/confirm?plan=${planId}&orderId=${orderId}`;
@@ -60,11 +61,12 @@ export default function PricingPage() {
 
         onFailure: (data: any) => {
           console.warn("Payment failed", data);
-          alert("Payment failed. Please try again.");
+          window.location.href = `/penumbra-dashboard`;
         },
 
         onClose: async () => {
-          console.log("Modal closed by user — confirming purchase.");
+          console.log("Modal closed by user.");
+          window.location.href = `/penumbra-dashboard`;
         },
       });
     } catch (e: any) {
