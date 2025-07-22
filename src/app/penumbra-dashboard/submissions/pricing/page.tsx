@@ -52,8 +52,8 @@ export default function PricingPage() {
 
       cashfree.checkout({
         paymentSessionId: orderToken,
-        redirectTarget: "_modal",
-
+        redirectTarget: "_self",
+        returnUrl: `${window.location.origin}/penumbra-dashboard/confirm?plan=${planId}&orderId=${orderId}`,
         onSuccess: () => {
           console.log("Payment successful — will confirm after modal closes.");
           router.push(

@@ -27,9 +27,26 @@ export default function ConfirmPage() {
           alert("Payment not confirmed. Try again.");
           router.replace("/penumbra-dashboard");
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error("Confirm failed:", err);
-        alert("Something went wrong.");
+
+        const message =
+          err?.response?.data?.message ||
+          err?.message ||
+          "Something went wrong.";
+
+        if (message.includes("Payment not completed")) {
+          alert(
+            "We couldn’t confirm your payment. It looks like the transaction wasn’t completed. If you were charged, please contact support."
+          );
+        } else if (message.includes("Order not found")) {
+          alert(
+            "This order ID is invalid. Please try again or contact support."
+          );
+        } else {
+          alert(message);
+        }
+
         router.replace("/penumbra-dashboard");
       } finally {
         setLoading(false);
