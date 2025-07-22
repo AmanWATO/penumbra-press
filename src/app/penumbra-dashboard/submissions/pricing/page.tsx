@@ -56,17 +56,19 @@ export default function PricingPage() {
 
         onSuccess: () => {
           console.log("Payment successful — will confirm after modal closes.");
-          window.location.href = `/penumbra-dashboard/confirm?plan=${planId}&orderId=${orderId}`;
+          router.push(
+            `/penumbra-dashboard/confirm?plan=${planId}&orderId=${orderId}`
+          );
         },
 
         onFailure: (data: any) => {
           console.warn("Payment failed", data);
-          window.location.href = `/penumbra-dashboard`;
+          router.push(`/penumbra-dashboard`);
         },
 
         onClose: async () => {
           console.log("Modal closed by user.");
-          window.location.href = `/penumbra-dashboard`;
+          router.push(`/penumbra-dashboard`);
         },
       });
     } catch (e: any) {
