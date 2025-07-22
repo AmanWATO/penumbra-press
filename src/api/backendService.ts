@@ -11,7 +11,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = sessionStorage.getItem("auth_token");
+    const token = localStorage.getItem("auth_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -26,7 +26,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      sessionStorage.removeItem("auth_token");
+      localStorage.removeItem("auth_token");
       window.location.href = "/login-to-penumbra";
     }
     return Promise.reject(error);
@@ -95,7 +95,7 @@ export const signUp = async (
 
     const { token, authorId } = response.data;
 
-    sessionStorage.setItem("auth_token", token);
+    localStorage.setItem("auth_token", token);
     // Only store token, not user data
 
     return { token, authorId };
@@ -118,7 +118,7 @@ export const signIn = async (
 
     const { token, authorId } = response.data;
 
-    sessionStorage.setItem("auth_token", token);
+    localStorage.setItem("auth_token", token);
     // Only store token, not user data
 
     return { token, authorId };
@@ -150,7 +150,7 @@ export const getCurrentUser = async (): Promise<{
 };
 
 export const signOut = (): void => {
-  sessionStorage.removeItem("auth_token");
+  localStorage.removeItem("auth_token");
   window.location.href = "/login-to-penumbra";
 };
 
@@ -167,7 +167,7 @@ export const resetPassword = async (
 };
 
 export const getStoredToken = (): string | null => {
-  return sessionStorage.getItem("auth_token");
+  return localStorage.getItem("auth_token");
 };
 
 export const isAuthenticated = (): boolean => {

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useConfig } from "@/context/ConfigProvider";
 import { colors } from "@/styles/theme";
 import useAuthState from "@/hooks/useAuthState";
+import { getStoredToken } from "@/api/backendService";
 
 interface NavLinkProps {
   label: string;
@@ -58,6 +59,8 @@ export function Header() {
   const config = useConfig();
   const { user } = useAuthState();
 
+  const token = getStoredToken();
+
   // Helper function to handle navigation and close mobile menu
   const handleNavigation = (path: string) => {
     router.push(path);
@@ -85,7 +88,7 @@ export function Header() {
       label: "Quotes",
       action: () => handleNavigation("/penumbra-quotes"),
     },
-    user
+    token
       ? {
           label: "Dashboard",
           action: () => handleNavigation("/penumbra-dashboard"),
@@ -149,7 +152,7 @@ export function Header() {
           style={{ color: theme.sections.headFoot.text }}
         >
           {mobileMenuOpen ? (
-            <X  className="h-5 w-5" />
+            <X className="h-5 w-5" />
           ) : (
             <Menu className="h-5 w-5" />
           )}
