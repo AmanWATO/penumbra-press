@@ -71,6 +71,7 @@ interface User {
   writingSlots: number;
   Purchase: {
     plan: "STANDARD" | "EARLY_BIRD" | "PENUMBRA_PRISM";
+    status: "PENDING" | "SUCCESS"
   }[];
 }
 

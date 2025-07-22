@@ -99,12 +99,13 @@ export default function SubmissionsPage() {
     return null;
   }
 
-  const hasPurchase = user.Purchase && user.Purchase.length > 0;
+  const successfulPurchases = user.Purchase?.filter(purchase => purchase.status === "SUCCESS") || [];
+  const hasPurchase = successfulPurchases.length > 0;
   const userWritingSlots = writingSlots || user.writingSlots || 0;
   const hasSubmissions = submissions.length > 0;
 
-  // Get plan type for display
-  const planType = hasPurchase ? user.Purchase[0].plan : null;
+  // Get plan type for display from successful purchases only
+  const planType = hasPurchase ? successfulPurchases[0].plan : null;
   const planDisplayName = planType
     ? planType.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
     : "";
