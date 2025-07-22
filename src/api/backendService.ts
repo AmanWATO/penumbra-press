@@ -9,9 +9,31 @@ const api = axios.create({
   },
 });
 
+// Helper function to safely access localStorage
+const getStoredToken = (): string | null => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("auth_token");
+  }
+  return null;
+};
+
+// Helper function to safely set localStorage
+const setStoredToken = (token: string): void => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("auth_token", token);
+  }
+};
+
+// Helper function to safely remove from localStorage
+const removeStoredToken = (): void => {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("auth_token");
+  }
+};
+
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("auth_token");
+    const token = getStoredToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -26,8 +48,10 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem("auth_token");
-      window.location.href = "/login-to-penumbra";
+      removeStoredToken();
+      if (typeof window !== "undefined") {
+        window.location.href = "/login-to-penumbra";
+      }
     }
     return Promise.reject(error);
   }
@@ -95,7 +119,7 @@ export const signUp = async (
 
     const { token, authorId } = response.data;
 
-    localStorage.setItem("auth_token", token);
+    setStoredToken(token);
     // Only store token, not user data
 
     return { token, authorId };
@@ -118,7 +142,7 @@ export const signIn = async (
 
     const { token, authorId } = response.data;
 
-    localStorage.setItem("auth_token", token);
+    setStoredToken(token);
     // Only store token, not user data
 
     return { token, authorId };
@@ -150,8 +174,10 @@ export const getCurrentUser = async (): Promise<{
 };
 
 export const signOut = (): void => {
-  localStorage.removeItem("auth_token");
-  window.location.href = "/login-to-penumbra";
+  removeStoredToken();
+  if (typeof window !== "undefined") {
+    window.location.href = "/login-to-penumbra";
+  }
 };
 
 export const resetPassword = async (
@@ -164,10 +190,6 @@ export const resetPassword = async (
       error.response?.data?.message || error.message || "Password reset failed";
     return { error: errorMessage };
   }
-};
-
-export const getStoredToken = (): string | null => {
-  return localStorage.getItem("auth_token");
 };
 
 export const isAuthenticated = (): boolean => {
@@ -223,5 +245,8 @@ export const getSubmissions = async (): Promise<{
     return { error: errorMessage };
   }
 };
+
+// Export the safe localStorage functions for use elsewhere
+export { getStoredToken, setStoredToken, removeStoredToken };
 
 export default api;

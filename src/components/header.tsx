@@ -57,7 +57,6 @@ export function Header() {
   const theme = useTheme();
   const router = useRouter();
   const config = useConfig();
-  const { user } = useAuthState();
 
   const token = getStoredToken();
 
