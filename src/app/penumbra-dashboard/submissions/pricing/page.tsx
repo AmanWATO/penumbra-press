@@ -52,7 +52,7 @@ export default function PricingPage() {
 
       cashfree.checkout({
         paymentSessionId: orderToken,
-        redirectTarget: "_self",
+        redirectTarget: "_modal",
 
         onSuccess: () => {
           console.log("Payment successful — will confirm after modal closes.");
