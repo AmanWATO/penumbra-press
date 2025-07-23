@@ -99,7 +99,8 @@ export default function SubmissionsPage() {
     return null;
   }
 
-  const successfulPurchases = user.Purchase?.filter(purchase => purchase.status === "SUCCESS") || [];
+  const successfulPurchases =
+    user.Purchase?.filter((purchase) => purchase.status === "SUCCESS") || [];
   const hasPurchase = successfulPurchases.length > 0;
   const userWritingSlots = writingSlots || user.writingSlots || 0;
   const hasSubmissions = submissions.length > 0;
@@ -284,6 +285,7 @@ export default function SubmissionsPage() {
                 whileTap={{ scale: 0.98 }}
               >
                 <Button
+                  disabled={true}
                   className="relative overflow-hidden px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300"
                   style={{
                     backgroundColor: dashboardTheme.colors.accent,
@@ -316,6 +318,17 @@ export default function SubmissionsPage() {
                     Add Your Submission
                   </span>
                 </Button>
+
+                <p
+                  className="mt-3 sm:mt-4 text-sm sm:text-base text-center"
+                  style={{
+                    color: dashboardTheme.colors.textSecondary,
+                    fontFamily: dashboardTheme.fonts.body,
+                  }}
+                >
+                  Submissions will open soon. Payment gateway is being updated —
+                  stay tuned!
+                </p>
               </motion.div>
             </div>
           </motion.div>
