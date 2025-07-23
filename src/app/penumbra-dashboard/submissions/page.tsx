@@ -326,8 +326,9 @@ export default function SubmissionsPage() {
                     fontFamily: dashboardTheme.fonts.body,
                   }}
                 >
-                  Submissions will open soon. Payment gateway is being updated —
-                  stay tuned!
+                  {`Submissions will open shortly — we're updating our payment
+                  gateway. This may take 2–5 days. If you've already paid,
+                  you're good to go — please proceed with your entry!`}
                 </p>
               </motion.div>
             </div>
