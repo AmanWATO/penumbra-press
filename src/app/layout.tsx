@@ -100,7 +100,7 @@ export default function RootLayout({
         <meta charSet="UTF-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="robots" content="index, follow" />
+
         <meta
           name="keywords"
           content="poetry contests, short stories, Indian writers, literary platform, Penumbra Penned, creative writing, online anthology"
@@ -131,20 +131,18 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "Penumbra Penned",
-            url: "https://penumbrapenned.com",
-            potentialAction: {
-              "@type": "SearchAction",
-              target:
-                "https://penumbrapenned.com/search?q={search_term_string}",
-              "query-input": "required name=search_term_string",
-            },
-          })}
-        </script>
+        <Script
+          id="site-structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Penumbra Penned",
+              url: "https://penumbrapenned.com",
+            }),
+          }}
+        />
 
         {/* Google Tag Manager */}
         <Script id="google-tag-manager" strategy="afterInteractive">
