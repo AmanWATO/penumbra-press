@@ -86,6 +86,7 @@ export function Footer() {
   const support = [
     { href: "/terms-and-conditions", label: "Terms and Conditions" },
     { href: "/privacy-policy", label: "Privacy Policy" },
+    { href: "/refund-policy", label: "Refund Policy" },
     { href: "/faq", label: "FAQs" },
   ];
 
