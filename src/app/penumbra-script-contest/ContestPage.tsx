@@ -128,6 +128,7 @@ function ContestPage() {
             animate="visible"
             className="max-w-none"
           >
+            {/* About Section */}
             <motion.section variants={itemVariants} className="mb-12 md:mb-16">
               <SectionTitle>About the Contest</SectionTitle>
               <motion.p
@@ -144,12 +145,13 @@ function ContestPage() {
                 <br />
                 <br />
                 This competition seeks narratives that challenge conventions,
-                sparks innovation, explore the liminal spaces of human
+                spark innovation, explore the liminal spaces of human
                 experience, and find beauty in the complicated truths that lie
                 between light and dark.
               </motion.p>
             </motion.section>
 
+            {/* Theme */}
             <motion.section variants={itemVariants} className="mb-12 md:mb-16">
               <SectionTitle>Theme</SectionTitle>
               <ContestCard>
@@ -183,6 +185,28 @@ function ContestPage() {
               </ContestCard>
             </motion.section>
 
+            {/* Important Update (Postponement Notice) */}
+            <motion.section variants={itemVariants} className="mb-12 md:mb-16">
+              <SectionTitle>Important Update</SectionTitle>
+              <ContestCard>
+                <p
+                  style={{ fontFamily: fonts.body, color: colors.deepSepia }}
+                  className="text-base md:text-lg mb-4"
+                >
+                  📢 Due to unforeseen circumstances, <strong>The Penumbra Script:
+                  Shadow Edition</strong> has been{" "}
+                  <span style={{ color: colors.nightBlue }}>postponed</span>.
+                </p>
+                <p
+                  style={{ fontFamily: fonts.body, color: colors.nightBlue }}
+                  className="text-base md:text-lg"
+                >
+                  The contest will officially <strong>resume from 20th October,
+                  2025</strong>. Updated key dates will be announced soon.
+                </p>
+              </ContestCard>
+            </motion.section>
+{/* 
             <motion.section variants={itemVariants} className="mb-12 md:mb-16">
               <SectionTitle>Key Dates</SectionTitle>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
@@ -331,7 +355,7 @@ function ContestPage() {
                   Submissions Open July 21st
                 </motion.button>
               </div>
-            </motion.section>
+            </motion.section> */}
           </motion.div>
         </div>
       </div>
@@ -340,3 +364,5 @@ function ContestPage() {
 }
 
 export default ContestPage;
+
+

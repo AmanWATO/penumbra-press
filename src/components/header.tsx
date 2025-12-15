@@ -58,7 +58,7 @@ export function Header() {
   const router = useRouter();
   const config = useConfig();
 
-  const token = getStoredToken();
+  // const token = getStoredToken();
 
   // Helper function to handle navigation and close mobile menu
   const handleNavigation = (path: string) => {
@@ -67,10 +67,10 @@ export function Header() {
   };
 
   const navLinks = [
-    {
-      label: "The Penumbra Script",
-      action: () => handleNavigation("/penumbra-script-contest"),
-    },
+    // {
+    //   label: "The Penumbra Script",
+    //   action: () => handleNavigation("/penumbra-script-contest"),
+    // },
     {
       label: "Penumbra Weekly",
       action: () => handleNavigation("/penumbra-weekly"),
@@ -87,17 +87,17 @@ export function Header() {
       label: "Quotes",
       action: () => handleNavigation("/penumbra-quotes"),
     },
-    token
-      ? {
-          label: "Dashboard",
-          action: () => handleNavigation("/penumbra-dashboard"),
-          icon: <UserRoundPen className="h-4 w-4" />,
-        }
-      : {
-          label: "Login",
-          action: () => handleNavigation("/login-to-penumbra"),
-          icon: <LogIn className="h-4 w-4" />,
-        },
+    // token
+    //   ? {
+    //       label: "Dashboard",
+    //       action: () => handleNavigation("/penumbra-dashboard"),
+    //       icon: <UserRoundPen className="h-4 w-4" />,
+    //     }
+    //   : {
+    //       label: "Login",
+    //       action: () => handleNavigation("/login-to-penumbra"),
+    //       icon: <LogIn className="h-4 w-4" />,
+    //     },
   ];
 
   return (
@@ -139,7 +139,7 @@ export function Header() {
               key={`desktop-${index}`}
               label={link.label}
               action={link.action}
-              icon={link.icon}
+              // icon={link.icon}
             />
           ))}
         </nav>
@@ -170,7 +170,7 @@ export function Header() {
                 key={`mobile-${index}`}
                 label={link.label}
                 action={link.action}
-                icon={link.icon}
+                // icon={link.icon}
               />
             ))}
           </nav>

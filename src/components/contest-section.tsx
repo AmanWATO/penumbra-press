@@ -48,7 +48,7 @@ export const ContestSection = () => {
         ></motion.div>
 
         {/* Event Info Card */}
-        <motion.div
+        {/* <motion.div
           className="p-6 sm:p-8 rounded-lg border w-full max-w-2xl mx-auto mb-10"
           style={{
             backgroundColor: colors.moonGray,
@@ -60,7 +60,6 @@ export const ContestSection = () => {
           viewport={{ once: true }}
         >
           <div className="flex flex-col sm:flex-row justify-between items-center gap-6 text-center sm:text-left">
-            {/* Theme Date */}
             <motion.div
               initial={{ x: -40, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
@@ -73,9 +72,14 @@ export const ContestSection = () => {
               >
                 Theme Revealed!
               </p>
-              <p style={{ color: colors.lightSepia,
-                 fontFamily: fonts.button,
-               }}>April 16, 2025</p>
+              <p
+                style={{
+                  color: colors.lightSepia,
+                  fontFamily: fonts.button,
+                }}
+              >
+                April 16, 2025
+              </p>
             </motion.div>
 
             <div
@@ -83,7 +87,6 @@ export const ContestSection = () => {
               style={{ backgroundColor: colors.deepSepia }}
             ></div>
 
-            {/* Submission Date */}
             <motion.div
               initial={{ x: 40, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
@@ -96,15 +99,48 @@ export const ContestSection = () => {
               >
                 Submissions Open
               </p>
-              <p style={{ color: colors.lightSepia,
-                 fontFamily: fonts.button,
-               }}>July 21, 2025</p>
+              <p
+                style={{
+                  color: colors.lightSepia,
+                  fontFamily: fonts.button,
+                }}
+              >
+                July 21, 2025
+              </p>
             </motion.div>
           </div>
+        </motion.div> */}
+
+        {/* 🚨 Postponement Notice */}
+        <motion.div
+          className="p-6 sm:p-8 rounded-lg max-w-2xl mx-auto mb-10"
+          style={{
+            backgroundColor: colors.penumbraBlack,
+            border: `1px solid ${colors.deepSepia}`,
+          }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <p
+            style={{ fontFamily: fonts.body, color: colors.softBeige }}
+            className="text-lg sm:text-xl mb-3"
+          >
+            Important Update
+          </p>
+          <p
+            style={{ fontFamily: fonts.body, color: colors.gray100 }}
+            className="text-base sm:text-lg"
+          >
+            Due to unforeseen circumstances, <b>The Penumbra Script: Shadow Edition</b> 
+            has been <span style={{ color: colors.lightSepia }}>postponed</span>.
+            The contest will officially <b>resume from 20th October 2025</b>.  
+            Updated key dates will be shared soon!
+          </p>
         </motion.div>
 
-        {/* NEW Badge + Description */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <motion.span
             initial={{ scale: 0.9, opacity: 0 }}
             whileInView={{ scale: [0.9, 1.05, 1], opacity: 1 }}
@@ -132,7 +168,6 @@ export const ContestSection = () => {
           </motion.p>
         </div>
 
-        {/* CTA Button */}
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -153,7 +188,7 @@ export const ContestSection = () => {
           >
             See Contest Theme
           </Link>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );

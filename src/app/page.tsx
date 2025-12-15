@@ -72,12 +72,12 @@ export default function Home() {
       <div className="min-h-screen flex flex-col">
         <HeroSection />
         <BooksSection />
-        <ContestSection />
+        {/* <ContestSection /> */}
         <QuoteSection />
         <BlogSection />
         <AboutSection />
         <NewsletterSection />
-        <GeoMessage />
+        {/* <GeoMessage /> */}
       </div>
     </>
   );
