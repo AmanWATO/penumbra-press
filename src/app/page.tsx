@@ -4,15 +4,36 @@ import GeoMessage from "@/components/geo-message";
 import CountdownBanner from "@/components/countdown-banner";
 import WeeklyContestResults from "@/components/weekly/WeeklyContestResults";
 
-const HeroSection = dynamic(() => import("@/components/hero-section"));
-const BooksSection = dynamic(() => import("@/components/books-section"));
-const BlogSection = dynamic(() => import("@/components/blog-section"));
-const QuoteSection = dynamic(() => import("@/components/quote-section"));
-const ContestSection = dynamic(() => import("@/components/contest-section"));
-const AboutSection = dynamic(() => import("@/components/about-section"));
-const NewsletterSection = dynamic(
-  () => import("@/components/newsletter-section")
+// Revamped Components
+const HeroSectionRevamped = dynamic(
+  () => import("@/components/hero-section-revamped")
 );
+const FeatureStatsSection = dynamic(
+  () => import("@/components/features-stats-section")
+);
+const BooksShowcaseRevamped = dynamic(
+  () => import("@/components/books-showcase-revamped")
+);
+
+const QuoteSectionRevamped = dynamic(() => import("@/components/quote-section-revamped"));
+const CtaSectionRevamped = dynamic(() => import("@/components/cta-section"));
+const NewsletterSectionRevamped = dynamic(
+  () => import("@/components/newsletter-section-revamped")
+);
+const BlogSectionRevamped = dynamic(
+  () => import("@/components/blog-section-revamped")
+);
+const AboutSectionRevamped = dynamic(
+  () => import("@/components/about-section-revamped")
+);
+
+// Old Components (commented out for reference)
+// const HeroSection = dynamic(() => import("@/components/hero-section"));
+// const BooksSection = dynamic(() => import("@/components/books-section"));
+// const BlogSection = dynamic(() => import("@/components/blog-section"));
+// const QuoteSection = dynamic(() => import("@/components/quote-section"));
+// const AboutSection = dynamic(() => import("@/components/about-section"));
+// const NewsletterSection = dynamic(() => import("@/components/newsletter-section"));
 
 export default function Home() {
   return (
@@ -70,13 +91,15 @@ export default function Home() {
       {/* <CountdownBanner /> */}
 
       <div className="min-h-screen flex flex-col">
-        <HeroSection />
-        <BooksSection />
-        {/* <ContestSection /> */}
-        <QuoteSection />
-        <BlogSection />
-        <AboutSection />
-        <NewsletterSection />
+        <HeroSectionRevamped />
+        <FeatureStatsSection />
+        <BooksShowcaseRevamped />
+        <QuoteSectionRevamped/>
+        <CtaSectionRevamped />
+        <BlogSectionRevamped />
+        <AboutSectionRevamped />
+        <NewsletterSectionRevamped/>
+        {/* <NewsletterSection /> */}
         {/* <GeoMessage /> */}
       </div>
     </>

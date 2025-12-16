@@ -37,12 +37,28 @@ export const booksData = [
     genre: "Poetry",
     coverImage: "/book3.png",
     description:
-      "Love is both a whisper and a storm, a quiet ache and a force that shapes us. When the Sky Meets the Sea of Souls is my poetic odyssey — 49 moments of love in its rawest forms. From self-discovery to healing, from the depth of solitude to the luminous unity of souls, this collection explores the spaces where love lives",
+      "Love is both a whisper and a storm, a quiet ache and a force that shapes us. When the Sky Meets the Sea of Souls is my poetic odyssey — 49 moments of love in its rawest forms. From self-discovery to healing, from the depth of solitude to the luminous unity of souls, this collection explores the spaces where love lives.",
     publicationYear: 2025,
     availability: {
       amazon: true,
       flipkart: false,
       amazonLink: "https://amzn.in/d/2CNR8BG",
+    },
+  },
+  {
+    id: 4,
+    title: "In The Margin Of Time",
+    genre: "Poetry",
+    coverImage: "/book4.png",
+    description:
+      "In the Margins of Time - this book didn’t begin with an outline or a grand vision. It began in the stillness between heartbeats, in the soft ache of the unspoken, in the subtle lingering of connections that exist outside the usual rules of time.",
+    publicationYear: 2025,
+    availability: {
+      amazon: true,
+      flipkart: true,
+      amazonLink: "https://amzn.in/d/bohb9J4",
+      flipkartLink:
+        "https://www.flipkart.com/in-the-margin-of-time/p/itm90e2c1052080f?pid=9789370467941&lid=LSTBOK97893704679416B7RME&marketplace=FLIPKART&q=in+the+margin+of+timne&store=bks&srno=s_1_1&otracker=AS_Query_HistoryAutoSuggest_1_6_na_na_na&otracker1=AS_Query_HistoryAutoSuggest_1_6_na_na_na&fm=search-autosuggest&iid=9d55d2c9-0b9a-4437-badd-9cece732b50d.9789370467941.SEARCH&ppt=sp&ppn=sp&ssid=llz2w4x2mo0000001765910838677&qH=53f5098f9be89e89",
     },
   },
 ];
