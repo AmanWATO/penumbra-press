@@ -13,16 +13,29 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "plus.unsplash.com",
       },
-    ],
-    domains: [
-      "scontent-atl3-2.cdninstagram.com",
-      "scontent-atl3-1.cdninstagram.com",
-      "scontent-lga3-3.cdninstagram.com",
-      "scontent-lga3-2.cdninstagram.com",
-      "images.pexels.com",
-      "images.unsplash.com",
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+      },
+      {
+        protocol: "https",
+        hostname: "scontent-atl3-2.cdninstagram.com",
+      },
+      {
+        protocol: "https",
+        hostname: "scontent-atl3-1.cdninstagram.com",
+      },
+      {
+        protocol: "https",
+        hostname: "scontent-lga3-3.cdninstagram.com",
+      },
+      {
+        protocol: "https",
+        hostname: "scontent-lga3-2.cdninstagram.com",
+      },
     ],
   },
+
   env: {
     SITE_NAME: "Penumbra Penned",
   },
