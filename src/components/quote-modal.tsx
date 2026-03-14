@@ -17,14 +17,12 @@ const QuoteModal = ({ selectedQuote, onClose }: QuoteModalProps) => {
       opacity: 1,
       transition: {
         duration: 0.3,
-        ease: "easeOut",
       },
     },
     exit: {
       opacity: 0,
       transition: {
         duration: 0.2,
-        ease: "easeIn",
       },
     },
   };
@@ -42,7 +40,6 @@ const QuoteModal = ({ selectedQuote, onClose }: QuoteModalProps) => {
       rotateX: 0,
       y: 0,
       transition: {
-        type: "spring",
         damping: 25,
         stiffness: 300,
         duration: 0.6,
@@ -56,7 +53,6 @@ const QuoteModal = ({ selectedQuote, onClose }: QuoteModalProps) => {
       y: -50,
       transition: {
         duration: 0.3,
-        ease: "easeIn",
       },
     },
   };
@@ -69,7 +65,6 @@ const QuoteModal = ({ selectedQuote, onClose }: QuoteModalProps) => {
       transition: {
         delay: 0.4,
         duration: 0.8,
-        ease: "easeOut",
       },
     },
   };
@@ -96,7 +91,6 @@ const QuoteModal = ({ selectedQuote, onClose }: QuoteModalProps) => {
       rotateX: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
       },
     },
   };
@@ -113,7 +107,6 @@ const QuoteModal = ({ selectedQuote, onClose }: QuoteModalProps) => {
       backgroundColor: "#ef4444",
       transition: {
         duration: 0.2,
-        ease: "easeOut",
       },
     },
     tap: {

@@ -26,7 +26,7 @@ export default function GuidelinesPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: dashboardTheme.animation.ease }}
+          transition={{ duration: 0.6, }}
           className="order-1"
         >
           {/* Back Button */}

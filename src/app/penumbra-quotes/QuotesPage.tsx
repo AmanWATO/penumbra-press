@@ -125,7 +125,6 @@ function QuotesPage() {
       scale: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
       },
     },
   };
@@ -136,7 +135,6 @@ function QuotesPage() {
       transition: {
         duration: 1,
         repeat: Infinity,
-        ease: "linear",
       },
     },
   };
@@ -159,7 +157,6 @@ function QuotesPage() {
       opacity: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
         staggerChildren: 0.1,
       },
     },
@@ -175,7 +172,6 @@ function QuotesPage() {
       opacity: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
       },
     },
   };
@@ -193,7 +189,6 @@ function QuotesPage() {
       transition: {
         delay: i * 0.08,
         duration: 0.6,
-        type: "spring",
         stiffness: 120,
         damping: 20,
       },
@@ -203,7 +198,6 @@ function QuotesPage() {
       y: -5,
       transition: {
         duration: 0.2,
-        ease: "easeOut",
       },
     },
     tap: {

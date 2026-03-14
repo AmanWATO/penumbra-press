@@ -15,7 +15,7 @@ export default function SubmissionSuccessPage() {
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, ease: dashboardTheme.animation.ease }}
+        transition={{ duration: 0.6 }}
         className="p-8 flex items-center justify-center min-h-[80vh]"
       >
         <div className="text-center max-w-md">

@@ -116,7 +116,7 @@ export default function SubmissionsPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: dashboardTheme.animation.ease }}
+        transition={{ duration: 0.6,  }}
         className="px-4 sm:px-6 lg:px-8 max-md:py-4"
       >
         {/* Header */}
@@ -453,7 +453,6 @@ export default function SubmissionsPage() {
                       animate={{ scale: 1 }}
                       transition={{
                         delay: 0.4,
-                        type: "spring",
                         stiffness: 200,
                       }}
                       className="mb-4 sm:mb-6"

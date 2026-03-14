@@ -109,7 +109,7 @@ export default function AccountPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: dashboardTheme.animation.ease }}
+          transition={{ duration: 0.6, }}
           className="lg:col-span-2"
         >
           {/* Header */}

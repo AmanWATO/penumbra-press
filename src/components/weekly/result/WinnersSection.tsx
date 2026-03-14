@@ -39,7 +39,6 @@ const cardVariants = {
     scale: 1,
     y: 0,
     transition: {
-      type: "spring",
       stiffness: 120,
       damping: 15,
     },
@@ -52,7 +51,6 @@ const floatingVariants = {
     transition: {
       duration: 3,
       repeat: Infinity,
-      ease: "easeInOut",
     },
   },
 };

@@ -33,7 +33,6 @@ const bookCardVariants = {
     y: 0,
     scale: 1,
     transition: {
-      type: "spring",
       stiffness: 120,
       damping: 15,
       duration: 0.7,
@@ -45,7 +44,6 @@ const bookCardVariants = {
     boxShadow:
       "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
     transition: {
-      type: "spring",
       stiffness: 400,
       damping: 20,
     },
@@ -58,7 +56,6 @@ const genreButtonVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
       stiffness: 300,
       damping: 20,
     },
@@ -67,7 +64,6 @@ const genreButtonVariants = {
     scale: 1.05,
     y: -2,
     transition: {
-      type: "spring",
       stiffness: 500,
     },
   },
@@ -80,7 +76,6 @@ const titleVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
       stiffness: 200,
       damping: 20,
       duration: 0.8,
@@ -231,7 +226,6 @@ function AuthorPage() {
       transition: {
         duration: 1.2,
         repeat: Infinity,
-        ease: "linear",
       },
     },
   };

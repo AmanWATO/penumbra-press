@@ -12,7 +12,6 @@ const pageVariants = {
     y: 0,
     transition: {
       duration: 0.8,
-      ease: "easeOut",
       staggerChildren: 0.1,
     },
   },
@@ -25,7 +24,6 @@ const itemVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: "easeOut",
     },
   },
 };

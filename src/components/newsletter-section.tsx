@@ -18,7 +18,7 @@ function NewsletterSection() {
     visible: (delay = 0) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut", delay },
+      transition: { duration: 0.6,  delay },
     }),
   };
 

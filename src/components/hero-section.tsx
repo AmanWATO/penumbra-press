@@ -23,7 +23,6 @@ import { motion } from "framer-motion";
       transition: {
         delay: i * 0.3,
         duration: 0.8,
-        ease: "easeOut",
       },
     }),
   };

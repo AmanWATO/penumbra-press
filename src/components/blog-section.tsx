@@ -45,7 +45,6 @@ export default function ModernBlogSection() {
       scale: 1,
       transition: {
         duration: 0.8,
-        ease: [0.25, 0.1, 0.25, 1],
       },
     },
     exit: (direction: number) => ({
@@ -54,7 +53,6 @@ export default function ModernBlogSection() {
       scale: 1.1,
       transition: {
         duration: 0.6,
-        ease: [0.25, 0.1, 0.25, 1],
       },
     }),
   };
@@ -73,7 +71,6 @@ export default function ModernBlogSection() {
       transition: {
         duration: 0.6,
         delay: delay * 0.1,
-        ease: [0.25, 0.1, 0.25, 1],
       },
     }),
   };
@@ -88,7 +85,7 @@ export default function ModernBlogSection() {
     active: {
       scale: 1.4,
       opacity: 1,
-      transition: { duration: 0.3, ease: "easeOut" },
+      transition: { duration: 0.3, },
     },
   };
 

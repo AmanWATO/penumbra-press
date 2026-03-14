@@ -112,7 +112,6 @@ const cardVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
       stiffness: 100,
       damping: 15,
     },
@@ -124,7 +123,6 @@ const hoverVariants = {
     y: -8,
     scale: 1.02,
     transition: {
-      type: "spring",
       stiffness: 300,
       damping: 20,
     },
