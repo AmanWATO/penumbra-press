@@ -27,7 +27,7 @@ export default function HeroSectionRevamped() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen flex items-center justify-start overflow-hidden"
+      className="relative w-full h-screen flex items-start pt-12 md:pt-20 justify-start overflow-hidden"
       style={{ backgroundColor: theme.background.dark }}
     >
       {/* Parallax Background */}
@@ -84,7 +84,7 @@ export default function HeroSectionRevamped() {
       >
         {/* Floating Badge */}
         <motion.div
-          className="flex justify-center mb-8"
+          className="flex justify-center mb-5 md:mb-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -108,7 +108,7 @@ export default function HeroSectionRevamped() {
 
         {/* Main Heading */}
         <motion.h1
-          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-4 text-center leading-tight"
+          className="text-4xl md:text-6xl font-bold mb-4 text-center leading-tight"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
@@ -183,11 +183,13 @@ export default function HeroSectionRevamped() {
         >
           <motion.button
             onClick={() => handleScroll("books")}
-            className="group relative px-8 py-4 rounded-full font-semibold text-lg overflow-hidden"
+            className="group relative px-8 py-3 rounded-full font-semibold text-lg overflow-hidden"
             style={{
               backgroundColor: theme.background.secondary,
               color: theme.text.primary,
               fontFamily: theme.fonts.button,
+              borderColor:theme.background.secondary,
+              borderWidth:1
             }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -209,7 +211,7 @@ export default function HeroSectionRevamped() {
 
           <motion.button
             onClick={() => handleScroll("about-author")}
-            className="px-8 py-4 rounded-full font-semibold text-lg border-2 backdrop-blur-sm"
+            className="px-8 py-3 rounded-full font-semibold text-lg border-2 backdrop-blur-sm"
             style={{
               borderColor: theme.text.light,
               color: theme.text.light,

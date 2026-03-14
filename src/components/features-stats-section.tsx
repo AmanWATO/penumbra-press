@@ -226,7 +226,7 @@ export default function FeaturesStatsSection() {
         </motion.div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-20">
+        {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-20">
           {stats.map((stat, index) => (
             <StatCard
               key={stat.label}
@@ -236,7 +236,7 @@ export default function FeaturesStatsSection() {
               delay={index * 0.1}
             />
           ))}
-        </div>
+        </div> */}
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">

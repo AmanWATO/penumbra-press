@@ -36,7 +36,7 @@ export default function BooksShowcaseRevamped() {
   return (
     <section
       id="books"
-      className="relative py-24 overflow-hidden"
+      className="relative py-16 overflow-hidden"
       style={{ backgroundColor: theme.background.dark }}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -44,14 +44,14 @@ export default function BooksShowcaseRevamped() {
       <div className="container mx-auto px-5 z-10 relative">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
           <h2
-            className="text-4xl md:text-5xl font-bold mb-4"
+            className="text-3xl md:text-5xl font-bold mb-2"
             style={{ fontFamily: theme.fonts.heading, color: theme.text.light }}
           >
             From My Desk to Your Hands
@@ -66,7 +66,7 @@ export default function BooksShowcaseRevamped() {
         </motion.div>
 
         {/* Book Showcase */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 max-md:gap-10 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 max-md:gap-8 items-center">
           {/* Featured Book Image */}
           <motion.div
             className="relative flex justify-center items-center"
@@ -78,8 +78,8 @@ export default function BooksShowcaseRevamped() {
             <Image
               src={featuredBook.coverImage}
               alt={`Cover of ${featuredBook.title}`}
-              width={400}
-              height={600}
+              width={320}
+              height={400}
               className="rounded-lg shadow-2xl object-cover"
               style={{ boxShadow: `0 25px 50px -12px ${theme.colors.gold}40` }}
             />
@@ -101,7 +101,7 @@ export default function BooksShowcaseRevamped() {
             >
               {featuredBook.title}
             </h3>
-            <p className="text-lg mb-6 line-clamp-3" style={{ color: theme.text.light, fontFamily: theme.fonts.body }}>
+            <p className="text-lg mb-6 line-clamp-5" style={{ color: theme.text.light, fontFamily: theme.fonts.body }}>
               {featuredBook.description}
             </p>
 
