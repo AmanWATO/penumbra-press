@@ -1,4 +1,8 @@
-import { Quote, WeeklyContestEntry } from "./apiTypes";
+import {
+  CreateWeeklyContestEntryDto,
+  Quote,
+  WeeklyContestEntry,
+} from "./apiTypes";
 
 const strapiUrl = "https://cms.penumbrapenned.com/api";
 
@@ -121,3 +125,4 @@ export const fetchWeeklyContestStats = async () => {
     };
   }
 };
+

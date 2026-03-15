@@ -25,3 +25,18 @@ export interface WeeklyContestStats {
   winners: WeeklyContestEntry[];
   allEntries: WeeklyContestEntry[];
 }
+
+export interface CreateWeeklyContestEntryDto {
+  title: string;
+  author_name: string;
+  author_email: string;
+  city: string;
+  theme: string;
+  genre: string;
+  content: string;
+  judge_notes?: string;
+  spotlight_rank: 'FIRST' | 'SECOND' | 'THIRD' | 'FOURTH' | 'FIFTH' | 'NONE' | null;
+  is_winner: boolean;
+  weekNumber: 'FIRST' | 'SECOND' | 'THIRD';
+  type?: string;
+}

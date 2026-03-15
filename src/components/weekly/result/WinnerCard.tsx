@@ -308,7 +308,7 @@ const WinnerCard: React.FC<WinnerCardProps> = ({
               }}
             >
               <p
-                className={`leading-relaxed flex-1 ${
+                className={`leading-relaxed line-clamp-3 flex-1 ${
                   isTopThree ? "text-sm" : "text-xs md:text-sm"
                 }`}
                 style={{

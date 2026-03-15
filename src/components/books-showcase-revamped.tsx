@@ -26,7 +26,7 @@ export default function BooksShowcaseRevamped() {
 
     const autoScroll = setInterval(() => {
       handleNext();
-    }, 5000); // Auto-scroll every 5 seconds
+    }, 3000); // Auto-scroll every 5 seconds
 
     return () => clearInterval(autoScroll);
   }, [isHovering, featuredIndex]);
@@ -122,7 +122,7 @@ export default function BooksShowcaseRevamped() {
 
             <Link href="/my-books">
               <motion.button
-                className="group relative px-8 py-4 rounded-full font-semibold text-lg overflow-hidden"
+                className="group cursor-pointer relative px-8 py-3 rounded-full font-semibold text-lg overflow-hidden"
                 style={{
                   backgroundColor: theme.background.secondary,
                   color: theme.text.primary,

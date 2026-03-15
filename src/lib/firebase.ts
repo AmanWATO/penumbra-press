@@ -195,6 +195,26 @@ export const weeklyContestDB = {
     }
   },
 
+  async getEntriesByWeek(
+    weekNumber: "week-1" | "week-2" | "week-3"
+  ): Promise<{ entries: Array<WeeklyContestEntry & { id: string }>; error?: any }> {
+    try {
+      const querySnapshot = await getDocs(
+        collection(db, "weekly-contests", weekNumber, "entries")
+      );
+
+      const entries = querySnapshot.docs.map((entryDoc) => ({
+        id: entryDoc.id,
+        ...(entryDoc.data() as WeeklyContestEntry),
+      }));
+
+      return { entries };
+    } catch (error) {
+      console.error("Error getting entries by week: ", error);
+      return { entries: [], error };
+    }
+  },
+
   async submitEntry(
     weekNumber: "week-1" | "week-2" | "week-3",
     entryData: Omit<WeeklyContestEntry, "submittedAt" | "weekNumber">

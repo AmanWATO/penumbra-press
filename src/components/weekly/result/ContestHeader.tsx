@@ -48,7 +48,7 @@ export const ContestHeader: React.FC<ContestHeaderProps> = ({
           <button
             key={week}
             onClick={() => onWeekChange(week)}
-            className={`px-4 py-2 max-md:px-3 max-md:py-1.5 rounded-lg font-semibold text-sm max-md:text-xs transition-all duration-200 ${
+            className={`px-4 cursor-pointer py-2 max-md:px-3 max-md:py-1.5 rounded-lg font-semibold text-sm max-md:text-xs transition-all duration-200 ${
               currentWeek === week
                 ? "transform scale-105"
                 : "hover:transform hover:scale-102 opacity-70 hover:opacity-90"

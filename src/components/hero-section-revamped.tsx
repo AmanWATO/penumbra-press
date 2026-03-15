@@ -183,7 +183,7 @@ export default function HeroSectionRevamped() {
         >
           <motion.button
             onClick={() => handleScroll("books")}
-            className="group relative px-8 py-3 rounded-full font-semibold text-lg overflow-hidden"
+            className="group relative px-8 py-3 cursor-pointer rounded-full font-semibold text-lg overflow-hidden"
             style={{
               backgroundColor: theme.background.secondary,
               color: theme.text.primary,
@@ -211,7 +211,7 @@ export default function HeroSectionRevamped() {
 
           <motion.button
             onClick={() => handleScroll("about-author")}
-            className="px-8 py-3 rounded-full font-semibold text-lg border-2 backdrop-blur-sm"
+            className="px-8 py-3 rounded-full cursor-pointer font-semibold text-lg border-2 backdrop-blur-sm"
             style={{
               borderColor: theme.text.light,
               color: theme.text.light,
