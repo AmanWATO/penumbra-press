@@ -1,10 +1,10 @@
 import { Quote, WeeklyContestEntry } from "./apiTypes";
 
-const strapiUrl = "https://cms-dev.penumbrapenned.com/api";
+const strapiUrl = "https://cms.penumbrapenned.com/api";
 
 export const fetchQuotes = async (): Promise<Quote[]> => {
   try {
-    const res = await fetch(`${strapiUrl}/quotes`, {
+    const res = await fetch(`${strapiUrl}/quotes?pagination[pageSize]=100`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -15,10 +15,10 @@ export const fetchQuotes = async (): Promise<Quote[]> => {
       throw new Error(`Failed to fetch quotes: ${res.statusText}`);
     }
 
-    const data = await res.json();
+    const response = await res.json();
 
     return (
-      data?.data?.map((item: any) => ({
+      response?.data?.map((item: any) => ({
         title: item.title,
         explanation: item.explanation,
         genre: item.genre,

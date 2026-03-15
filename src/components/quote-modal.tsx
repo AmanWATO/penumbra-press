@@ -1,129 +1,59 @@
+"use client";
+
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Bookmark } from "lucide-react";
 import { Quote } from "@/api/apiTypes";
-import theme from "@/styles/theme";
+import { useTheme } from "@/context/ThemeProvider";
 
 interface QuoteModalProps {
   selectedQuote: Quote | null;
   onClose: () => void;
+  colorScheme: {
+    bg: string;
+    border: string;
+    accent: string;
+    text: string;
+  };
 }
 
-const QuoteModal = ({ selectedQuote, onClose }: QuoteModalProps) => {
-  const quotesTheme = theme.sections.quotes;
+// Helper to strip quotes from text
+const stripQuotes = (text: string): string => {
+  return text.replace(/^["']|["']$/g, '').trim();
+};
+
+const QuoteModal = ({ selectedQuote, onClose, colorScheme }: QuoteModalProps) => {
+  const theme = useTheme();
 
   const backdropVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.3,
-      },
-    },
-    exit: {
-      opacity: 0,
-      transition: {
-        duration: 0.2,
-      },
-    },
+    visible: { opacity: 1, transition: { duration: 0.3 } },
+    exit: { opacity: 0, transition: { duration: 0.2 } },
   };
 
   const modalVariants = {
-    hidden: {
-      scale: 0.3,
-      opacity: 0,
-      rotateX: -15,
-      y: 100,
-    },
+    hidden: { scale: 0.95, opacity: 0, y: 20 },
     visible: {
       scale: 1,
       opacity: 1,
-      rotateX: 0,
       y: 0,
-      transition: {
-        damping: 25,
-        stiffness: 300,
-        duration: 0.6,
-        delay: 0.1,
-      },
+      transition: { duration: 0.4, ease: "easeOut" as const },
     },
     exit: {
-      scale: 0.8,
-      opacity: 0,
-      rotateX: 15,
-      y: -50,
-      transition: {
-        duration: 0.3,
-      },
-    },
-  };
-
-  const headerBarVariants = {
-    hidden: { scaleX: 0, opacity: 0 },
-    visible: {
-      scaleX: 1,
-      opacity: 1,
-      transition: {
-        delay: 0.4,
-        duration: 0.8,
-      },
-    },
-  };
-
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.5,
-      },
-    },
-  };
-
-  const textVariants = {
-    hidden: {
-      opacity: 0,
-      y: 20,
-      rotateX: -10,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      rotateX: 0,
-      transition: {
-        duration: 0.6,
-      },
-    },
-  };
-
-  const closeButtonVariants = {
-    rest: {
-      scale: 1,
-      rotate: 0,
-      backgroundColor: "#f3f4f6",
-    },
-    hover: {
-      scale: 1.1,
-      rotate: 90,
-      backgroundColor: "#ef4444",
-      transition: {
-        duration: 0.2,
-      },
-    },
-    tap: {
       scale: 0.95,
-      transition: {
-        duration: 0.1,
-      },
+      opacity: 0,
+      y: 10,
+      transition: { duration: 0.2 },
     },
   };
 
   return (
     <AnimatePresence>
       {selectedQuote && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          {/* Animated Backdrop */}
+        <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+          {/* Backdrop */}
           <motion.div
-            className="absolute inset-0 bg-[#17171750] backdrop-blur-sm"
+            className="absolute inset-0"
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.85)" }}
             variants={backdropVariants}
             initial="hidden"
             animate="visible"
@@ -131,133 +61,127 @@ const QuoteModal = ({ selectedQuote, onClose }: QuoteModalProps) => {
             onClick={onClose}
           />
 
-          {/* Modal Content with 3D perspective */}
+          {/* Modal Content */}
           <motion.div
-            className="relative max-w-2xl w-full mx-4 rounded-xl shadow-2xl bg-white overflow-hidden"
+            className="relative max-w-xl w-full rounded-lg overflow-hidden"
+            style={{
+              backgroundColor: "#1a1a1a",
+              border: `1px solid ${colorScheme.border}`,
+            }}
             variants={modalVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
-            style={{
-              perspective: "1000px",
-              transformStyle: "preserve-3d",
-            }}
           >
-            {/* Animated Close Button */}
+            {/* Top accent line */}
+            <div
+              className="absolute top-0 left-0 right-0 h-px"
+              style={{ backgroundColor: colorScheme.accent }}
+            />
+
+            {/* Close button */}
             <motion.button
-              className="absolute top-6 right-4 w-8 h-8 flex cursor-pointer items-center justify-center rounded-full z-10"
-              variants={closeButtonVariants}
-              initial="rest"
-              whileHover="hover"
-              whileTap="tap"
+              className="absolute top-4 cursor-pointer right-4 w-8 h-8 flex items-center justify-center rounded-full transition-colors"
+              style={{
+                backgroundColor: colorScheme.bg,
+                border: `1px solid ${colorScheme.border}`,
+              }}
+              whileHover={{ backgroundColor: colorScheme.border }}
+              whileTap={{ scale: 0.95 }}
               onClick={onClose}
             >
-              <motion.div
-                animate={{ rotate: 0 }}
-                whileHover={{ rotate: 180 }}
-                transition={{ duration: 0.3 }}
-              >
-                <X size={20} className="text-white" />
-              </motion.div>
+              <X className="w-4 h-4" style={{ color: colorScheme.text }} />
             </motion.button>
 
-            <motion.div
-              className="p-6 md:p-8"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {/* Animated Header Bar */}
+            <div className="p-8">
+              {/* Genre tag */}
               <motion.div
-                className="h-3 w-full rounded-t-lg absolute top-0 left-0"
-                style={{ backgroundColor: quotesTheme.accent }}
-                variants={headerBarVariants}
-                initial="hidden"
-                animate="visible"
-              />
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6"
+                style={{
+                  backgroundColor: colorScheme.bg,
+                  border: `1px solid ${colorScheme.border}`,
+                }}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <Bookmark className="w-3 h-3" style={{ color: colorScheme.accent }} />
+                <span
+                  className="text-xs tracking-wide uppercase"
+                  style={{ color: colorScheme.text, fontFamily: theme.fonts.button }}
+                >
+                  {selectedQuote.genre}
+                </span>
+              </motion.div>
 
-              {/* Main quote text with typewriter effect */}
-              <motion.div variants={textVariants} className="mt-6 mb-8">
-                <motion.p
-                  className={`text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed text-gray-800 `}
+              {/* Quote text */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <p
+                  className="text-xl md:text-2xl leading-relaxed mb-8"
                   style={{
+                    color: theme.colors.gray100,
                     fontFamily: theme.fonts.math,
                   }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{
-                    delay: 0.6,
-                    duration: 0.8,
-                    ease: "easeOut",
-                  }}
                 >
-                  {`"${selectedQuote.title}"`}
-                </motion.p>
+                  &ldquo;{stripQuotes(selectedQuote.title)}&rdquo;
+                </p>
               </motion.div>
 
-              {/* Animated Divider */}
+              {/* Divider */}
               <motion.div
-                className="my-6 h-px bg-gray-200 rounded-full"
-                initial={{ scaleX: 0, opacity: 0 }}
-                animate={{ scaleX: 1, opacity: 1 }}
-                transition={{
-                  delay: 0.8,
-                  duration: 0.6,
-                  ease: "easeOut",
-                }}
-                style={{ transformOrigin: "left" }}
+                className="w-12 h-px mb-8"
+                style={{ backgroundColor: colorScheme.accent }}
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
               />
 
-              {/* Genre and Explanation */}
-              <motion.div variants={textVariants}>
-                <motion.h3
-                  className={`text-lg mb-3 font-medium text-gray-800 `}
-                  style={{
-                    fontFamily: theme.fonts.button,
-                  }}
-                  whileHover={{
-                    color: quotesTheme.accent,
-                    x: 10,
-                    transition: { duration: 0.2 },
-                  }}
-                >
-                  {selectedQuote?.genre}
-                </motion.h3>
-
-                <motion.p
-                  className={`ext-base text-gray-600 leading-relaxed`}
-                  style={{
-                    fontFamily: theme.fonts.serifAlt,
-                  }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: 1,
-                    duration: 0.6,
-                  }}
-                >
-                  {selectedQuote.explanation}
-                </motion.p>
-              </motion.div>
-
-              {/* Subtle glow effect */}
-              <motion.div
-                className="absolute inset-0 rounded-xl pointer-events-none"
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: [0, 0.1, 0],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
+              {/* Explanation */}
+              <motion.p
+                className="text-sm md:text-base leading-relaxed"
                 style={{
-                  background: `radial-gradient(circle at center, ${quotesTheme.accent}20, transparent 70%)`,
-                  filter: "blur(20px)",
+                  color: theme.colors.gray400,
+                  fontFamily: theme.fonts.serifAlt,
                 }}
-              />
-            </motion.div>
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                {selectedQuote.explanation}
+              </motion.p>
+
+              {/* Footer attribution */}
+              <motion.div
+                className="mt-10 pt-6 flex items-center justify-between"
+                style={{ borderTop: `1px solid ${colorScheme.border}` }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+              >
+                <span
+                  className="text-xs tracking-wide"
+                  style={{ color: theme.colors.gray600, fontFamily: theme.fonts.body }}
+                >
+                  From the Thoughtful Archive
+                </span>
+                <span
+                  className="text-xs"
+                  style={{ color: colorScheme.accent, fontFamily: theme.fonts.playful }}
+                >
+                  ~ Aman Srivastava
+                </span>
+              </motion.div>
+            </div>
+
+            {/* Bottom accent line */}
+            <div
+              className="absolute bottom-0 left-0 right-0 h-px"
+              style={{ backgroundColor: colorScheme.border }}
+            />
           </motion.div>
         </div>
       )}

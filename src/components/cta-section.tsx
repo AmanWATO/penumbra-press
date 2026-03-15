@@ -101,7 +101,7 @@ export default function CTASection() {
 
                     <Link href="/my-books">
                       <motion.button
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white transition-all shadow-lg hover:shadow-xl"
+                        className="inline-flex cursor-pointer items-center gap-2 px-8 py-4 rounded-xl font-bold text-white transition-all shadow-lg hover:shadow-xl"
                         style={{
                           fontFamily: fonts.button,
                           background: `linear-gradient(to right, ${colors.gold}, ${colors.deepSepia})`,
@@ -181,7 +181,7 @@ export default function CTASection() {
 
                     <Link href="/penumbra-weekly">
                       <motion.button
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white transition-all shadow-lg hover:shadow-xl"
+                        className="inline-flex cursor-pointer items-center gap-2 px-8 py-4 rounded-xl font-bold text-white transition-all shadow-lg hover:shadow-xl"
                         style={{
                           fontFamily: fonts.button,
                           background: `linear-gradient(to right, ${colors.purple}, ${colors.nightBlue})`,

@@ -174,7 +174,7 @@ export default function NewsletterSectionRevamped() {
 
                   <motion.button
                     type="submit"
-                    className="px-8 py-4 rounded-xl font-bold text-white transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="px-8 py-4 rounded-xl cursor-pointer font-bold text-white transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     style={{ fontFamily: fonts.button, background: `linear-gradient(to right, ${colors.gold}, ${colors.deepSepia})` }}
                     whileHover={{ scale: submitted ? 1 : 1.02 }}
                     whileTap={{ scale: submitted ? 1 : 0.98 }}

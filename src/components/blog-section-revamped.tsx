@@ -117,7 +117,7 @@ export default function BlogSectionRevamped() {
         <div className="text-center mt-16">
           <Link href="/insights">
             <motion.button
-              className="px-8 py-4 cursor-pointer rounded-full font-semibold text-lg border-2"
+              className="px-8 py-3 cursor-pointer rounded-full font-semibold text-lg border-2"
               style={{
                 borderColor: theme.colors.deepSepia,
                 color: theme.colors.deepSepia,
